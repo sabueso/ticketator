@@ -18,11 +18,16 @@ from django.contrib import admin
 
 #Import another modular views
 from core import views_users as vusers
+from core import views_company as vcompanys
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^core/', include('core.urls')),
 
     #Users
-    url(r'^core/list/', vusers.list_users, name='gestio-user-list'),
+    url(r'^core/users/list/', vusers.list_users, name='user-list'),
+
+    #Companys
+    url(r'^core/companys/list/', vcompanys.list_companys, name='company-list'),
 ]
