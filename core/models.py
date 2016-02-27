@@ -7,16 +7,16 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Company:
+class Company(models.Model):
 	name = models.CharField(max_length=100)
 	#More fields will be needed...
 
-class Department:
-	company_rel = models.ForeignKey(Company,on_delete=models.CASCADE )
+class Department(models.Model):
+	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
 	name = models.CharField(max_length=100)
 	#logo = pending....
 	#color  = if needed....
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department,on_delete=models.CASCADE )
+    department = models.ForeignKey('Department',on_delete=models.CASCADE )
