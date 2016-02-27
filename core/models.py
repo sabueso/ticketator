@@ -12,17 +12,25 @@ from datetime import datetime
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 	#More fields will be needed...
+	
+	def __unicode__(self):
+		return self.name
 
 class Department(models.Model):
 	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
 	name = models.CharField(max_length=100)
 	#logo = pending....
 	#color  = if needed....
+	def __unicode__(self):
+		return self.name
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
     department = models.ForeignKey('Department',on_delete=models.CASCADE )
-    avatar =  models.FileField(upload_to='/avatar/')
+    notify_email =  models.BooleanField(default=False)
+    avatar =  models.FileField(upload_to='./avatar/')
+    def __str__(self):
+		return self.id
 
 class State(models.Model):
 	name = models.CharField(max_length=30)
@@ -30,6 +38,9 @@ class State(models.Model):
 	numvalue = models.IntegerField(null=True,blank=True,default=0)
 	active = models.BooleanField(default=True)
 	#color = ColorField()
+	
+	def __unicode__(self):
+		return self.name
 
 class Ticket(models.Model):
 	date = models.DateTimeField(default=datetime.now)
@@ -39,3 +50,6 @@ class Ticket(models.Model):
 	subject =  models.CharField(max_length=40)
 	body = models.TextField(null=True,blank=True)
 	assigned_state = models.ForeignKey(State)
+	
+	def __str__(self):
+		return '%s' % (self.id)
