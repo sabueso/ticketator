@@ -5,4 +5,4 @@ from django.http import HttpResponse
 
 
 def index(request):
-	return HttpResponse("Hello, world. You're in the _CORE_ index.")
+	return HttpResponse("<center>Dashboard place =>  Go to <a href=\"/tickets/\">tickets</a></center>")
