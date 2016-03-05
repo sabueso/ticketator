@@ -5,4 +5,5 @@ from django.http import HttpResponse
 
 
 def index(request):
-	return HttpResponse("<center>Dashboard place =>  Go to <a href=\"/tickets/\">tickets</a></center>")
+	#return HttpResponse("<center>Dashboard place =>  Go to <a href=\"/tickets/\">tickets</a></center>")
+	return render(request, 'dashboard/index.html')

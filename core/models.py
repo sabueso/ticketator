@@ -17,7 +17,7 @@ class Company(models.Model):
 		return self.name
 
 class Department(models.Model):
-	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
+        company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
 	name = models.CharField(max_length=100)
 	#logo = pending....
 	#color  = if needed....
@@ -25,12 +25,12 @@ class Department(models.Model):
 		return self.name
 
 class Profile(models.Model):
-    user = models.OneToOneField(User)
-    department = models.ForeignKey('Department',on_delete=models.CASCADE )
-    notify_email =  models.BooleanField(default=False)
-    avatar =  models.FileField(upload_to='./avatar/')
-    def __str__(self):
-		return self.id
+        user = models.OneToOneField(User)
+        department = models.ForeignKey('Department',on_delete=models.CASCADE )
+        notify_email =  models.BooleanField(default=False)
+        avatar =  models.FileField(upload_to='./avatar/')
+        #def __str__(self):
+        #    return self.id
 
 class State(models.Model):
 	name = models.CharField(max_length=30)
