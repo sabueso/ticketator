@@ -8,9 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>{{site_vars.name}} {{site_vars.version}}</title>
-
     <!-- Bootstrap Core CSS -->
     <link href="{% static "theme/bower_components/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
 
@@ -35,9 +33,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
-
 <body>
 
     <div id="wrapper">
@@ -46,6 +42,8 @@
         {% include "dashboard/bars.html" %}
 
         <div id="page-wrapper">
+            {% block content %}
+            {% endblock %}
         </div>
         <!-- /#page-wrapper -->
 
