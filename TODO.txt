@@ -1,0 +1,5 @@
+#Ticketator TO-DO
+
+
+-Write a decent README.txt
+-Implement a templatetag for load the the name of the project and other repetitive data
