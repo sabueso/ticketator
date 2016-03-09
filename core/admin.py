@@ -16,10 +16,8 @@ class ProfileAdmin(admin.ModelAdmin):
 
 admin.site.register(Profile,ProfileAdmin) 
 
-
-
 class TicketAdmin(admin.ModelAdmin):
-	list_display = ('id','date','create_user','subject','assigned_state','assigned_department','assigned_user')
+	list_display = ('id','date','create_user','subject','assigned_state','assigned_department','assigned_user','assigned_prio')
 	search_fields = ('subject','body')
 
 admin.site.register(Ticket,TicketAdmin)

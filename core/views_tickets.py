@@ -21,7 +21,7 @@ def common_ticket_data():
 #List tickets
 def list_tickets(request):
 	common_data = common_ticket_data()
-	tickets_info = Ticket.objects.filter().order_by("-id")
+	tickets_info = Ticket.objects.all().order_by("-id")
 	return render(request, 'tickets/list_tickets.html', locals())
 
 

@@ -139,3 +139,5 @@ STATICFILES_DIRS = [
 
 SITE_NAME = 'Ticketator DEV'
 SITE_VERSION = '0.1'
+DATE_INPUT_FORMATS = ['%d/%m/%y']
+DATE_FORMAT = ['%d/%m/%y']

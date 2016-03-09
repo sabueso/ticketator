@@ -31,6 +31,7 @@
                                             <th>Owner</th>
                                             <th>Status</th>
                                             <th>Responsible</th>
+                                            <th>Priority</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,8 +42,14 @@
                                     	<td>{{line.date}}</td>
                                     	<td>{{line.create_user}}</td>
                                     	<td>{{line.assigned_state}}</td>
-                                    	{% if line.assigned_user %}<td>{{line.assigned_user}}</td>{%else%}<td>-</td>{%endif%}
+                                    	{% if line.assigned_user %}
+                                        <td>{{line.assigned_user}}</td>
+                                        {%else%}
+                                        <td></td>
+                                        {%endif%}
+                                        <td>{{line.assigned_prio}}</td>
                                     	{%endfor%}
+                                        
                                     </tbody>
 
                                 </table>
