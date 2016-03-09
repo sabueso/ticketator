@@ -45,6 +45,12 @@ class State(models.Model):
 	def __unicode__(self):
 		return self.name
 
+class Priority(models.Model):
+	name = models.CharField(max_length=30)
+	#color = ColorField()
+	def __unicode__(self):
+		return self.name
+
 class Ticket(models.Model):
 	date = models.DateTimeField(default=datetime.now)
 	create_user = models.ForeignKey(User, related_name = "c_user", blank=True, null=True,)
@@ -53,6 +59,7 @@ class Ticket(models.Model):
 	subject =  models.CharField(max_length=40)
 	body = models.TextField(null=True,blank=True)
 	assigned_state = models.ForeignKey(State)
+	assigned_prio = models.ForeignKey(Priority)
 	
 	def __str__(self):
 		return '%s' % (self.id)
@@ -60,4 +67,4 @@ class Ticket(models.Model):
 class TicketForm(ModelForm):
 	class Meta:
 		model =  Ticket
-		fields = ['date','create_user','assigned_department','assigned_user','subject','body','assigned_state']
+		fields = ['date','create_user','assigned_department','assigned_user','subject','body','assigned_state','assigned_prio']

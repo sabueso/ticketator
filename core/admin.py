@@ -7,6 +7,7 @@ from .models import *
 admin.site.register(Company) 
 admin.site.register(Department)
 admin.site.register(State)
+admin.site.register(Priority)
 
 
 class ProfileAdmin(admin.ModelAdmin):
