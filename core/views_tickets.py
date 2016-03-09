@@ -17,12 +17,14 @@ def common_ticket_data():
 	now_str = datetime.now()
 	return {'status_info':status_info, 'dept_info':dept_info, 'users_info':users_info, 'now_str':now_str }
 
+#List tickets
 def list_tickets(request):
 	common_data = common_ticket_data()
 	tickets_info = Ticket.objects.filter().order_by("-id")
 	return render(request, 'tickets/list_tickets.html', locals())
 
 
+#Add/Edit tickets
 def manage_ticket(request, ticket_id=None):
 	site_vars = utils.site_vars()
 	#Common data
@@ -31,6 +33,7 @@ def manage_ticket(request, ticket_id=None):
 		#Check if existis or raise 404	
 		actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
 	else:
+		#If not, assign a new ticket instance to be use as instance of form
 		actual_ticket = Ticket()
 	#POST mode
 	if request.method == 'POST':
@@ -41,17 +44,6 @@ def manage_ticket(request, ticket_id=None):
 			new_state_form.save()
 			return redirect("/tickets")
 	else:
-	#Non-POST mode
+	#Non-POST mode, show only
 		form = TicketForm(instance=actual_ticket)
 	return render(request,'tickets/create_ticket.html', locals())
-
-
-# def get_ticket(request, ticket_id=None):
-# 	try:
-# 		ticket=Ticket.objects.get(id=ticket_id)
-# 	except:
-# 		#Pending to implement 404 for tickets that no exists
-# 		return HttpResponse("The ticket doesn't exists")
-# 	form = TicketForm(instance=ticket)
-# 	return render(request,'tickets/create_ticket.html', locals())
-	
