@@ -7,7 +7,8 @@
                 </div>
                 <!-- /.col-lg-12 -->
     </div>
-<form method='post' action="/tickets/create" role="form">
+<!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
+<form method='post' action="/tickets/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form">
 {% csrf_token %}
     <div class="row">
                 <div class="col-lg-12">
@@ -17,55 +18,66 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-8">
+                                <div class="col-lg-9">
                                         <div class="form-group">
-                                            <label>Subject: </label>
-                                            
-                                            <input id="subject" name="subject" class="form-control" placeholder="Brief description about your ticket (yes, brief...)">
+                                            <label>Subject:</label>
+                                            <input id="subject" name="subject" class="form-control" placeholder="Brief description about your ticket (yes, brief...)" {% if form.instance.subject %} value="{{form.instance.subject}}" {% endif %}>
                                             {{form.subject.errors}}
                                             
                                         </div>
                                         <div class="form-group">
                                             <label>Description:</label>
+                                            <textarea id="body" name="body" rows="5" placeholder="Describe now your problem, with more detail..." class="form-control">{% if form.instance.body %}{{form.instance.body}}{%endif%}</textarea>
                                             {{form.body.errors}}
-                                            <textarea id="body" rows="5" placeholder="Describe now your problem, with more detail..." class="form-control"></textarea>
                                         </div>
                                 </div>
                                 
-                                <div class="col-lg-2 pull-right">
-                                    <div class="form-group ">
-                                            <label>{{form.date.label}}</label>
-                                            {{form.date.errors}}
+                                <div class="col-lg-2 pull-right" >
+                                    <div class="form-group pull-right">
+                                            <label class="pull-right">{{form.date.label}}</label></p>
                                             {{form.date}}
+                                            {{form.date.errors}}
                                     </div>
                                 	<div class="form-group ">
-                                            <label>{{form.assigned_state.label}}</label>
+                                            <label class="pull-right">{{form.assigned_state.label}}</label>
                                             <select class="form-control" id="id_assigned_state" name="assigned_state">
-                                            <option disabled selected> -- select an option -- </option>
-                                            {% for status in status_info %}
-                                                <option value="{{status.id}}">{{status}}</option>
+                                            {% for status in common_data.status_info %}
+                                                {%if status.id  == form.instance.assigned_state.id %}
+                                                    <option value="{{status.id}}" selected >{{status}}</option>
+                                                {%else%}
+                                                    <option value="{{status.id}}">{{status}}</option>
+                                                {%endif%}
                                             {%endfor%}
                                             </select>
                                             {{form.assigned_state.errors}}
                                     </div>
                                     
                                 	<div class="form-group ">
-                                            <label>{{form.assigned_department.label}}</label>
+                                            <label class="pull-right">{{form.assigned_department.label}}</label>
                                             <select class="form-control" id="id_assigned_department" name="assigned_department">
                                             <option disabled selected> -- select an option -- </option>
-                                            {% for dept in dept_info %}
-                                                <option value="{{dept.id}}">{{dept}}</option>
+                                            {% for dept in common_data.dept_info %}
+                                                {% if dept.id == form.instance.assigned_department.id %}
+                                                <option value="{{dept.id}}" selected >{{dept}}</option>
+                                                {% else %}
+                                                <option value="{{dept.id}}" >{{dept}}</option>
+                                                {% endif %}
                                             {%endfor%}
                                             </select>
                                             {{form.assigned_department.errors}}
                                             
                                     </div>
                                     <div class="form-group ">
-                                            <label>{{form.assigned_user.label}}</label>
+                                            <label class="pull-right">{{form.assigned_user.label}}</label>
                                             <select class="form-control" id="id_assigned_user" name="assigned_user">
                                             <option disabled selected> -- select an option -- </option>
-                                            {% for responsable in users_info %}
-                                                <option value="{{responsable.id}}">{{responsable}}</option>
+                                            {% for responsable in common_data.users_info %}
+                                                {% if responsable.id == form.instance.assigned_user.id%}
+                                                    <option value="{{responsable.id}}" selected >{{responsable}}</option>
+                                                {% else %}
+                                                    <option value="{{responsable.id}}">{{responsable}}</option>
+                                                {% endif %}
+
                                             {%endfor%}
                                             </select>
                                             {{form.assigned_user.errors}}

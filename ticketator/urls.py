@@ -37,6 +37,11 @@ urlpatterns = [
     url(r'^core/companys/list/', vcompanys.list_companys, name='company-list'),
 
     #Tickets
-    url(r'^tickets/create', vtickets.create_ticket, name='tickets-create'),
-    url(r'^tickets/', vtickets.list_tickets, name='tickets-list'),
+    
+    url(r'^tickets/$', vtickets.list_tickets, name='tickets-list'),
+    url(r'^tickets/create', vtickets.manage_ticket, name='tickets-create'),
+    url(r'^tickets/(?P<ticket_id>\d+)?$', vtickets.manage_ticket, name='tickets-get'),
+    
+    
+
 ]
