@@ -6,8 +6,8 @@ from django.conf import settings as settings_file
 #thus in the dict key, to be rendered in each function you need
 #Note: remember to import as "from core import views_utils"
 
-def site_vars():
-	site_vars_data = {}
-	site_vars_data['name']=settings_file.SITE_NAME
-	site_vars_data['version']=settings_file.SITE_VERSION
-	return site_vars_data
+# def site_vars():
+# 	site_vars_data = {}
+# 	site_vars_data['name']=settings_file.SITE_NAME
+# 	site_vars_data['version']=settings_file.SITE_VERSION
+# 	return site_vars_data

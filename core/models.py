@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.forms import ModelForm
-
 #Added imports
 from django.contrib.auth.models import User
 from datetime import datetime
@@ -10,8 +9,12 @@ from datetime import datetime
 #from colorfield.fields import ColorField
 
 #Generic views...
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+#from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+class UserForm(ModelForm):
+	class Meta:
+		model =  User
+		fields = ['password','last_login','is_superuser','username','first_name','last_name','email','is_staff','is_active','date_joined']
 
 # Create your models here.
 class Company(models.Model):

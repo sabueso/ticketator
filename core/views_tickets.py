@@ -1,7 +1,7 @@
 #Tickets views: list, create, delete
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from core import views_utils as utils
+#from core import views_utils as utils
 from core.models import Ticket,TicketForm, State, Department, Priority
 from django.contrib.auth.models import User
 #Needed for forms
@@ -19,15 +19,17 @@ def common_ticket_data():
 	return {'status_info':status_info, 'prio_info':prio_info,'dept_info':dept_info, 'users_info':users_info, 'now_str':now_str}
 
 #List tickets
-def list_tickets(request):
+def list_tickets(request, state_id=None):
 	common_data = common_ticket_data()
-	tickets_info = Ticket.objects.all().order_by("-id")
+	if state_id:	
+		tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
+	else:
+		tickets_info = Ticket.objects.all().order_by("-id")
 	return render(request, 'tickets/list_tickets.html', locals())
-
 
 #Add/Edit tickets
 def manage_ticket(request, ticket_id=None):
-	site_vars = utils.site_vars()
+	#site_vars = utils.site_vars()
 	#Common data
 	common_data = common_ticket_data()
 	if ticket_id:
@@ -47,4 +49,4 @@ def manage_ticket(request, ticket_id=None):
 	else:
 	#Non-POST mode, show only
 		form = TicketForm(instance=actual_ticket)
-	return render(request,'tickets/create_ticket.html', locals())
+	return render(request,'tickets/create_edit_ticket.html', locals())

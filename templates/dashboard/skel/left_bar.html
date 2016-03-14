@@ -1,3 +1,5 @@
+{% load core_settings_data %}
+
 <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
@@ -22,17 +24,15 @@
                             <a href="/tickets"><i class="fa fa-th-list fa-fw"></i>Tickets</a>
                         </li>
                         <li>
+
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Reports<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                                {% all_states as states %}
+                                {% for i in states %}
                                 <li>
-                                    <a href="flot.html">Open tickets</a>
+                                    <a href="/tickets/state/{{i.id}}">{{i}} tickets</a>
                                 </li>
-                                <li>
-                                    <a href="flot.html">Working tickets</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">Closed tickets</a>
-                                </li>
+                                {%endfor%}
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

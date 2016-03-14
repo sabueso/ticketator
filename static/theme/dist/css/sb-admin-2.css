@@ -297,6 +297,10 @@ table.dataTable thead .sorting:after {
     margin: 15px 0;
 }
 
+.medium {
+    font-size: 25px;
+}
+
 .huge {
     font-size: 40px;
 }
