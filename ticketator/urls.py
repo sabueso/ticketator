@@ -29,9 +29,10 @@ urlpatterns = [
 
     #Tickets
     url(r'^tickets/$', vtickets.list_tickets, name='tickets-list'),
-    url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
     url(r'^tickets/create', vtickets.manage_ticket, name='tickets-create'),
     url(r'^tickets/(?P<ticket_id>\d+)?$', vtickets.manage_ticket, name='tickets-get'),
+        #Filtering view
+    url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
 
 
 ]

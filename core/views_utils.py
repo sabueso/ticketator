@@ -11,3 +11,7 @@ from django.conf import settings as settings_file
 # 	site_vars_data['name']=settings_file.SITE_NAME
 # 	site_vars_data['version']=settings_file.SITE_VERSION
 # 	return site_vars_data
+
+def now():
+	obj_now = datetime.now().strftime("%d/%m/%y")
+	return obj_now

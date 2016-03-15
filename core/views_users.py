@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User
 from core.models import UserForm
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
 
 
@@ -11,23 +12,18 @@ def list_users(request, state_id=None):
 	return render(request, 'users/list_users.html', locals())
 
 def manage_user(request, user_id=None):
-	#site_vars = utils.site_vars()
-	#Common data
+	#Try to locate the object to use it as an instance and if not, create a new one to use it in a new form.
 	#common_data = common_ticket_data()
 	if user_id:
-		#Check if existis or raise 404	
 		actual_user=get_object_or_404(User,pk=user_id)
 	else:
-		#If not, assign a new ticket instance to be use as instance of form
 		actual_user = User()
 	#POST mode
 	if request.method == 'POST':
-		form = UserForm(request.POST, instance = actual_user)
+		form = UserForm(request.POST, instance=actual_user)
 		if form.is_valid():
-			#new_state_form = form.save(commit=False)
-			#new_state_form.create_user = request.user
-			new_state_form.save()
-			return redirect("/users")
+			form.save()
+			return redirect("/settings/user")
 	else:
 	#Non-POST mode, show only
 		form = UserForm(instance=actual_user)

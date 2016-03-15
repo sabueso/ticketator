@@ -11,16 +11,37 @@
                 </div>
                 <!-- /.col-lg-12 -->
     </div>
+
+
+{% load core_settings_data %}
+{%site_vars as vars %}
 <!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
-<form method='post' action="/tickets/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form">
+<form method='post' action="/settings/user/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form">
 {% csrf_token %}
     <div class="row">
                 <div class="col-lg-8 col-md-offset-2">
                     <div class="panel panel-default">
-                        <div class="panel-heading text-right">
+                        
+                        <div class="panel-heading">
+                            {% if vars.debug == True%}
+                            <div class="pull-left">
+                                Debug: {{vars.debug}}
+                            </div>
+                            {%endif%}
+                            <div class="text-right">
                             Create new user
+                            </div>
                         </div>
                         <div class="panel-body">
+
+                                {% if vars.debug == True%}
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {{form.errors}}
+                                
+                                    </div>
+                                    {% endif %}
+                                {%endif%}
 
                             <div class="row">
                                 <div class="col-lg-6">
@@ -32,6 +53,7 @@
                                                     <input id="username" name="username" class="form-control">
                                                     {%endif%}
                                                     <p class="help-block"></p>
+                                                    {{form.username.errors}}
                                         </div>
                                         
                                         <div class="form-group">
@@ -42,6 +64,7 @@
                                                     <input id="first_name" name="first_name" class="form-control">
                                                     {% endif%}
                                                     <p class="help-block"></p>
+                                                    {{form.first_name.errors}}
                                         </div>
                                         
                                         <div class="form-group">
@@ -52,6 +75,7 @@
                                                     <input id="last_name" name="last_name" class="form-control">
                                                     {% endif%}
                                                     <p class="help-block"></p>
+                                                    {{form.last_name.errors}}
                                         </div>
 
                                         <div class="form-group">
@@ -62,6 +86,7 @@
                                                     <input id="email" name="email" class="form-control">
                                                     {% endif%}
                                                     <p class="help-block"></p>
+                                                    {{form.email.errors}}
                                         </div>
                                         
                                 </div>
@@ -73,6 +98,17 @@
                                                         <p class="help-block"></p>
                                         </div>
                                             
+                                        <div class="form-group">
+                                                   <label>Date Joined</label>
+                                                    {% if form.instance.date_joined%}
+                                                    <input id="date_joined" name="date_joined" value="{{form.instance.date_joined}}" class="form-control">
+                                                    {% else%}
+                                                    <input id="date_joined" name="date_joined" class="form-control">
+                                                    {% endif%}
+                                                    <p class="help-block"></p>
+                                                    {{form.date_joined.errors}}
+                                        </div>
+
                                         <div class="form-group">
                                                      <label>Password (repeat)</label>
                                                      <input class="form-control">
@@ -94,10 +130,11 @@
                                                     {% endif %}
                                                     
                                                 </label>
+                                                {{form.is_staff.errors}}
                                             
-                                                <label>
+                                                <!--<label>
                                                     <input type="checkbox" value="">Enable
-                                                </label>                                            
+                                                </label>-->
                                             </div>
                                         </div>
                                 </div>

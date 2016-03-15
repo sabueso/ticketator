@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
 from django.db import models
+from django import forms
 from django.forms import ModelForm
 #Added imports
 from django.contrib.auth.models import User
 from datetime import datetime
+from core import views_utils as util
 
 #TO-DO imports
 #from colorfield.fields import ColorField
@@ -12,6 +14,7 @@ from datetime import datetime
 #from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 class UserForm(ModelForm):
+	date_joined = forms.DateField(widget=forms.SelectDateWidget(), initial=util.now)
 	class Meta:
 		model =  User
 		fields = ['password','last_login','is_superuser','username','first_name','last_name','email','is_staff','is_active','date_joined']
