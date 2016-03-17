@@ -1,7 +1,7 @@
 #User views: list, create, delete
 from django.contrib.auth.models import User
 from core.models import UserForm
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
 
@@ -22,7 +22,10 @@ def manage_user(request, user_id=None):
 	if request.method == 'POST':
 		form = UserForm(request.POST, instance=actual_user)
 		if form.is_valid():
-			form.save()
+			#form.check_password()
+			temp_form = form.save(commit = False)
+			temp_form.set_password(form.cleaned_data["password"])
+			temp_form.save()
 			return redirect("/settings/user")
 	else:
 	#Non-POST mode, show only

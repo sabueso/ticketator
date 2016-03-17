@@ -7,17 +7,26 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from core import views_utils as util
 
-#TO-DO imports
-#from colorfield.fields import ColorField
-
 #Generic views...
 #from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 class UserForm(ModelForm):
 	date_joined = forms.DateField(widget=forms.SelectDateWidget(), initial=util.now)
+	password = forms.CharField(widget=forms.PasswordInput)
+	password_check = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=False)
+	is_active = forms.BooleanField(required=False, initial=True)
 	class Meta:
 		model =  User
-		fields = ['password','last_login','is_superuser','username','first_name','last_name','email','is_staff','is_active','date_joined']
+		fields = '__all__'
+
+	def clean_password_check(self):
+		password_raw = self.cleaned_data.get('password')
+		password_chk = self.cleaned_data.get('password_check')
+		if not password_chk:
+			raise forms.ValidationError("You must confirm your password")
+		if password_raw != password_chk:
+			raise forms.ValidationError("Your passwords do not match")
+		return password_chk
 
 # Create your models here.
 class Company(models.Model):
@@ -73,4 +82,4 @@ class Ticket(models.Model):
 class TicketForm(ModelForm):
 	class Meta:
 		model =  Ticket
-		fields = ['date','create_user','assigned_department','assigned_user','subject','body','assigned_state','assigned_prio']
+		fields = '__all__'

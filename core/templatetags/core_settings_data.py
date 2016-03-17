@@ -24,5 +24,6 @@ def status_name(status_id):
 	status_obj_name = State.objects.get(id=status_id)
 	return status_obj_name.name
 
-
-
+@register.filter(name='addcss')
+def addcss(field, css):
+   return field.as_widget(attrs={"class":css})

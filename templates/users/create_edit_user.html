@@ -69,7 +69,7 @@
                                         
                                         <div class="form-group">
                                                    <label>Last name</label>
-                                                   {% if form.instance.last_name%}
+                                                    {% if form.instance.last_name%}
                                                     <input id="last_name" name="last_name" value="{{form.instance.last_name}}" class="form-control">
                                                     {% else%}
                                                     <input id="last_name" name="last_name" class="form-control">
@@ -93,15 +93,24 @@
                                 
                                 <div class="col-lg-6">
                                         <div class="form-group">
-                                                        <label>Password</label>
-                                                        <input class="form-control">
-                                                        <p class="help-block"></p>
+                                                    <label>Password</label>
+                                                    {{form.password|addcss:"form-control"}}
+                                                    <p class="help-block"></p>
+                                                    {{form.password.errors}}
+                                        </div>
+
+
+                                        <div class="form-group">
+                                                     <label>Password (repeat)</label>
+                                                     {{form.password_check|addcss:"form-control"}}
+                                                     <p class="help-block"></p>
+                                                     {{form.password_check.errors}}
                                         </div>
                                             
                                         <div class="form-group">
                                                    <label>Date Joined</label>
                                                     {% if form.instance.date_joined%}
-                                                    <input id="date_joined" name="date_joined" value="{{form.instance.date_joined}}" class="form-control">
+                                                    <input id="date_joined" name="date_joined" value="{{form.instance.date_joined|date:"d/m/Y"}}" class="form-control">
                                                     {% else%}
                                                     <input id="date_joined" name="date_joined" class="form-control">
                                                     {% endif%}
@@ -109,11 +118,7 @@
                                                     {{form.date_joined.errors}}
                                         </div>
 
-                                        <div class="form-group">
-                                                     <label>Password (repeat)</label>
-                                                     <input class="form-control">
-                                                     <p class="help-block"></p>
-                                        </div>
+
 
                                         <div class="form-group">
                                             <label>Checkboxes</label>
@@ -127,6 +132,20 @@
                                                         {% endif %}
                                                     {% else %}
                                                         <input id="is_staff" name="is_staff" type="checkbox"> Staff
+                                                    {% endif %}
+                                                    
+                                                </label>
+                                                {{form.is_staff.errors}}
+
+                                                <label>
+                                                    {% if form.instance.is_active %}
+                                                        {% if form.instance.is_active = True %}
+                                                        <input id="is_active" name="is_active" type="checkbox" checked> Active
+                                                        {% else %}
+                                                        <input id="is_active" name="is_active" type="checkbox"> Staff
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <input id="is_active" name="is_active" type="checkbox"> Staff
                                                     {% endif %}
                                                     
                                                 </label>
