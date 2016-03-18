@@ -1,8 +1,32 @@
 #Company views: list, create, delete
 
-from django.shortcuts import render
+from core.models import Company, CompanyForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
 
 
-def list_companys(request):
-	return HttpResponse("Listing Comnpanys...")
+#List tickets
+def list_companies(request, state_id=None):
+	user_list = Company.objects.all().order_by("-id")
+	return render(request, 'companies/list_companies.html', locals())
+
+def manage_company(request, company_id=None):
+	#Try to locate the object to use it as an instance and if not, create a new one to use it in a new form.
+	#common_data = common_ticket_data()
+	if company_id:
+		actual_company=get_object_or_404(Company,pk=company_id)
+	else:
+		actual_company=Company()
+	#POST mode
+	if request.method == 'POST':
+		form = CompanyForm(request.POST, instance=actual_company)
+		if form.is_valid():
+			form.save()
+			return redirect("/settings/companies")
+	else:
+	#Non-POST mode, show only
+		form = CompanyForm(instance=actual_company)
+	return render(request,'companies/create_edit_company.html', locals())
+
+

@@ -32,9 +32,16 @@ class UserForm(ModelForm):
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 	#More fields will be needed...
-	
+	#logo = pending
+	#phone = pending
+	#address = pending
 	def __unicode__(self):
 		return self.name
+
+class CompanyForm(ModelForm):
+	class Meta:
+		model =  Company
+		fields = '__all__'
 
 class Department(models.Model):
 	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
