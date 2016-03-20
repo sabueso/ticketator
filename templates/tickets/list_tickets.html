@@ -37,6 +37,8 @@
                                             <th class="text-center">Owner</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Responsible</th>
+                                            <th class="text-center">Department</th>
+                                            <th class="text-center">Company</th>
                                             <th class="text-center">Priority</th>
                                         </tr>
                                     </thead>
@@ -49,12 +51,23 @@
                                     	<td class="text-center">{{line.create_user}}</td>
                                     	<td class="text-center">{{line.assigned_state}}</td>
                                     	{% if line.assigned_user %}
-                                        <td class="text-center">{{line.assigned_user}}</td>
+                                            <td class="text-center">{{line.assigned_user}}</td>
                                         {%else%}
-                                        <td></td>
+                                            <td></td>
                                         {%endif%}
                                         <td class="text-center">{{line.assigned_prio}}</td>
+                                        {% if line.assigned_department %}
+                                            <td class="text-center">{{line.assigned_department}}</td>
+                                        {%else%}
+                                            <td></td>
+                                        {%endif%}
+                                        {% if line.assigned_company %}
+                                            <td class="text-center">{{line.assigned_company}}</td>
+                                        {%else%}
+                                            <td></td>
+                                        {%endif%}
                                     	{%endfor%}
+                                        
                                     </tbody>
 
                                 </table>

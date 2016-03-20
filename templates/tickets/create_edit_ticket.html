@@ -43,7 +43,7 @@
                                                 <!--{{form.assigned_prio.errors}}-->
                                         <!--/div>-->
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                         <!--<div class="form-group">-->
                                                 <label class="pull-center">State</label>
                                                 <select class="form-control" id="id_assigned_state" name="assigned_state">
@@ -58,25 +58,6 @@
                                                 {{form.assigned_state.errors}}
                                         <!-- </div> -->
                                         </div>
-                                        
-                                        <div class="col-md-3">
-                                        <!-- <div class="form-group"> -->
-                                                <label class="pull-center">Department</label>
-                                                <select class="form-control" id="id_assigned_department" name="assigned_department">
-                                                <option disabled selected> --select-- </option>
-                                                {% for dept in common_data.dept_info %}
-                                                    {% if dept.id == form.instance.assigned_department.id %}
-                                                    <option value="{{dept.id}}" selected >{{dept}}</option>
-                                                    {% else %}
-                                                    <option value="{{dept.id}}" >{{dept}}</option>
-                                                    {% endif %}
-                                                {%endfor%}
-                                                </select>
-                                                {{form.assigned_department.errors}}
-                                        <!-- </div> -->
-                                        </div>
-
-                                        <!-- <div class="form-group"> -->
                                         <div class="col-md-2">
                                                 <label class="pull-centert">Reponsible</label>
                                                 <select class="form-control" id="id_assigned_user" name="assigned_user">
@@ -93,6 +74,44 @@
                                                 {{form.assigned_user.errors}}
                                         <!-- </div> -->
                                         </div>
+                                        
+                                        <div class="col-md-2">
+                                        <!-- <div class="form-group"> -->
+                                                <label class="pull-center">Department</label>
+                                                <select class="form-control" id="id_assigned_department" name="assigned_department">
+                                                <option disabled selected> --select-- </option>
+                                                {% for dept in common_data.dept_info %}
+                                                    {% if dept.id == form.instance.assigned_department.id %}
+                                                    <option value="{{dept.id}}" selected >{{dept}}</option>
+                                                    {% else %}
+                                                    <option value="{{dept.id}}" >{{dept}}</option>
+                                                    {% endif %}
+                                                {%endfor%}
+                                                </select>
+                                                {{form.assigned_department.errors}}
+                                        <!-- </div> -->
+                                        </div>
+
+                                        <!---Company-->
+                                        <div class="col-md-2">
+                                        <!-- <div class="form-group"> -->
+                                                <label class="pull-center">Company</label>
+                                                <select class="form-control" id="id_assigned_company" name="assigned_company">
+                                                <option disabled selected> --select-- </option>
+                                                {% for comp in common_data.comp_info %}
+                                                    {% if comp.id == form.instance.assigned_company.id %}
+                                                    <option value="{{comp.id}}" selected >{{comp}}</option>
+                                                    {% else %}
+                                                    <option value="{{comp.id}}" >{{comp}}</option>
+                                                    {% endif %}
+                                                {%endfor%}
+                                                </select>
+                                                {{form.assigned_company.errors}}
+                                        <!-- </div> -->
+                                        </div>
+
+                                        <!-- <div class="form-group"> -->
+                                        
 
                                     <!--</div>-->
                                 <!--</div>-->

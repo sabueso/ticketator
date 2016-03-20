@@ -1,7 +1,7 @@
 {% extends "dashboard/index.html" %}
 
 {%block content %}
-	<div class="row">
+    	<div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Settings</h1>
                 </div>
@@ -42,11 +42,36 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="medium">Groups</div>
-                                        <div>Manage groups</div>
+                                        <div>Manage groups rights</div>
                                     </div>
                                 </div>
                             </div>
                             <a href="/settings/group">
+                                <div class="panel-footer">
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-right">Go</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+            </div>
+
+
+            <!--Departments-->
+            <div class="col-lg-2">
+                <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-th fa-3x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="medium">Departments</div>
+                                        <div>Manage departments</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/settings/departments">
                                 <div class="panel-footer">
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                     <span class="pull-right">Go</span>

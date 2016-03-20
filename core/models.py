@@ -44,12 +44,17 @@ class CompanyForm(ModelForm):
 		fields = '__all__'
 
 class Department(models.Model):
-	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
 	name = models.CharField(max_length=100)
+	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
 	#logo = pending....
 	#color  = if needed....
 	def __unicode__(self):
 		return self.name
+
+class DepartmentForm(ModelForm):
+	class Meta:
+		model =  Department
+		fields = '__all__'
 
 class Profile(models.Model):
 	user = models.OneToOneField(User)
@@ -76,8 +81,9 @@ class Priority(models.Model):
 class Ticket(models.Model):
 	date = models.DateTimeField(default=datetime.now)
 	create_user = models.ForeignKey(User, related_name = "c_user", blank=True, null=True,)
-	assigned_department = models.ForeignKey('Department', blank=True, null=True)
 	assigned_user = models.ForeignKey(User, blank=True, null=True, related_name = "a_user")
+	assigned_department = models.ForeignKey('Department', blank=True, null=True)
+	assigned_company = models.ForeignKey('Company', blank=True, null=True)
 	subject =  models.CharField(max_length=40)
 	body = models.TextField(null=True,blank=True)
 	assigned_state = models.ForeignKey(State)

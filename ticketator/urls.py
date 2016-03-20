@@ -5,6 +5,7 @@ from django.contrib import admin
 from core import views
 from core import views_users as vusers
 from core import views_company as vcompanies
+from core import views_department as vdepartment
 from core import views_tickets as vtickets
 
 
@@ -29,6 +30,11 @@ urlpatterns = [
     url(r'^settings/companies/create', vcompanies.manage_company, name='company-create'),
     url(r'^settings/companies/(?P<company_id>\d+)?$', vcompanies.manage_company, name='company-edit'),
 
+    #departments
+    url(r'^settings/departments/$', vdepartment.list_departments, name='department-list'),
+    url(r'^settings/departments/create', vdepartment.manage_department, name='department-create'),
+    url(r'^settings/departments/(?P<department_id>\d+)?$', vdepartment.manage_department, name='department-edit'),
+
     #Tickets
     url(r'^tickets/$', vtickets.list_tickets, name='tickets-list'),
     url(r'^tickets/create', vtickets.manage_ticket, name='tickets-create'),
@@ -37,3 +43,4 @@ urlpatterns = [
     url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
 
 ]
+

@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 #from core import views_utils as utils
-from core.models import Ticket,TicketForm, State, Department, Priority
+from core.models import Ticket,TicketForm, State, Department, Priority, Company
 from django.contrib.auth.models import User
 #Needed for forms
 from django.views.decorators.csrf import csrf_protect
@@ -11,12 +11,14 @@ from datetime import datetime
 #Commond data & querys used to create/edit ticktes
 def common_ticket_data():
 	#Querys
+	users_info = User.objects.all()
+	dept_info = Department.objects.all()
+	comp_info =  Company.objects.all()
 	status_info = State.objects.all()
 	prio_info = Priority.objects.all()
-	dept_info = Department.objects.all()
-	users_info = User.objects.all()
 	now_str = datetime.now()
-	return {'status_info':status_info, 'prio_info':prio_info,'dept_info':dept_info, 'users_info':users_info, 'now_str':now_str}
+	return {'status_info':status_info, 'prio_info':prio_info, \
+	'dept_info':dept_info, 'users_info':users_info, 'now_str':now_str, 'comp_info':comp_info}
 
 #List tickets
 def list_tickets(request, state_id=None):
