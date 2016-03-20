@@ -3,20 +3,18 @@ from django.db import models
 from django import forms
 from django.forms import ModelForm
 #Added imports
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from datetime import datetime
 from core import views_utils as util
 
-#Generic views...
-#from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
+#=> Auth forms
 class UserForm(ModelForm):
 	date_joined = forms.DateField(widget=forms.SelectDateWidget(), initial=util.now)
 	password = forms.CharField(widget=forms.PasswordInput)
 	password_check = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=False)
 	is_active = forms.BooleanField(required=False, initial=True)
 	class Meta:
-		model =  User
+		model = User
 		fields = '__all__'
 
 	def clean_password_check(self):
@@ -28,7 +26,12 @@ class UserForm(ModelForm):
 			raise forms.ValidationError("Your passwords do not match")
 		return password_chk
 
-# Create your models here.
+class GroupForm(ModelForm):
+	class Meta:
+		model = Group
+		fields = '__all__'
+
+#=> Companys
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 	#More fields will be needed...
@@ -43,6 +46,7 @@ class CompanyForm(ModelForm):
 		model =  Company
 		fields = '__all__'
 
+#=> Departments
 class Department(models.Model):
 	name = models.CharField(max_length=100)
 	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
@@ -56,13 +60,28 @@ class DepartmentForm(ModelForm):
 		model =  Department
 		fields = '__all__'
 
+#=> Profile
+#Review if it's really usefull
 class Profile(models.Model):
 	user = models.OneToOneField(User)
 	department = models.ForeignKey('Department',on_delete=models.CASCADE )
 	notify_email =  models.BooleanField(default=False)
 	avatar =  models.FileField(upload_to='./avatar/')
 
-  
+
+#=> Groups
+#Group's rights
+class Rights(models.Model):
+	#user_rol=models.ForeignKey(User, related_name = "rol_user", blank=True, null=True,)
+	dept_rol=models.ForeignKey('Department', related_name = "rol_dept", blank=True, null=True)
+	#Permited actions
+	can_view=models.BooleanField(default=False)
+	can_create=models.BooleanField(default=False)
+	can_delete=models.BooleanField(default=False)
+	can_edit=models.BooleanField(default=False)
+	can_comment=models.BooleanField(default=False)
+
+#=> States  
 class State(models.Model):
 	name = models.CharField(max_length=30)
 	description = models.CharField(max_length=130)
@@ -72,12 +91,14 @@ class State(models.Model):
 	def __unicode__(self):
 		return self.name
 
+#=> Prioritys
 class Priority(models.Model):
 	name = models.CharField(max_length=30)
 	#color = ColorField()
 	def __unicode__(self):
 		return self.name
 
+#=> Tickets
 class Ticket(models.Model):
 	date = models.DateTimeField(default=datetime.now)
 	create_user = models.ForeignKey(User, related_name = "c_user", blank=True, null=True,)
@@ -96,3 +117,5 @@ class TicketForm(ModelForm):
 	class Meta:
 		model =  Ticket
 		fields = '__all__'
+
+#= END =#

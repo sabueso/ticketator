@@ -1,13 +1,10 @@
 from django.conf.urls import include,url
 from django.contrib import admin
 
-#Import another modular views
+#Import some modular views
 from core import views
-from core import views_users as vusers
-from core import views_company as vcompanies
-from core import views_department as vdepartment
-from core import views_tickets as vtickets
-
+from core import views_users as vusers, views_company as vcompanies, views_department as vdepartment, \
+                    views_tickets as vtickets, views_group as vgroup
 
 urlpatterns = [
 
@@ -24,6 +21,11 @@ urlpatterns = [
     url(r'^settings/user/$', vusers.list_users, name='user-list'),
     url(r'^settings/user/create', vusers.manage_user, name='user-create'),
     url(r'^settings/user/(?P<user_id>\d+)?$', vusers.manage_user, name='user-edit'),
+
+    #departments
+    url(r'^settings/groups/$', vgroup.list_groups, name='group-list'),
+    url(r'^settings/groups/create', vgroup.manage_group, name='group-create'),
+    url(r'^settings/groups/(?P<group_id>\d+)?$', vgroup.manage_group, name='group-edit'),
 
     #Companys
     url(r'^settings/companies/$', vcompanies.list_companies, name='company-list'),
