@@ -4,7 +4,7 @@ from django.contrib import admin
 #Import some modular views
 from core import views
 from core import views_users as vusers, views_company as vcompanies, views_department as vdepartment, \
-                    views_tickets as vtickets, views_group as vgroup
+    views_tickets as vtickets, views_group as vgroup, views_right as vright
 
 urlpatterns = [
 
@@ -22,10 +22,15 @@ urlpatterns = [
     url(r'^settings/user/create', vusers.manage_user, name='user-create'),
     url(r'^settings/user/(?P<user_id>\d+)?$', vusers.manage_user, name='user-edit'),
 
-    #departments
+    #Groups
     url(r'^settings/groups/$', vgroup.list_groups, name='group-list'),
     url(r'^settings/groups/create', vgroup.manage_group, name='group-create'),
     url(r'^settings/groups/(?P<group_id>\d+)?$', vgroup.manage_group, name='group-edit'),
+
+    #Rights
+    url(r'^settings/rights/$', vright.list_rights, name='right-list'),
+    url(r'^settings/rights/create', vright.manage_right, name='right-create'),
+    url(r'^settings/rights/(?P<right_id>\d+)?$', vright.manage_right, name='right-edit'),
 
     #Companys
     url(r'^settings/companies/$', vcompanies.list_companies, name='company-list'),

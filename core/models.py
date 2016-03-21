@@ -7,6 +7,11 @@ from django.contrib.auth.models import User, Group
 from datetime import datetime
 from core import views_utils as util
 
+from django.core.exceptions import ValidationError
+
+from django.http import HttpResponse
+
+
 #=> Auth forms
 class UserForm(ModelForm):
 	date_joined = forms.DateField(widget=forms.SelectDateWidget(), initial=util.now)
@@ -72,14 +77,54 @@ class Profile(models.Model):
 #=> Groups
 #Group's rights
 class Rights(models.Model):
+	enabled=models.BooleanField(default=True)
 	#user_rol=models.ForeignKey(User, related_name = "rol_user", blank=True, null=True,)
-	dept_rol=models.ForeignKey('Department', related_name = "rol_dept", blank=True, null=True)
+	grp_src=models.ForeignKey(Group, related_name = "src_grp", blank=True, null=True)
+	dpt_dst=models.ForeignKey('Department', related_name = "dst_dept", blank=True, null=True)
 	#Permited actions
 	can_view=models.BooleanField(default=False)
 	can_create=models.BooleanField(default=False)
 	can_delete=models.BooleanField(default=False)
 	can_edit=models.BooleanField(default=False)
 	can_comment=models.BooleanField(default=False)
+
+	#Check at database state if registry is created or we can create it:
+	#If you use the admin, to mantain the non-duplicity of the rules, we make a secondary 
+	#check at time to save the object to the DB.
+	#Yes, you have 2 querys but this is the unique way to avoid errors if you use the admin
+	#panel to insert some righths
+
+	def detect_rights_exists(self, grp, dpt):
+		obj_query = Rights.objects.filter(grp_src=grp, dpt_dst=dpt)
+		return_query={}
+		if obj_query:
+			return_query['status'] = True
+			for i in obj_query:
+				return_query['numbers'] = i.id
+			return return_query
+		else:
+			return_query['status'] = False
+			return return_query
+		
+	def save(self, *args, **kwargs):
+		detect_function = self.detect_rights_exists(self.grp_src, self.dpt_dst)
+		if detect_function['status'] == True:
+			raise ValidationError("Rule already created: model output "+str(detect_function['numbers'])+"") 
+		else:
+			super( Rights, self ).save( *args, **kwargs )
+
+
+class RightForm(ModelForm):
+	class Meta:
+		model =  Rights
+		fields = '__all__'
+
+	#Check at form stage if registry is created or we can create it 
+	def clean_dpt_dst(self):
+		detect_function = Rights.detect_rights_exists(Rights(), self.cleaned_data.get('grp_src'), self.cleaned_data.get('dpt_dst'))
+	 	if detect_function['status']:
+	 		raise forms.ValidationError("Rule already created src=>"+str(self.cleaned_data.get('grp_src'))+" dst=>"+str(self.cleaned_data.get('dpt_dst'))+"")
+	 	return self.cleaned_data.get('dpt_dst')
 
 #=> States  
 class State(models.Model):
