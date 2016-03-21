@@ -95,20 +95,20 @@ class Rights(models.Model):
 	#panel to insert some righths
 
 	def detect_rights_exists(self, grp, dpt):
-		obj_query = Rights.objects.filter(grp_src=grp, dpt_dst=dpt)
 		return_query={}
+		obj_query = Rights.objects.filter(grp_src=grp, dpt_dst=dpt)
 		if obj_query:
 			return_query['status'] = True
-			for i in obj_query:
-				return_query['numbers'] = i.id
+			return_query['numbers'] = [i.id for i in obj_query]
 			return return_query
 		else:
 			return_query['status'] = False
 			return return_query
-		
+	
+	#Only for new records (self.pk check)		
 	def save(self, *args, **kwargs):
 		detect_function = self.detect_rights_exists(self.grp_src, self.dpt_dst)
-		if detect_function['status'] == True:
+		if not self.pk and detect_function['status'] == True:
 			raise ValidationError("Rule already created: model output "+str(detect_function['numbers'])+"") 
 		else:
 			super( Rights, self ).save( *args, **kwargs )
@@ -119,10 +119,11 @@ class RightForm(ModelForm):
 		model =  Rights
 		fields = '__all__'
 
-	#Check at form stage if registry is created or we can create it 
+	#Check at form stage if registry is created or if we can create it 
 	def clean_dpt_dst(self):
 		detect_function = Rights.detect_rights_exists(Rights(), self.cleaned_data.get('grp_src'), self.cleaned_data.get('dpt_dst'))
-	 	if detect_function['status']:
+		#Check if no pk assigned and if detect_function['status'] is True
+	 	if not self.instance.pk and detect_function['status']:
 	 		raise forms.ValidationError("Rule already created src=>"+str(self.cleaned_data.get('grp_src'))+" dst=>"+str(self.cleaned_data.get('dpt_dst'))+"")
 	 	return self.cleaned_data.get('dpt_dst')
 

@@ -37,6 +37,7 @@
                                             <th class="text-center">can_delete</th>
                                             <th class="text-center">can_edit</th>
                                             <th class="text-center">can_comment</th>
+                                            <th class="text-center">Enabled</th>
                                             <!-- <th>Name</th>
                                             <th>Surname</th>
                                             <th class="text-center" width="5px">Active</th>
@@ -59,11 +60,36 @@
                                             {%else%}
                                             <td class="text-center">-</td>
                                             {%endif%}
-                                            <td class="text-center">{{line.can_view}}</td>
-                                            <td class="text-center">{{line.can_create}}</td>
-                                            <td class="text-center">{{line.can_delete}}</td>
-                                            <td class="text-center">{{line.can_edit}}</td>
-                                            <td class="text-center">{{line.can_comment}}</td>
+                                            {% if line.can_view == True %}
+                                                <td class="text-center"><i class="fa fa-check"></i></td>
+                                            {%else%}
+                                                <td class="text-center"><i class="fa fa-times"></i></td>
+                                            {%endif%}
+                                            {% if line.can_create == True %}
+                                                <td class="text-center"><i class="fa fa-check"></i></td>
+                                            {%else%}
+                                                <td class="text-center"><i class="fa fa-times"></i></td>
+                                            {%endif%}
+                                            {% if line.can_delete == True %}
+                                                <td class="text-center"><i class="fa fa-check"></i></td>
+                                            {%else%}
+                                                <td class="text-center"><i class="fa fa-times"></i></td>
+                                            {%endif%}
+                                            {% if line.can_edit == True %}
+                                                <td class="text-center"><i class="fa fa-check"></i></td>
+                                            {%else%}
+                                                <td class="text-center"><i class="fa fa-times"></i></td>
+                                            {%endif%}
+                                            {% if line.can_comment == True %}
+                                                <td class="text-center"><i class="fa fa-check"></i></td>
+                                            {%else%}
+                                                <td class="text-center"><i class="fa fa-times"></i></td>
+                                            {%endif%}
+                                            {% if line.enabled == True %}
+                                                <td class="text-center"><i class="fa fa-check-circle "></i></td>
+                                            {%else%}
+                                                <td class="text-center"><i class="fa fa-minus-circle "></i></td>
+                                            {%endif%}
                                     	{%endfor%}
                                     </tbody>
 
