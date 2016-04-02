@@ -18,6 +18,13 @@
                         </div>
 
                         <div class="panel-body">
+                            {% if vars.debug == True%}
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {{ form.non_field_errors }}
+                                    </div>
+                                    {% endif %}
+                                {%endif%}
                             <div class="row show-grid">
                                 <!--<div class="col-lg-9" >-->
                                     <!--<div class="panel-body">-->

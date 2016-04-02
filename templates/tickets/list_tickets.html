@@ -24,7 +24,9 @@
                             {% status_name state_id %} tickets
                             </div>
                         {% endif %}
-                        
+                        <div>
+                            {{depts}}
+                        </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
@@ -55,7 +57,7 @@
                                         {%else%}
                                             <td></td>
                                         {%endif%}
-                                        <td class="text-center">{{line.assigned_prio}}</td>
+                                        
                                         {% if line.assigned_department %}
                                             <td class="text-center">{{line.assigned_department}}</td>
                                         {%else%}
@@ -66,6 +68,7 @@
                                         {%else%}
                                             <td></td>
                                         {%endif%}
+                                        <td class="text-center">{{line.assigned_prio}}</td>
                                     	{%endfor%}
                                         
                                     </tbody>

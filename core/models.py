@@ -6,11 +6,8 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User, Group
 from datetime import datetime
 from core import views_utils as util
-
+from core import rights
 from django.core.exceptions import ValidationError
-
-from django.http import HttpResponse
-
 
 #=> Auth forms
 class UserForm(ModelForm):
@@ -73,12 +70,10 @@ class Profile(models.Model):
 	notify_email =  models.BooleanField(default=False)
 	avatar =  models.FileField(upload_to='./avatar/')
 
-
 #=> Groups
 #Group's rights
 class Rights(models.Model):
 	enabled=models.BooleanField(default=True)
-	#user_rol=models.ForeignKey(User, related_name = "rol_user", blank=True, null=True,)
 	grp_src=models.ForeignKey(Group, related_name = "src_grp", blank=True, null=True)
 	dpt_dst=models.ForeignKey('Department', related_name = "dst_dept", blank=True, null=True)
 	#Permited actions
@@ -124,8 +119,8 @@ class RightForm(ModelForm):
 		detect_function = Rights.detect_rights_exists(Rights(), self.cleaned_data.get('grp_src'), self.cleaned_data.get('dpt_dst'))
 		#Check if no pk assigned and if detect_function['status'] is True
 	 	if not self.instance.pk and detect_function['status']:
-	 		raise forms.ValidationError("Rule already created src=>"+str(self.cleaned_data.get('grp_src'))+" dst=>"+str(self.cleaned_data.get('dpt_dst'))+"")
-	 	return self.cleaned_data.get('dpt_dst')
+	 		raise forms.ValidationError("Rule already created ("+str(detect_function['numbers'][0])+") src=>"+str(self.cleaned_data.get('grp_src'))+" dst=>"+str(self.cleaned_data.get('dpt_dst'))+"")
+	 	return self.cleaned_data.get('dpt_dst')	
 
 #=> States  
 class State(models.Model):
@@ -155,13 +150,30 @@ class Ticket(models.Model):
 	body = models.TextField(null=True,blank=True)
 	assigned_state = models.ForeignKey(State)
 	assigned_prio = models.ForeignKey(Priority)
-	
+
 	def __str__(self):
 		return '%s' % (self.id)
 
 class TicketForm(ModelForm):
+	# Pass request to a form => http://stackoverflow.com/questions/6325681/passing-a-user-request-to-forms
+	def __init__(self, *args, **kwargs):	
+		self.request = kwargs.pop("request")
+		super(TicketForm, self).__init__(*args, **kwargs)
+
 	class Meta:
 		model =  Ticket
 		fields = '__all__'
+
+	def clean(self):
+		ruledefined='Some rule defined'
+		cantsave='You don\'t have permissions to edit this ticket' 
+		cantview='You don\'t have permissions to view this ticket'
+		#Some essential vars
+		user_obj=self.request.user
+		dept_obj=self.cleaned_data.get('assigned_department')
+		#Check if some right is defined for this action
+		user_object_rights=rights.get_rights_for_ticket(user_obj, dept_obj)
+		if user_object_rights.can_edit != True:
+			raise forms.ValidationError(cantsave)
 
 #= END =#

@@ -2,11 +2,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 #from core import views_utils as utils
-from core.models import Ticket,TicketForm, State, Department, Priority, Company
-from django.contrib.auth.models import User
+from core.models import Ticket,TicketForm, State, Department, Priority, Company, Rights
+from django.contrib.auth.models import User, Group
 #Needed for forms
 from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
+#Rights magic
+from core import rights
+from django.db.models import Q
+
 
 #Commond data & querys used to create/edit ticktes
 def common_ticket_data():
@@ -23,13 +27,18 @@ def common_ticket_data():
 #List tickets
 def list_tickets(request, state_id=None):
 	common_data = common_ticket_data()
-	if state_id:	
-		tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
+	if request.user.username == 'admin':
+		tickets_info = Ticket.objects.filter().order_by("-id")
 	else:
-		tickets_info = Ticket.objects.all().order_by("-id")
+		depts = rights.get_depts(request.user)
+		if state_id:	
+			tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
+		else:
+			tickets_info = Ticket.objects.filter(depts).order_by("-id")
 	return render(request, 'tickets/list_tickets.html', locals())
 
-#Add/Edit tickets
+
+#Create/Edit tickets
 def manage_ticket(request, ticket_id=None):
 	#site_vars = utils.site_vars()
 	#Common data
@@ -42,13 +51,13 @@ def manage_ticket(request, ticket_id=None):
 		actual_ticket = Ticket()
 	#POST mode
 	if request.method == 'POST':
-		form = TicketForm(request.POST, instance = actual_ticket)
+		form = TicketForm(request.POST, instance = actual_ticket , request=request)
 		if form.is_valid():
 			new_state_form = form.save(commit=False)
-			new_state_form.create_user = request.user
-			new_state_form.save()
-			return redirect("/tickets")
+		 	new_state_form.create_user = request.user
+		 	new_state_form.save()
+		 	return redirect("/tickets")
 	else:
 	#Non-POST mode, show only
-		form = TicketForm(instance=actual_ticket)
+		form = TicketForm(instance=actual_ticket, request=request)
 	return render(request,'tickets/create_edit_ticket.html', locals())
