@@ -12,9 +12,10 @@ from django.core.exceptions import ValidationError
 #=> Auth forms
 class UserForm(ModelForm):
 	date_joined = forms.DateField(widget=forms.SelectDateWidget(), initial=util.now)
-	password = forms.CharField(widget=forms.PasswordInput)
+	password = forms.CharField(widget=forms.PasswordInput, required=False)
 	password_check = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=False)
 	is_active = forms.BooleanField(required=False, initial=True)
+
 	class Meta:
 		model = User
 		fields = '__all__'
@@ -22,10 +23,15 @@ class UserForm(ModelForm):
 	def clean_password_check(self):
 		password_raw = self.cleaned_data.get('password')
 		password_chk = self.cleaned_data.get('password_check')
-		if not password_chk:
+		#First password but not second
+		if not password_chk and password_raw:
 			raise forms.ValidationError("You must confirm your password")
+		#First and second but differents
 		if password_raw != password_chk:
 			raise forms.ValidationError("Your passwords do not match")
+		#Not updating password
+		if self.instance.pk and not password_chk and password_raw:
+			pass
 		return password_chk
 
 class GroupForm(ModelForm):
@@ -165,15 +171,24 @@ class TicketForm(ModelForm):
 		fields = '__all__'
 
 	def clean(self):
+		#Some messages
 		ruledefined='Some rule defined'
 		cantsave='You don\'t have permissions to edit this ticket' 
 		cantview='You don\'t have permissions to view this ticket'
+		cantcreate='You don\'t have permissions to create this ticket'
 		#Some essential vars
 		user_obj=self.request.user
 		dept_obj=self.cleaned_data.get('assigned_department')
 		#Check if some right is defined for this action
-		user_object_rights=rights.get_rights_for_ticket(user_obj, dept_obj)
-		if user_object_rights.can_edit != True:
-			raise forms.ValidationError(cantsave)
+		user_object_rights=rights.get_rights_for_ticket(user=user_obj, dept=dept_obj, ticket_id=None)
+		#New ticket
+		if not self.instance.id:
+			if user_object_rights.can_create != True:
+				raise forms.ValidationError(cantcreate)
+		#Existing ticket
+		else:
+			if user_object_rights.can_edit != True:
+				raise forms.ValidationError(cantsave)
+		
 
 #= END =#

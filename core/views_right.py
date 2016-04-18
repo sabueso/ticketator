@@ -8,7 +8,7 @@ from django.http import HttpResponse
 
 #List tickets
 def list_rights(request):
-	rights_list = Rights.objects.all().order_by("-id")
+	rights_list = Rights.objects.all().order_by('grp_src_id','-dpt_dst')
 	return render(request, 'rights/list_rights.html', locals())
 
 def manage_right(request, right_id=None):
@@ -22,7 +22,6 @@ def manage_right(request, right_id=None):
 		if form.is_valid():		
 			form.save()
 			return redirect("/settings/rights")
-
 	else:
 	#Non-POST mode, show only
 		form = RightForm(instance=actual_right)

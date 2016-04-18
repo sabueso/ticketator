@@ -4,7 +4,7 @@ from django.contrib import admin
 #Import some modular views
 from core import views
 from core import views_users as vusers, views_company as vcompanies, views_department as vdepartment, \
-    views_tickets as vtickets, views_group as vgroup, views_right as vright
+    views_tickets as vtickets, views_group as vgroup, views_right as vright, views_auth as vauth
 
 urlpatterns = [
 
@@ -16,6 +16,10 @@ urlpatterns = [
 
     #Settings & utilities
     url(r'^settings/$', views.settings, name='tickets-settings'),
+
+    #Auth
+    url(r'^login','django.contrib.auth.views.login',{'template_name': 'auth/login.html'}),
+    url(r'^logoff', vauth.logout_v, name='logout'),
 
     #Users   
     url(r'^settings/user/$', vusers.list_users, name='user-list'),
@@ -46,7 +50,8 @@ urlpatterns = [
     url(r'^tickets/$', vtickets.list_tickets, name='tickets-list'),
     url(r'^tickets/create', vtickets.manage_ticket, name='tickets-create'),
     url(r'^tickets/(?P<ticket_id>\d+)?$', vtickets.manage_ticket, name='tickets-get'),
-        #Filtering view
+    
+    #Filtering view
     url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
 
 ]

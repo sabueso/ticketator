@@ -1,6 +1,7 @@
 #Tickets views: list, create, delete
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, Http404
 #from core import views_utils as utils
 from core.models import Ticket,TicketForm, State, Department, Priority, Company, Rights
 from django.contrib.auth.models import User, Group
@@ -10,6 +11,7 @@ from datetime import datetime
 #Rights magic
 from core import rights
 from django.db.models import Q
+
 
 
 #Commond data & querys used to create/edit ticktes
@@ -24,12 +26,14 @@ def common_ticket_data():
 	return {'status_info':status_info, 'prio_info':prio_info, \
 	'dept_info':dept_info, 'users_info':users_info, 'now_str':now_str, 'comp_info':comp_info}
 
+@login_required
 #List tickets
 def list_tickets(request, state_id=None):
 	common_data = common_ticket_data()
 	if request.user.username == 'admin':
 		tickets_info = Ticket.objects.filter().order_by("-id")
 	else:
+		#dept is used in template to debug profits
 		depts = rights.get_depts(request.user)
 		if state_id:	
 			tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
@@ -39,13 +43,18 @@ def list_tickets(request, state_id=None):
 
 
 #Create/Edit tickets
+@login_required
 def manage_ticket(request, ticket_id=None):
 	#site_vars = utils.site_vars()
 	#Common data
 	common_data = common_ticket_data()
 	if ticket_id:
 		#Check if existis or raise 404	
-		actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
+		ticket_rights = rights.get_rights_for_ticket(user=request.user, dept=None, ticket_id=ticket_id)
+		if ticket_rights.can_view == True :
+			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
+		else:
+			raise Http404("You dont have enough permissions to see this ticket")
 	else:
 		#If not, assign a new ticket instance to be use as instance of form
 		actual_ticket = Ticket()

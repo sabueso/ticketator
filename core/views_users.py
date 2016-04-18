@@ -22,10 +22,13 @@ def manage_user(request, user_id=None):
 	if request.method == 'POST':
 		form = UserForm(request.POST, instance=actual_user)
 		if form.is_valid():
-			#form.check_password()
 			temp_form = form.save(commit = False)
-			temp_form.set_password(form.cleaned_data["password"])
+			if not form.cleaned_data["password"] and not form.cleaned_data["password_check"] and form.instance.pk:
+				pass
+			else:
+				temp_form.set_password(form.cleaned_data["password"])
 			temp_form.save()
+			form.save_m2m()
 			return redirect("/settings/user")
 	else:
 	#Non-POST mode, show only
