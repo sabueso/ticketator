@@ -4,13 +4,13 @@
 {%block content %}
 	<div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><i class="fa fa-user "></i>Manage departments</h1>
+                    <h1 class="page-header"><i class="fa fa-user "></i>Manage queue</h1>
                 </div>
                 <!-- /.col-lg-12 -->                
     </div>
     <div class="row">
                 <div class="col-lg-12">
-                    <a href="/settings/departments/create" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 5px;"></i>Add Department</a>
+                    <a href="/settings/queue/create" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 5px;"></i>Add Queue</a>
                 </div>
     </div>
     
@@ -19,7 +19,7 @@
                 <div class="col-lg-8 col-md-offset-2">
                     <div class="panel panel-default">
                             <div class="panel-heading">
-                                Actual departments
+                                Actual queue
                             </div>
                     
                         
@@ -41,9 +41,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	{%for line in department_list %}
+                                    	{%for line in queue_list %}
                                     	<tr class="odd gradeX">
-                                    	<td><a href="/settings/departments/{{line.id}}">{{line.id}}</a></td>
+                                    	<td><a href="/settings/queue/{{line.id}}">{{line.id}}</a></td>
                                     	<td class="text-center">{{line.name}}</td>
                                         <td class="text-center">{{line.company_rel}}</td>
                                     	<!-- <td>{{line.first_name}}</td>

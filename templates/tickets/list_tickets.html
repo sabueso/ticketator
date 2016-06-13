@@ -25,7 +25,7 @@
                             </div>
                         {% endif %}
                         <div>
-                            {{depts}}
+                            {{queues}}
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -39,7 +39,7 @@
                                             <th class="text-center">Owner</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Responsible</th>
-                                            <th class="text-center">Department</th>
+                                            <th class="text-center">Queue</th>
                                             <th class="text-center">Company</th>
                                             <th class="text-center">Priority</th>
                                         </tr>
@@ -58,8 +58,8 @@
                                             <td></td>
                                         {%endif%}
                                         
-                                        {% if line.assigned_department %}
-                                            <td class="text-center">{{line.assigned_department}}</td>
+                                        {% if line.assigned_queue %}
+                                            <td class="text-center">{{line.assigned_queue}}</td>
                                         {%else%}
                                             <td></td>
                                         {%endif%}

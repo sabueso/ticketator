@@ -84,18 +84,18 @@
                                         
                                         <div class="col-md-2">
                                         <!-- <div class="form-group"> -->
-                                                <label class="pull-center">Department</label>
-                                                <select class="form-control" id="id_assigned_department" name="assigned_department">
+                                                <label class="pull-center">Queue</label>
+                                                <select class="form-control" id="id_assigned_queue" name="assigned_queue">
                                                 <option disabled selected> --select-- </option>
-                                                {% for dept in common_data.dept_info %}
-                                                    {% if dept.id == form.instance.assigned_department.id %}
-                                                    <option value="{{dept.id}}" selected >{{dept}}</option>
+                                                {% for queue in common_data.queue_info %}
+                                                    {% if queue.id == form.instance.assigned_queue.id %}
+                                                    <option value="{{queue.id}}" selected >{{queue}}</option>
                                                     {% else %}
-                                                    <option value="{{dept.id}}" >{{dept}}</option>
+                                                    <option value="{{queue.id}}" >{{queue}}</option>
                                                     {% endif %}
                                                 {%endfor%}
                                                 </select>
-                                                {{form.assigned_department.errors}}
+                                                {{form.assigned_queue.errors}}
                                         <!-- </div> -->
                                         </div>
 

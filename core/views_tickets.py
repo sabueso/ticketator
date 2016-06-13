@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 #from core import views_utils as utils
-from core.models import Ticket,TicketForm, State, Department, Priority, Company, Rights
+from core.models import Ticket,TicketForm, State, Queue, Priority, Company, Rights
 from django.contrib.auth.models import User, Group
 #Needed for forms
 from django.views.decorators.csrf import csrf_protect
@@ -18,13 +18,13 @@ from django.db.models import Q
 def common_ticket_data():
 	#Querys
 	users_info = User.objects.all()
-	dept_info = Department.objects.all()
+	queue_info = Queue.objects.all()
 	comp_info =  Company.objects.all()
 	status_info = State.objects.all()
 	prio_info = Priority.objects.all()
 	now_str = datetime.now()
 	return {'status_info':status_info, 'prio_info':prio_info, \
-	'dept_info':dept_info, 'users_info':users_info, 'now_str':now_str, 'comp_info':comp_info}
+	'queue_info':queue_info, 'users_info':users_info, 'now_str':now_str, 'comp_info':comp_info}
 
 @login_required
 #List tickets
@@ -33,12 +33,12 @@ def list_tickets(request, state_id=None):
 	if request.user.username == 'admin':
 		tickets_info = Ticket.objects.filter().order_by("-id")
 	else:
-		#dept is used in template to debug profits
-		depts = rights.get_depts(request.user)
+		#queue is used in template to debug profits
+		queues = rights.get_queues(request.user)
 		if state_id:	
 			tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
 		else:
-			tickets_info = Ticket.objects.filter(depts).order_by("-id")
+			tickets_info = Ticket.objects.filter(queues).order_by("-id")
 	return render(request, 'tickets/list_tickets.html', locals())
 
 
@@ -50,7 +50,7 @@ def manage_ticket(request, ticket_id=None):
 	common_data = common_ticket_data()
 	if ticket_id:
 		#Check if existis or raise 404	
-		ticket_rights = rights.get_rights_for_ticket(user=request.user, dept=None, ticket_id=ticket_id)
+		ticket_rights = rights.get_rights_for_ticket(user=request.user, queue=None, ticket_id=ticket_id)
 		if ticket_rights.can_view == True :
 			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
 		else:

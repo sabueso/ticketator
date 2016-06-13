@@ -10,12 +10,13 @@
     
     <div class="row">
         <!--users-->
-            <div class="col-lg-2">
+        <div class="col-lg-12">    
+            <div class="col-lg-3">
                 <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-user fa-3x"></i>
+                                        <i class="fa fa-user fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="medium">Users</div>
@@ -32,61 +33,13 @@
                             </a>
                         </div>
             </div>
-
-            <!--Departments-->
-            <div class="col-lg-2">
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-th fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">Departments</div>
-                                        <div>Manage departments</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/settings/departments">
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-            </div>
-
-            <!--companys-->
-            <div class="col-lg-2">
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-building fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">Company</div>
-                                        <div>Add/Remove companys</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/settings/companies">
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-            </div>
             <!--groups-->
-            <div class="col-lg-2">
-                <div class="panel panel-green">
+            <div class="col-lg-3">
+                <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-users fa-3x"></i>
+                                        <i class="fa fa-users fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="medium">Groups</div>
@@ -103,17 +56,66 @@
                             </a>
                         </div>
             </div>
+            <!--Queues-->
+            <div class="col-lg-3">
+                <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-th fa-2x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="medium">Queues</div>
+                                        <div>Manage queues</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/settings/queue">
+                                <div class="panel-footer">
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-right">Go</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">            
+            <!--Company-->
+            <div class="col-lg-3">
+                <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-building fa-2x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="medium">Company</div>
+                                        <div>Add/Remove companys</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/settings/companies">
+                                <div class="panel-footer">
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-right">Go</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+            </div>
             <!--rights-->
-            <div class="col-lg-2">
+            <div class="col-lg-3">
                 <div class="panel panel-green">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-key fa-3x"></i>
+                                        <i class="fa fa-key fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="medium">Rights</div>
-                                        <div>Manage rights for groups</div>
+                                        <div>Manage rights/queues</div>
                                     </div>
                                 </div>
                             </div>
@@ -126,13 +128,15 @@
                             </a>
                         </div>
             </div>
+        </div>
+        <div class="col-lg-12">
             <!--config-->
-            <div class="col-lg-2">
+            <div class="col-lg-3">
                 <div class="panel panel-yellow">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-gear  fa-3x"></i>
+                                        <i class="fa fa-gear  fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="medium">Config</div>
@@ -149,6 +153,7 @@
                             </a>
                         </div>
             </div>
+        </div>
 
     </div>
     

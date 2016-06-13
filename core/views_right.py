@@ -8,7 +8,7 @@ from django.http import HttpResponse
 
 #List tickets
 def list_rights(request):
-	rights_list = Rights.objects.all().order_by('grp_src_id','-dpt_dst')
+	rights_list = Rights.objects.all().order_by('grp_src_id','-queue_dst')
 	return render(request, 'rights/list_rights.html', locals())
 
 def manage_right(request, right_id=None):

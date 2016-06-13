@@ -3,7 +3,7 @@ from django.contrib import admin
 
 #Import some modular views
 from core import views
-from core import views_users as vusers, views_company as vcompanies, views_department as vdepartment, \
+from core import views_users as vusers, views_company as vcompanies, views_queues as vqueues, \
     views_tickets as vtickets, views_group as vgroup, views_right as vright, views_auth as vauth
 
 urlpatterns = [
@@ -41,10 +41,10 @@ urlpatterns = [
     url(r'^settings/companies/create', vcompanies.manage_company, name='company-create'),
     url(r'^settings/companies/(?P<company_id>\d+)?$', vcompanies.manage_company, name='company-edit'),
 
-    #departments
-    url(r'^settings/departments/$', vdepartment.list_departments, name='department-list'),
-    url(r'^settings/departments/create', vdepartment.manage_department, name='department-create'),
-    url(r'^settings/departments/(?P<department_id>\d+)?$', vdepartment.manage_department, name='department-edit'),
+    #queues
+    url(r'^settings/queue/$', vqueues.list_queues, name='queues-list'),
+    url(r'^settings/queue/create', vqueues.manage_queue, name='queues-create'),
+    url(r'^settings/queue/(?P<queue_id>\d+)?$', vqueues.manage_queue, name='queues-edit'),
 
     #Tickets
     url(r'^tickets/$', vtickets.list_tickets, name='tickets-list'),

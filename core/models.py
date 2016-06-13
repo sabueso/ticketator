@@ -54,8 +54,8 @@ class CompanyForm(ModelForm):
 		model =  Company
 		fields = '__all__'
 
-#=> Departments
-class Department(models.Model):
+#=> Queues (ex Departments)
+class Queue(models.Model):
 	name = models.CharField(max_length=100)
 	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
 	#logo = pending....
@@ -63,16 +63,16 @@ class Department(models.Model):
 	def __unicode__(self):
 		return self.name
 
-class DepartmentForm(ModelForm):
+class QueueForm(ModelForm):
 	class Meta:
-		model =  Department
+		model =  Queue
 		fields = '__all__'
 
 #=> Profile
 #Review if it's really usefull
 class Profile(models.Model):
 	user = models.OneToOneField(User)
-	department = models.ForeignKey('Department',on_delete=models.CASCADE )
+	queue = models.ForeignKey('Queue',on_delete=models.CASCADE )
 	notify_email =  models.BooleanField(default=False)
 	avatar =  models.FileField(upload_to='./avatar/')
 
@@ -81,7 +81,7 @@ class Profile(models.Model):
 class Rights(models.Model):
 	enabled=models.BooleanField(default=True)
 	grp_src=models.ForeignKey(Group, related_name = "src_grp", blank=True, null=True)
-	dpt_dst=models.ForeignKey('Department', related_name = "dst_dept", blank=True, null=True)
+	queue_dst=models.ForeignKey('Queue', related_name = "dst_queue", blank=True, null=True)
 	#Permited actions
 	can_view=models.BooleanField(default=False)
 	can_create=models.BooleanField(default=False)
@@ -95,9 +95,9 @@ class Rights(models.Model):
 	#Yes, you have 2 querys but this is the unique way to avoid errors if you use the admin
 	#panel to insert some righths
 
-	def detect_rights_exists(self, grp, dpt):
+	def detect_rights_exists(self, grp, queue):
 		return_query={}
-		obj_query = Rights.objects.filter(grp_src=grp, dpt_dst=dpt)
+		obj_query = Rights.objects.filter(grp_src=grp, queue_dst=queue)
 		if obj_query:
 			return_query['status'] = True
 			return_query['numbers'] = [i.id for i in obj_query]
@@ -108,7 +108,7 @@ class Rights(models.Model):
 	
 	#Only for new records (self.pk check)		
 	def save(self, *args, **kwargs):
-		detect_function = self.detect_rights_exists(self.grp_src, self.dpt_dst)
+		detect_function = self.detect_rights_exists(self.grp_src, self.queue_dst)
 		if not self.pk and detect_function['status'] == True:
 			raise ValidationError("Rule already created: model output "+str(detect_function['numbers'])+"") 
 		else:
@@ -121,12 +121,12 @@ class RightForm(ModelForm):
 		fields = '__all__'
 
 	#Check at form stage if registry is created or if we can create it 
-	def clean_dpt_dst(self):
-		detect_function = Rights.detect_rights_exists(Rights(), self.cleaned_data.get('grp_src'), self.cleaned_data.get('dpt_dst'))
+	def clean_queue_dst(self):
+		detect_function = Rights.detect_rights_exists(Rights(), self.cleaned_data.get('grp_src'), self.cleaned_data.get('queue_dst'))
 		#Check if no pk assigned and if detect_function['status'] is True
 	 	if not self.instance.pk and detect_function['status']:
-	 		raise forms.ValidationError("Rule already created ("+str(detect_function['numbers'][0])+") src=>"+str(self.cleaned_data.get('grp_src'))+" dst=>"+str(self.cleaned_data.get('dpt_dst'))+"")
-	 	return self.cleaned_data.get('dpt_dst')	
+	 		raise forms.ValidationError("Rule already created ("+str(detect_function['numbers'][0])+") src=>"+str(self.cleaned_data.get('grp_src'))+" dst=>"+str(self.cleaned_data.get('queue_dst'))+"")
+	 	return self.cleaned_data.get('queue_dst')	
 
 #=> States  
 class State(models.Model):
@@ -150,7 +150,7 @@ class Ticket(models.Model):
 	date = models.DateTimeField(default=datetime.now)
 	create_user = models.ForeignKey(User, related_name = "c_user", blank=True, null=True,)
 	assigned_user = models.ForeignKey(User, blank=True, null=True, related_name = "a_user")
-	assigned_department = models.ForeignKey('Department', blank=True, null=True)
+	assigned_queue = models.ForeignKey('Queue', blank=True, null=True)
 	assigned_company = models.ForeignKey('Company', blank=True, null=True)
 	subject =  models.CharField(max_length=40)
 	body = models.TextField(null=True,blank=True)
@@ -178,9 +178,9 @@ class TicketForm(ModelForm):
 		cantcreate='You don\'t have permissions to create this ticket'
 		#Some essential vars
 		user_obj=self.request.user
-		dept_obj=self.cleaned_data.get('assigned_department')
+		queue_obj=self.cleaned_data.get('assigned_queue')
 		#Check if some right is defined for this action
-		user_object_rights=rights.get_rights_for_ticket(user=user_obj, dept=dept_obj, ticket_id=None)
+		user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=queue_obj, ticket_id=None)
 		#New ticket
 		if not self.instance.id:
 			if user_object_rights.can_create != True:
