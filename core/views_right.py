@@ -27,4 +27,5 @@ def manage_right(request, right_id=None):
 		form = RightForm(instance=actual_right)
 	return render(request,'rights/create_edit_right.html', locals())
 
-
+#some unusefull comment
+#another one
