@@ -39,11 +39,7 @@ def get_rights_for_ticket(user, queue=None, ticket_id=None):
 					u_dst_group=models.Ticket.objects.get(id=ticket_id).assigned_queue
 					r_obj=models.Rights.objects.get(grp_src=u_group,queue_dst=u_dst_group)
 					#Set the models propertys
-					self.can_edit = r_obj.can_edit
-					self.can_view = r_obj.can_view
-					self.can_create = r_obj.can_create
-					self.can_delete = r_obj.can_delete
-					self.can_comment = r_obj.can_comment
+					q_result(r_obj)
 				else:
 					#Obtain the user group
 					u_group=Group.objects.filter(user=user)
