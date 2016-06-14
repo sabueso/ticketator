@@ -138,6 +138,11 @@ class State(models.Model):
 	def __unicode__(self):
 		return self.name
 
+class StateForm(ModelForm):
+	class Meta:
+		model =  State
+		fields = '__all__'		
+
 #=> Prioritys
 class Priority(models.Model):
 	name = models.CharField(max_length=30)

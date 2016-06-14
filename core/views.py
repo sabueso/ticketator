@@ -11,4 +11,4 @@ def index(request):
 
 @login_required
 def settings(request):
-	return render(request, 'dashboard/settings.html')
+	return render(request, 'settings/settings.html')

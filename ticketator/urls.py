@@ -3,8 +3,10 @@ from django.contrib import admin
 
 #Import some modular views
 from core import views
-from core import views_users as vusers, views_company as vcompanies, views_queues as vqueues, \
-    views_tickets as vtickets, views_group as vgroup, views_right as vright, views_auth as vauth
+from core import views_users as vusers, views_company as vcompanies,\
+                 views_queues as vqueues,views_tickets as vtickets, \
+                 views_group as vgroup, views_right as vright,\
+                 views_auth as vauth, views_states as vstates
 
 urlpatterns = [
 
@@ -35,6 +37,11 @@ urlpatterns = [
     url(r'^settings/rights/$', vright.list_rights, name='right-list'),
     url(r'^settings/rights/create', vright.manage_right, name='right-create'),
     url(r'^settings/rights/(?P<right_id>\d+)?$', vright.manage_right, name='right-edit'),
+
+    #States
+    url(r'^settings/state/$', vstates.list_state, name='right-list'),
+    url(r'^settings/state/create', vstates.manage_state, name='right-create'),
+    url(r'^settings/state/(?P<state_id>\d+)?$', vstates.manage_state, name='right-edit'),
 
     #Companys
     url(r'^settings/companies/$', vcompanies.list_companies, name='company-list'),
