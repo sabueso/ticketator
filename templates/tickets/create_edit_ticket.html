@@ -1,12 +1,20 @@
 {% extends "dashboard/index.html" %}
 
 {%block content %}
-	<div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">New ticket</h1>
-                </div>
-                <!-- /.col-lg-12 -->
+
+    <div class="page-title">
+              <div class="title_left">
+                <h3>List tickets</h3>
+              </div>
+
+              <div class="title_right">
+
+              </div>
     </div>
+
+    <div class="clearfix"></div>
+
+
 <!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
 <form method='post' action="/tickets/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form">
 {% csrf_token %}
