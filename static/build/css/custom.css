@@ -1,4 +1,7 @@
 @charset "UTF-8";
+:root {
+  --sidebarwidth: 140px; }
+
 .left_col {
   background: #2A3F54; }
 
@@ -187,7 +190,7 @@
   .nav_menu {
     position: static; } }
 .nav-md .container.body .col-md-3.left_col {
-  width: 140px;
+  width: var(--sidebarwidth);
   padding: 0;
   position: absolute;
   display: -ms-flexbox;
@@ -203,10 +206,10 @@ body .container.body .right_col {
 
 .nav-md .container.body .right_col {
   padding: 10px 20px 0;
-  margin-left: 140px; }
+  margin-left: var(--sidebarwidth); }
 
 .nav_title {
-  width: 140px;
+  width: var(--sidebarwidth);
   float: left;
   background: #2A3F54;
   border-radius: 0;
@@ -335,7 +338,7 @@ body {
 
 .main_container .top_nav {
   display: block;
-  margin-left: 140px; }
+  margin-left: var(--sidebarwidth); }
 
 .no-padding {
   padding: 0 !important; }
@@ -562,7 +565,8 @@ a:hover, a:focus {
   font-weight: 500;
   color: #ECF0F1 !important;
   margin-left: 0 !important;
-  line-height: 32px; }
+  /*trying to update upper bar height*/
+  /*line-height: 32px;*/}
 
 .site_title {
   text-overflow: ellipsis;
@@ -663,12 +667,7 @@ a:hover, a:focus {
 footer {
   background: #fff;
   padding: 15px 20px;
-  
   display: block; }
-
-@media (min-width: 992px) {
-  footer {
-    margin-left: 140px; } }
 
 .nav-sm footer {
   margin-left: 70px; }
@@ -1421,7 +1420,7 @@ span.right {
   display: block;
   padding: 5px 0 0 0;
   position: fixed;
-  width: 140px;
+  width: var(--sidebarwidth);
   background: #2A3F54; }
 
 .sidebar-footer a {
@@ -1449,6 +1448,9 @@ span.right {
   white-space: nowrap;
   position: relative; }
 
+@media (min-width: 992px) {
+  footer {
+    margin-left: var(--sidebarwidth); } }
 @media (min-width: 992px) {
   .tile_count .tile_stats_count {
     margin-bottom: 10px;
@@ -2775,7 +2777,7 @@ ul.project_files li a i {
 .pricing_features {
   background: #FAFAFA;
   padding: 20px 15px;
-  min-height: 140px;
+  min-height: 230px;
   font-size: 13.5px; }
 
 .pricing_features ul li {
@@ -3987,7 +3989,7 @@ ul.notifications {
   margin-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
-  width: 140px;
+  width: var(--sidebarwidth);
   overflow: hidden;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
 
