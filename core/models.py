@@ -175,6 +175,13 @@ class TicketForm(ModelForm):
 		model =  Ticket
 		fields = '__all__'
 
+	#Assign the company to the ticket instance
+	def clean_assigned_company(self):
+		cleared_queue = self.cleaned_data.get('assigned_queue').id
+		queue_obj = Queue.objects.get(id=cleared_queue)
+		company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
+		return company_to_assign
+	
 	def clean(self):
 		#Some messages
 		ruledefined='Some rule defined'
@@ -195,5 +202,3 @@ class TicketForm(ModelForm):
 			if user_object_rights.can_edit != True:
 				raise forms.ValidationError(cantsave)
 		
-
-#= END =#

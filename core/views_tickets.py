@@ -41,7 +41,7 @@ def list_tickets(request, state_id=None):
 			tickets_info = Ticket.objects.filter(queues).order_by("-id")
 	return render(request, 'tickets/list_tickets.html', locals())
 
-
+#Old creation method
 #Create/Edit tickets
 @login_required
 def manage_ticket(request, ticket_id=None):
@@ -70,3 +70,34 @@ def manage_ticket(request, ticket_id=None):
 	#Non-POST mode, show only
 		form = TicketForm(instance=actual_ticket, request=request)
 	return render(request,'tickets/create_edit_ticket.html', locals())
+#Will be remove in future...
+
+
+#Create/Edit tickets
+@login_required
+def manage_ticket_new(request, ticket_id=None):
+	#site_vars = utils.site_vars()
+	#Common data
+	common_data = common_ticket_data()
+	if ticket_id:
+		#Check if existis or raise 404	
+		ticket_rights = rights.get_rights_for_ticket(user=request.user, queue=None, ticket_id=ticket_id)
+		if ticket_rights.can_view == True :
+			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
+		else:
+			raise Http404("You dont have enough permissions to see this ticket")
+	else:
+		#If not, assign a new ticket instance to be use as instance of form
+		actual_ticket = Ticket()
+	#POST mode
+	if request.method == 'POST':
+		form = TicketForm(request.POST, instance = actual_ticket , request=request)
+		if form.is_valid():
+			new_state_form = form.save(commit=False)
+		 	new_state_form.create_user = request.user
+		 	new_state_form.save()
+		 	return redirect("/tickets")
+	else:
+	#Non-POST mode, show only
+		form = TicketForm(instance=actual_ticket, request=request)
+	return render(request,'tickets/create_edit_ticket_newui.html', locals())

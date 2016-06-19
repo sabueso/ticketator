@@ -30,3 +30,9 @@ def manage_queue(request, queue_id=None):
 	return render(request,'queues/create_edit_queue.html', locals())
 
 
+#Delete state
+def delete_queue(request, queue_id=None):
+	if queue_id:
+		actual_queue=get_object_or_404(Queue,pk=queue_id)
+		actual_queue.delete()
+		return redirect("/settings/queue")

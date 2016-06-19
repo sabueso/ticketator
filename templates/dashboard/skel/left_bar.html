@@ -19,11 +19,14 @@
                     <a href="/tickets/create"><i class="fa fa-support"></i> New ticket <span class="fa "></span></a>
                 </li>
                 <li>
+                    <a href="/tickets/create-new"><i class="fa fa-support"></i> New ticket<span class="label label-success pull-right">NEW UI</span><span class="fa "></span></a>
+                </li>
+                <li>
                     <a href="/tickets"><i class="fa fa-reorder"></i> Tickets <span class="fa"></span></a>
                 </li>
 
                 <li>
-                    <a><i class="fa fa-bar-chart-o fa-fw"></i> Reports<span class="fa arrow"></span></a>
+                    <a><i class="fa fa-bar-chart-o fa-fw"></i>States<span class="fa arrow"></span></a>
                             <ul class="nav child_menu">
                                 {% all_states as states %}
                                 {% for i in states %}

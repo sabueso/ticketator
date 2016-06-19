@@ -11,6 +11,7 @@ def list_state(request):
 	state_list = State.objects.all().order_by("-id")
 	return render(request, 'states/list_states.html', locals())
 
+#Create or edit state
 def manage_state(request, state_id=None):
 	#Try to locate the object to use it as an instance and if not, create a new one to use it in a new form.
 	#common_data = common_ticket_data()
@@ -29,4 +30,9 @@ def manage_state(request, state_id=None):
 		form = StateForm(instance=actual_state)
 	return render(request,'states/create_edit_state.html', locals())
 
-
+#Delete state
+def delete_state(request, state_id=None):
+	if state_id:
+		actual_state=get_object_or_404(State,pk=state_id)
+		actual_state.delete()
+		return redirect("/settings/state")

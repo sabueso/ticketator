@@ -64,39 +64,40 @@
                                         <tr class="headings">
                                             <th class="text-center">ID</th>
                                             <th class="text-center">Subject</th>
+                                            <th class="text-center">State</th>
+                                            <th class="text-center">Queue</th>
                                             <th class="text-center" width="180px">Date</th>
                                             <th class="text-center">Owner</th>
-                                            <th class="text-center">Status</th>
+                                            
                                             <th class="text-center">Responsible</th>
-                                            <th class="text-center">Queue</th>
-                                            <th class="text-center">Company</th>
+                                            
+                                            <!--<th class="text-center">Company</th>-->
                                             <th class="text-center">Priority</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     	{%for line in tickets_info %}
                                     	   <tr class="odd gradeX">
-                                    	   <td class="text-center"><a href="/tickets/{{line.id}}">{{line.id}}</a></td>
+                                    	   <td class="text-center"><a href="/tickets/edit/{{line.id}}">{{line.id}}</a></td>
                                     	   <td class="text-center">{{line.subject}}</td>
+                                           <td class="text-center"><span class="label label-primary">{{line.assigned_state}}</span></td>   
+                                           {% if line.assigned_queue %}
+                                            <td class="text-center">{{line.assigned_queue}}</td>
+                                        {%else%}
+                                            <td></td>
+                                        {%endif%}
                                     	   <td class="text-center">{{line.date|date:"d/m/y m:h:s"}}</td>
                                     	   <td class="text-center">{{line.create_user}}</td>
-                                    	   <td class="text-center">{{line.assigned_state}}</td>
                                     	{% if line.assigned_user %}
                                             <td class="text-center">{{line.assigned_user}}</td>
                                         {%else%}
                                             <td></td>
                                         {%endif%}
-                                        
-                                        {% if line.assigned_queue %}
-                                            <td class="text-center">{{line.assigned_queue}}</td>
-                                        {%else%}
-                                            <td></td>
-                                        {%endif%}
-                                        {% if line.assigned_company %}
+                                        <!--{% if line.assigned_company %}
                                             <td class="text-center">{{line.assigned_company}}</td>
                                         {%else%}
                                             <td></td>
-                                        {%endif%}
+                                        {%endif%}-->
                                         <td class="text-center">{{line.assigned_prio}}</td>
                                     	{%endfor%}
                                         

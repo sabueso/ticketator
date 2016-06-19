@@ -112,9 +112,11 @@
                          			<div class="colg-lg-9">
                          				<div class="form-group">
                          					<hr></hr>
-                            <!--submit-->
+                            
                          				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save</button>
-                                      	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                        {%if form.instance.id%}
+                                      	<a class="btn btn-default pull-left" style="margin-left: 20px" href="/settings/state/delete/{{form.instance.id}}">Delete</a>
+                                        {%endif%}
                                       	</div>
                          			</div>
                          		</div>

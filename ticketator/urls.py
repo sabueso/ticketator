@@ -39,9 +39,10 @@ urlpatterns = [
     url(r'^settings/rights/(?P<right_id>\d+)?$', vright.manage_right, name='right-edit'),
 
     #States
-    url(r'^settings/state/$', vstates.list_state, name='right-list'),
-    url(r'^settings/state/create', vstates.manage_state, name='right-create'),
-    url(r'^settings/state/(?P<state_id>\d+)?$', vstates.manage_state, name='right-edit'),
+    url(r'^settings/state/$', vstates.list_state, name='state-list'),
+    url(r'^settings/state/create', vstates.manage_state, name='state-create'),
+    url(r'^settings/state/delete/(?P<state_id>\d+)?$', vstates.delete_state, name='state-delete'),
+    url(r'^settings/state/(?P<state_id>\d+)?$', vstates.manage_state, name='state-edit'),
 
     #Companys
     url(r'^settings/companies/$', vcompanies.list_companies, name='company-list'),
@@ -51,12 +52,15 @@ urlpatterns = [
     #queues
     url(r'^settings/queue/$', vqueues.list_queues, name='queues-list'),
     url(r'^settings/queue/create', vqueues.manage_queue, name='queues-create'),
+    url(r'^settings/queue/delete/(?P<queue_id>\d+)?$', vqueues.delete_queue, name='queue-delete'),
     url(r'^settings/queue/(?P<queue_id>\d+)?$', vqueues.manage_queue, name='queues-edit'),
 
     #Tickets
     url(r'^tickets/$', vtickets.list_tickets, name='tickets-list'),
+    url(r'^tickets/create-new', vtickets.manage_ticket_new, name='tickets-create'),
     url(r'^tickets/create', vtickets.manage_ticket, name='tickets-create'),
-    url(r'^tickets/(?P<ticket_id>\d+)?$', vtickets.manage_ticket, name='tickets-get'),
+    url(r'^tickets/edit/(?P<ticket_id>\d+)?$', vtickets.manage_ticket_new, name='tickets-edit'),
+    #url(r'^tickets/view/(?P<ticket_id>\d+)?$', vtickets.view_ticket, name='tickets-view'),
     
     #Filtering view
     url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),

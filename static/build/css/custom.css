@@ -1,7 +1,10 @@
-@charset "UTF-8";
-:root {
-  --sidebarwidth: 140px; }
+/* Why do not i implement CSS variables...*/
+/* https://developer.microsoft.com/en-us/microsoft-edge/platform/status/cssvariables */
 
+/** To define the sidebar width **/
+/** search for "sidebar" comments  **/
+
+@charset "UTF-8";
 .left_col {
   background: #2A3F54; }
 
@@ -186,11 +189,12 @@
   width: 100%;
   position: relative; }
 
+/*sidebar*/
 @media (min-width: 480px) {
   .nav_menu {
     position: static; } }
 .nav-md .container.body .col-md-3.left_col {
-  width: var(--sidebarwidth);
+  width: 140px;
   padding: 0;
   position: absolute;
   display: -ms-flexbox;
@@ -204,12 +208,14 @@
 body .container.body .right_col {
   background: #F7F7F7; }
 
+/*sidebar*/
 .nav-md .container.body .right_col {
   padding: 10px 20px 0;
-  margin-left: var(--sidebarwidth); }
+  margin-left: 140px; }
 
+/*sidebar*/
 .nav_title {
-  width: var(--sidebarwidth);
+  width: 140px;
   float: left;
   background: #2A3F54;
   border-radius: 0;
@@ -336,9 +342,11 @@ body {
   font-weight: 400;
   line-height: 1.471; }
 
+
+/*sidebar*/
 .main_container .top_nav {
   display: block;
-  margin-left: var(--sidebarwidth); }
+  margin-left: 140px; }
 
 .no-padding {
   padding: 0 !important; }
@@ -565,8 +573,7 @@ a:hover, a:focus {
   font-weight: 500;
   color: #ECF0F1 !important;
   margin-left: 0 !important;
-  /*trying to update upper bar height*/
-  /*line-height: 32px;*/}
+  /*line-height: 32px;*/ }
 
 .site_title {
   text-overflow: ellipsis;
@@ -622,7 +629,7 @@ a:hover, a:focus {
 .toggle {
   float: left;
   margin: 0;
-  padding-top: 16px;
+  padding-top: 10px;
   width: 70px; }
 
 .toggle a {
@@ -1414,13 +1421,14 @@ span.right {
 .tile_info a {
   text-overflow: ellipsis; }
 
+/*sidebar*/
 .sidebar-footer {
   bottom: 0px;
   clear: both;
   display: block;
   padding: 5px 0 0 0;
   position: fixed;
-  width: var(--sidebarwidth);
+  width: 140px;
   background: #2A3F54; }
 
 .sidebar-footer a {
@@ -1450,7 +1458,7 @@ span.right {
 
 @media (min-width: 992px) {
   footer {
-    margin-left: var(--sidebarwidth); } }
+    margin-left: 140px; } }
 @media (min-width: 992px) {
   .tile_count .tile_stats_count {
     margin-bottom: 10px;
@@ -3989,7 +3997,7 @@ ul.notifications {
   margin-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
-  width: var(--sidebarwidth);
+  width: 240px;
   overflow: hidden;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
 

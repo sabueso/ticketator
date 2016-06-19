@@ -110,7 +110,9 @@
                          					<hr></hr>
                             <!--submit-->
                          				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save</button>
-                                      	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                        {%if form.instance.id%}
+                                        <a class="btn btn-default pull-left" style="margin-left: 20px" href="/settings/queue/delete/{{form.instance.id}}">Delete</a>
+                                        {%endif%}
                                       	</div>
                          			</div>
                          		</div>
