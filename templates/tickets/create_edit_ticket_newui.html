@@ -1,0 +1,137 @@
+{% extends "dashboard/index.html" %}
+
+{% block content %}
+
+<div class="x_panel">
+                <div class="x_title">
+                    <h2>New ticket  </h2><span class="label">NEW UI</span>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-wrench"></i></a>
+                        <ul role="menu" class="dropdown-menu">
+                          <!--<li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>-->
+                        </ul>
+                      </li>
+                      <!--<li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>-->
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                    <form method='post' action="/tickets/{%if form.instance.id%}edit/{{form.instance.id}}{%else%}create-new{%endif%}" role="form">
+                    {% csrf_token %}
+                        <div class="row">
+                            <!--Left side-->
+                            {% if vars.debug == True%}
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {{ form.non_field_errors }}
+                                    </div>
+                                    {% endif %}
+                                {%endif%}
+                            <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <label>Subject:</label>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <input id="subject" name="subject" class="form-control" placeholder="Brief description about your ticket (yes, brief...)" {% if form.instance.subject %} value="{{form.instance.subject}}" {% endif %}>
+                                            {{form.subject.errors}}                                
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <label>Description:</label>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <textarea id="body" name="body" rows="5" placeholder="Describe now your problem, with more detail..." class="form-control">{% if form.instance.body %}{{form.instance.body}}{%endif%}</textarea>
+                                            {{form.body.errors}}                    
+                                </div>
+                                <hr></hr>
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <label>Upload files:</label>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                
+                                </div>
+                            </div>
+                            <!--Right side-->
+                            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <label class="pull-center">Queue</label>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <select class="form-control" id="id_assigned_queue" name="assigned_queue">
+                                            {% for queue in common_data.queue_info %}
+                                            {% if queue.id == form.instance.assigned_queue.id %}
+                                            <option value="{{queue.id}}" selected >{{queue}}</option>
+                                            {% else %}
+                                            <option value="{{queue.id}}" >{{queue}}</option>    
+                                            {% endif %}
+                                        {%endfor%}
+                                    </select>   
+                                            {{form.assigned_queue.errors}}
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <label class="pull-center">State</label>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <select class="form-control" id="id_assigned_state" name="assigned_state">
+                                        {% for status in common_data.status_info %}
+                                            {%if status.id  == form.instance.assigned_state.id %}
+                                                <option value="{{status.id}}" selected >{{status}}</option>
+                                            {%else%}
+                                                <option value="{{status.id}}">{{status}}</option>
+                                            {%endif%}
+                                        {%endfor%}
+                                    </select>
+                                    {{form.assigned_state.errors}}
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <label class="pull-center">Date</label>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <input id="date" name="date" class="form-control" {% if form.instance.date%} value="{{form.instance.date|date:"d/m/y m:h:s"}}" readonly{% endif %}>
+                                    {{form.date.errors}}
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <label class="pull-center">Priority</label>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <select class="form-control" id="id_assigned_prio" name="assigned_prio">
+                                                {% for prio in common_data.prio_info %}
+                                                    {%if prio.id  == form.instance.assigned_prio.id %}
+                                                        <option value="{{prio.id}}" selected >{{prio}}</option>
+                                                    {%else%}
+                                                        <option value="{{prio.id}}">{{prio}}</option>
+                                                    {%endif%}
+                                                {%endfor%}
+                                    </select>
+                                </div>
+
+                            </div>
+                            <!--Buttons line-->
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                <div class="ln_solid"></div>
+                            </div>
+                            <!--End of the box-->
+                                <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save ticket</button>
+                                 <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                
+                        </div>
+                    </form>
+                </div>
+</div>
+
+
+
+{%endblock%}

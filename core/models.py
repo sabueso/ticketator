@@ -201,4 +201,13 @@ class TicketForm(ModelForm):
 		else:
 			if user_object_rights.can_edit != True:
 				raise forms.ValidationError(cantsave)
-		
+
+class Attachments(models.Model):
+	ticket_rel = models.ForeignKey(Ticket)
+	file_name = models.FileField(upload_to='static/ticket_files/')
+
+
+class AttachmentsForms(ModelForm):
+	class Meta:
+		model =  Attachments
+		fields = '__all__'
