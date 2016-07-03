@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 #from core import views_utils as utils
-from core.models import Ticket,TicketForm, State, Queue, Priority, Company, Rights
+from core.models import Ticket,TicketForm, Attachment, AttachmentForm, State, Queue, Priority, Company, Rights
 from django.contrib.auth.models import User, Group
 #Needed for forms
 from django.views.decorators.csrf import csrf_protect
@@ -11,7 +11,6 @@ from datetime import datetime
 #Rights magic
 from core import rights
 from django.db.models import Q
-
 
 
 #Commond data & querys used to create/edit ticktes
@@ -41,38 +40,6 @@ def list_tickets(request, state_id=None):
 			tickets_info = Ticket.objects.filter(queues).order_by("-id")
 	return render(request, 'tickets/list_tickets.html', locals())
 
-# #Old creation method
-# #Create/Edit tickets
-# @login_required
-# def manage_ticket(request, ticket_id=None):
-# 	#site_vars = utils.site_vars()
-# 	#Common data
-# 	common_data = common_ticket_data()
-# 	if ticket_id:
-# 		#Check if existis or raise 404	
-# 		ticket_rights = rights.get_rights_for_ticket(user=request.user, queue=None, ticket_id=ticket_id)
-# 		if ticket_rights.can_view == True :
-# 			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
-# 		else:
-# 			raise Http404("You dont have enough permissions to see this ticket")
-# 	else:
-# 		#If not, assign a new ticket instance to be use as instance of form
-# 		actual_ticket = Ticket()
-# 	#POST mode
-# 	if request.method == 'POST':
-# 		form = TicketForm(request.POST, instance = actual_ticket , request=request)
-# 		if form.is_valid():
-# 			new_state_form = form.save(commit=False)
-# 		 	new_state_form.create_user = request.user
-# 		 	new_state_form.save()
-# 		 	return redirect("/tickets")
-# 	else:
-# 	#Non-POST mode, show only
-# 		form = TicketForm(instance=actual_ticket, request=request)
-# 	return render(request,'tickets/create_edit_ticket.html', locals())
-# #Will be remove in future...
-
-
 #Create/Edit tickets
 @login_required
 def manage_ticket_new(request, ticket_id=None):
@@ -84,6 +51,7 @@ def manage_ticket_new(request, ticket_id=None):
 		ticket_rights = rights.get_rights_for_ticket(user=request.user, queue=None, ticket_id=ticket_id)
 		if ticket_rights.can_view == True :
 			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
+			actual_files=Attachment.objects.filter(ticket_rel=ticket_id)
 		else:
 			raise Http404("You dont have enough permissions to see this ticket")
 	else:
@@ -91,13 +59,23 @@ def manage_ticket_new(request, ticket_id=None):
 		actual_ticket = Ticket()
 	#POST mode
 	if request.method == 'POST':
-		form = TicketForm(request.POST, instance = actual_ticket , request=request)
-		if form.is_valid():
-			new_state_form = form.save(commit=False)
-		 	new_state_form.create_user = request.user
-		 	new_state_form.save()
+		form_ticket = TicketForm(request.POST, instance = actual_ticket , request=request, prefix="ticket")
+		form_attach = AttachmentForm(request.POST, request.FILES, prefix="attach") 
+		if form_ticket.is_valid() and form_attach.is_valid():
+			#The ticket part
+			new_ticket_form = form_ticket.save(commit=False)
+		 	new_ticket_form.create_user = request.user
+		 	saved_ticket = new_ticket_form.save()
+		 	#Seconf, save the attach part
+			#instance = Attachment(ticket_rel=new_ticket_form,file_name=request.FILES['attach-file_name'])
+			#instance.save()
+			if form_attach.has_changed():
+				new_form_attach =  form_attach.save(commit=False)
+				new_form_attach.ticket_rel = new_ticket_form
+				new_form_attach.save()
 		 	return redirect("/tickets")
 	else:
 	#Non-POST mode, show only
-		form = TicketForm(instance=actual_ticket, request=request)
+		form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
+		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
 	return render(request,'tickets/create_edit_ticket_newui.html', locals())

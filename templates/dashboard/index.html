@@ -27,6 +27,8 @@
 
     <!-- Custom Theme Style -->
     <link href="{% static "build/css/custom.min.css" %}" rel="stylesheet" type="text/css">
+    {% block extend_js%}
+    {% endblock %}
 
     
 </head>
@@ -64,8 +66,10 @@
     <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
 
     <!-- bootstrap-daterangepicker -->
-    <script src="{% static "js/moment/moment.min.js" %}"></script>
-    <script src="{% static "js/datepicker/daterangepicker.js" %}"></script>
+    <!--<script src="{% static "js/moment/moment.min.js" %}"></script>
+    <script src="{% static "js/datepicker/daterangepicker.js" %}"></script>-->
+    <script src="/static/vendors/dropzone/dist/min/dropzone.min.js"></script>
+
 
     <!-- Custom Theme Scripts -->
     <script src="{% static "build/js/custom.min.js" %}"></script>
