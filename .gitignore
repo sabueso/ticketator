@@ -37,6 +37,18 @@ ehthumbs.db
 Thumbs.db
 
 #Personalized git prefes
-*ticket_files/*
+*ticket_files/
 *.pyc
 
+
+# Created by https://www.gitignore.io/api/django
+#
+# ### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+# media
+#
