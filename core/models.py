@@ -9,6 +9,7 @@ from core import views_utils as util
 from core import rights
 from django.core.exceptions import ValidationError
 
+
 #=> Auth forms
 class UserForm(ModelForm):
 	date_joined = forms.DateField(widget=forms.SelectDateWidget(), initial=util.now)

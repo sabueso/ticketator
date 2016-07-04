@@ -42,7 +42,7 @@ def list_tickets(request, state_id=None):
 
 #Create/Edit tickets
 @login_required
-def manage_ticket_new(request, ticket_id=None):
+def manage_ticket(request, ticket_id=None):
 	#site_vars = utils.site_vars()
 	#Common data
 	common_data = common_ticket_data()
@@ -79,3 +79,16 @@ def manage_ticket_new(request, ticket_id=None):
 		form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
 		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
 	return render(request,'tickets/create_edit_ticket_newui.html', locals())
+
+
+@login_required
+def delete_ticket(request, ticket_id=None):
+	obj_to_delete = get_object_or_404(Ticket,pk=ticket_id)
+	try:
+		attach_to_delete = Attachment.objects.filter(ticket_rel=ticket_id)
+	except DoesNotExist:
+		pass
+	else:
+		attach_to_delete.delete()
+	obj_to_delete.delete()
+	return redirect("/tickets")

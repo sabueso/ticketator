@@ -1,180 +1,220 @@
 {% extends "dashboard/index.html" %}
 
-
 {% block extend_js%}
-{% load staticfiles %}
+    {% load staticfiles %}
     <link href="{% static "vendors/dropzone/dist/min/dropzone.min.css" %}" rel="stylesheet">
 {% endblock%}
 
+
 {% block content %}
+    {% load core_settings_data %}
+    {% url_tickets as urlt %}
+    <div class="x_panel">
+                    <div class="x_title">
+                        <h2>New ticket  </h2><span class="label">NEW UI</span>
+                        <ul class="nav navbar-right panel_toolbox">
+                        
+                        <!--chevron-->
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
 
-
-<div class="x_panel">
-                <div class="x_title">
-                    <h2>New ticket  </h2><span class="label">NEW UI</span>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-wrench"></i></a>
-                        <ul role="menu" class="dropdown-menu">
-                          <!--<li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>-->
+                        
+                        <li class="dropdown">
+                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-wrench"></i></a>
+                                {% if form_ticket.instance.id %}
+                                <ul role="menu" class="dropdown-menu">
+                                    <li><a href="{{urlt.ticket_delete}}/{{form_ticket.instance.id}}">Delete</a>
+                                    </li>
+                                <!--<li><a href="#">Settings 2</a>
+                                </li>-->
+                                </ul>
+                                {% endif %}        
+                        </li>
+                        
+                        <!--close-->    
+                            <li>
+                                <a href="{{urlt.ticket_list}}"><i class="fa fa-close"></i></a>
+                            </li>
                         </ul>
-                      </li>
-                      <!--<li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>-->
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
+                        <div class="clearfix"></div>
+                    </div>
 
-                <div class="x_content">
-                    <form method='post' action="/tickets/{%if form_ticket.instance.id%}edit/{{form_ticket.instance.id}}{%else%}create-new{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
-                        <div class="row">
-                            <!--Left side-->
-                            {% if vars.debug == True%}
-                                    {% if form_ticket.errors or form_attach.errors%}
-                                    <div class="alert alert-danger">
-                                        Error in form </p>
-                                        {% for fticket_error in form_ticket %}
-                                            {{fticket_error.label }}{{fticket_error.errors}}</p>
-                                        {% endfor%}
+                    <div class="x_content">
+                        <form method='post' action="/tickets/{%if form_ticket.instance.id%}edit/{{form_ticket.instance.id}}{%else%}create-new{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="row">
+                                <!--Left side-->
+                                {% if vars.debug == True%}
 
-                                        {% for fattach_error in form_attach %}
-                                            {{fattach_error.label }}{{fattach_error.errors}}</p>
-                                        {% endfor%}                                        
-                                    </div>
-                                    {% endif %}
-                                {%endif%}
-                            <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <label>Subject:</label>
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                    <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %}>
-                                            {{form_ticket.subject.errors}}                                
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <label>Description:</label>
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                    <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
-                                            {{form_ticket.body.errors}}                    
-                                </div>
-                                <hr></hr>
-                                {% if actual_files %}
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                            <label for="id_file_name">Uploaded files:</label>
-                                    </div>
-                                                                
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <ul class="list-unstyled timeline">
-                                        {% for i in actual_files %}
-                                        <li>
-                                                <div class="block">
-                                                <div class="tags">
-                                                  <a class="tag" href="/static/media/{{i.file_name}}" download>
-                                                    <span>{{i.file_name}}</span>
-                                                  </a>
-                                                </div>
-                                                <div class="block_content">
-                                                  <p class="excerpt"><img width=50% height=50% src="/static/media/{{i.file_name}}">
-                                                  </p>
-                                                </div>
-                                              </div>
-                                        </li>
-                                        {%endfor%}
-                                        </ul>
-                                    </div>
-                                {%endif%}
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <label>Attach files:</label>
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <input id="id_attach-file_name" type="file" name="attach-file_name">
-                                        {{form_attach.file_name.errors}}
-                                </div>
-                                <!--><!-->
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                    <ln></ln>
-                                </div>
-                            </div>
-                            <!--Right side-->
-                            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                    <label class="pull-center">Queue</label>
-                                </div>
+                                     
+                                            {% if form_ticket.errors %}
+                                            <div class="alert alert-danger"> 
+                                            Main form: </p>
+                                                {% for fticket_error in form_ticket %}
+                                                    {% if fticket_error.errors %}
+                                                        <ul ><li>{{fticket_error.label|striptags }} => <b>{{fticket_error.errors|striptags}}</b> </li></ul>
+                                                    {% endif%}
+                                                {% endfor%}
 
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <select class="form-control" id="id_ticket-assigned_queue" name="ticket-assigned_queue">
-                                            {% for queue in common_data.queue_info %}
-                                            {% if queue.id == form_ticket.instance.assigned_queue.id %}
-                                            <option value="{{queue.id}}" selected >{{queue}}</option>
-                                            {% else %}
-                                            <option value="{{queue.id}}" >{{queue}}</option>    
-                                            {% endif %}
-                                        {%endfor%}
-                                    </select>   
-                                            {{form_ticket.assigned_queue.errors}}
-                                </div>
-
-                                <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                    <label class="pull-center">State</label>
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                    <select class="form-control" id="id_tciket-assigned_state" name="ticket-assigned_state">
-                                        {% for status in common_data.status_info %}
-                                            {%if status.id  == form_ticket.instance.assigned_state.id %}
-                                                <option value="{{status.id}}" selected >{{status}}</option>
-                                            {%else%}
-                                                <option value="{{status.id}}">{{status}}</option>
+                                                {% if form_ticket.non_field_errors %}             
+                                                    {{ form_ticket.non_field_errors }}
+                                                {%endif%}
+                                            </div>
                                             {%endif%}
-                                        {%endfor%}
-                                    </select>
-                                    {{form_ticket.assigned_state.errors}}
-                                </div>
+                                            
 
-                                <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                    <label class="pull-center">Date</label>
-                                </div>
 
-                                <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                    <input id="id_ticket-date" name="ticket-date" class="form-control" {% if form_ticket.instance.date%} value="{{form_ticket.instance.date|date:"d/m/y m:h:s"}}" readonly{% endif %}>
-                                    {{form_ticket.date.errors}}
-                                </div>
-
-                                <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                    <label class="pull-center">Priority</label>
-                                </div>
-
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                    <select class="form-control" id="id_assigned_prio" name="ticket-assigned_prio">
-                                                {% for prio in common_data.prio_info %}
-                                                    {%if prio.id  == form_ticket.instance.assigned_prio.id %}
-                                                        <option value="{{prio.id}}" selected >{{prio}}</option>
-                                                    {%else%}
-                                                        <option value="{{prio.id}}">{{prio}}</option>
+                                            {% if form_attach.errors %}
+                                            <div class="alert alert-warning"> 
+                                            Attach form: </p>
+                                                {% for fattach_error in form_attach %}  
+                                                    {% if fattach_error.errrors %}
+                                                        [ {{fattach_error.label|striptags }} => <b>{{fattach_error.errors|striptags}}</b> ]
                                                     {%endif%}
-                                                {%endfor%}
-                                    </select>
-                                    {{form_ticket.assigned_prio.errors}}
-                                </div>
+                                                {% endfor%}
+                                            </div>
+                                            {%endif%}                                        
+                                            
+                                        
+                                {%endif%}
+                                <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <label>Subject:</label>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %}>
+                                                {{form_ticket.subject.errors}}                                
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <label>Description:</label>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
+                                                {{form_ticket.body.errors}}                    
+                                    </div>
+                                    <hr></hr>
 
+                                    {% if actual_files %}
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <label for="id_file_name">Uploaded files:</label>
+                                        </div>
+                                                                    
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <ul class="list-unstyled timeline">
+                                            {% for i in actual_files %}
+                                            <li>
+                                                    <div class="block">
+                                                    <div class="tags">
+                                                      <a class="tag" href="/static/media/{{i.file_name}}" download>
+                                                        <span>{{i.file_name|filename_text}}</span>
+                                                      </a>
+                                                    </div>
+                                                    <div class="block_content">
+                                                      <p class="excerpt"><a href="#" data-toggle="modal" data-target="#img{{i.id}}"><img width=50% height=50% src="/static/media/{{i.file_name}}"></a></p>
+                                                    </div>
+                                                  </div>
+                                                    <!--modal part-->
+                                                    <div id="img{{i.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <img src="/static/media/{{i.file_name}}" class="img-responsive">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--modal final-->
+                                            </li>
+                                            {%endfor%}
+                                            </ul>
+                                        </div>
+                                    {%endif%}
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <label>Attach files:</label>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <input id="id_attach-file_name" type="file" name="attach-file_name">
+                                            {{form_attach.file_name.errors}}
+                                    </div>
+                                    <!--><!-->
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <ln></ln>
+                                    </div>
+                                </div>
+                                <!--Right side-->
+                                <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <label class="pull-center">Queue</label>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <select class="form-control" id="id_ticket-assigned_queue" name="ticket-assigned_queue">
+                                                {% for queue in common_data.queue_info %}
+                                                {% if queue.id == form_ticket.instance.assigned_queue.id %}
+                                                <option value="{{queue.id}}" selected >{{queue}}</option>
+                                                {% else %}
+                                                <option value="{{queue.id}}" >{{queue}}</option>    
+                                                {% endif %}
+                                            {%endfor%}
+                                        </select>   
+                                                {{form_ticket.assigned_queue.errors}}
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                        <label class="pull-center">State</label>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                        <select class="form-control" id="id_tciket-assigned_state" name="ticket-assigned_state">
+                                            {% for status in common_data.status_info %}
+                                                {%if status.id  == form_ticket.instance.assigned_state.id %}
+                                                    <option value="{{status.id}}" selected >{{status}}</option>
+                                                {%else%}
+                                                    <option value="{{status.id}}">{{status}}</option>
+                                                {%endif%}
+                                            {%endfor%}
+                                        </select>
+                                        {{form_ticket.assigned_state.errors}}
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                        <label class="pull-center">Date</label>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                        <input id="id_ticket-date" name="ticket-date" class="form-control" {% if form_ticket.instance.date%} value="{{form_ticket.instance.date|date:"d/m/y m:h:s"}}" readonly{% endif %}>
+                                        {{form_ticket.date.errors}}
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                        <label class="pull-center">Priority</label>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <select class="form-control" id="id_assigned_prio" name="ticket-assigned_prio">
+                                                    {% for prio in common_data.prio_info %}
+                                                        {%if prio.id  == form_ticket.instance.assigned_prio.id %}
+                                                            <option value="{{prio.id}}" selected >{{prio}}</option>
+                                                        {%else%}
+                                                            <option value="{{prio.id}}">{{prio}}</option>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                        </select>
+                                        {{form_ticket.assigned_prio.errors}}
+                                    </div>
+
+                                </div>
+                                <!--Buttons line-->
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <div class="ln_solid"></div>
+                                </div>
+                                <!--End of the box-->
+                                    <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save ticket</button>
+                                    <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                    
                             </div>
-                            <!--Buttons line-->
-                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                <div class="ln_solid"></div>
-                            </div>
-                            <!--End of the box-->
-                                <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save ticket</button>
-                                <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
-                                
-                        </div>
-                    </form>
-                </div>
-</div>
+                        </form>
+                    </div>
+    </div>
 
 
 {%endblock%}
