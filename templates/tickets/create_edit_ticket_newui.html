@@ -148,7 +148,7 @@
                                     </div>
 
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <select class="form-control" id="id_ticket-assigned_queue" name="ticket-assigned_queue">
+                                        <select class="form-control pointer" id="id_ticket-assigned_queue" name="ticket-assigned_queue">
                                                 {% for queue in common_data.queue_info %}
                                                 {% if queue.id == form_ticket.instance.assigned_queue.id %}
                                                 <option value="{{queue.id}}" selected >{{queue}}</option>
@@ -164,7 +164,7 @@
                                         <label class="pull-center">State</label>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                        <select class="form-control" id="id_tciket-assigned_state" name="ticket-assigned_state">
+                                        <select class="form-control pointer" id="id_tciket-assigned_state" name="ticket-assigned_state">
                                             {% for status in common_data.status_info %}
                                                 {%if status.id  == form_ticket.instance.assigned_state.id %}
                                                     <option value="{{status.id}}" selected >{{status}}</option>
@@ -190,7 +190,7 @@
                                     </div>
 
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <select class="form-control" id="id_assigned_prio" name="ticket-assigned_prio">
+                                        <select class="form-control pointer" id="id_assigned_prio" name="ticket-assigned_prio" >
                                                     {% for prio in common_data.prio_info %}
                                                         {%if prio.id  == form_ticket.instance.assigned_prio.id %}
                                                             <option value="{{prio.id}}" selected >{{prio}}</option>
