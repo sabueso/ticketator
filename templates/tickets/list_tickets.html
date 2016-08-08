@@ -36,7 +36,7 @@
                     
                     
                     <div class="x_title">
-                    <h2>List tickets <small>Custom design</small></h2>
+                    <h2>List tickets</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -78,7 +78,7 @@
                                     <tbody>
                                     	{%for line in tickets_info %}
                                     	   <tr class="odd gradeX">
-                                    	   <td class="text-center"><a href="/tickets/edit/{{line.id}}">{{line.id}}</a></td>
+                                    	   <td class="text-center"><a href="/tickets/edit/{{line.id}}">{{line.id}}</a>  || <a href="/tickets/edit-dev/{{line.id}}"><i class="fa fa-bomb" style="margin-right: 10px;"></i></a></td>
                                     	   <td class="text-center">{{line.subject}}</td>
                                            <td class="text-center"><span class="label label-primary">{{line.assigned_state}}</span></td>   
                                            {% if line.assigned_queue %}

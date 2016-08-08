@@ -9,12 +9,10 @@ admin.site.register(Queue)
 admin.site.register(State)
 admin.site.register(Priority)
 
+#Custom user render outside the "Auth" module
+from django.contrib.auth.admin import UserAdmin
+admin.site.register(User, UserAdmin)
 
-class ProfileAdmin(admin.ModelAdmin):
-	list_display = ('id','user','queue','notify_email','avatar')
-	search_fields = ('username','queue')
-
-admin.site.register(Profile,ProfileAdmin) 
 
 class RightsAdmin(admin.ModelAdmin):
 	list_display = ('id','grp_src','queue_dst','can_view','can_create','can_delete','can_edit','can_comment','enabled')
@@ -27,3 +25,5 @@ class TicketAdmin(admin.ModelAdmin):
 	search_fields = ('subject','body')
 
 admin.site.register(Ticket,TicketAdmin)
+
+admin.site.register(UserType)

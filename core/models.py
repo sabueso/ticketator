@@ -8,7 +8,21 @@ from datetime import datetime
 from core import views_utils as util
 from core import rights
 from django.core.exceptions import ValidationError
+#Extending the Django User's model
+from django.contrib.auth.models import AbstractUser
 
+#=> UserType (OP or simple user)
+class UserType(models.Model):
+	status=models.CharField(max_length=20)
+	def __unicode__(self):
+		return self.status
+
+#Extending base User class
+#https://micropyramid.com/blog/how-to-create-custom-user-model-in-django/
+class User(AbstractUser):
+	status_rel = models.ForeignKey(UserType, on_delete=models.CASCADE, null=True, blank=True)
+	avatar =  models.FileField(upload_to='./avatar/', null=True, blank=True)
+	#test = models.CharField(max_length=40, null=True, blank=True)
 
 #=> Auth forms
 class UserForm(ModelForm):
@@ -58,7 +72,7 @@ class CompanyForm(ModelForm):
 #=> Queues (ex Departments)
 class Queue(models.Model):
 	name = models.CharField(max_length=100)
-	company_rel = models.ForeignKey('Company', on_delete=models.CASCADE )
+	company_rel = models.ForeignKey(Company, on_delete=models.CASCADE )
 	#logo = pending....
 	#color  = if needed....
 	def __unicode__(self):
@@ -69,20 +83,13 @@ class QueueForm(ModelForm):
 		model =  Queue
 		fields = '__all__'
 
-#=> Profile
-#Review if it's really usefull
-class Profile(models.Model):
-	user = models.OneToOneField(User)
-	queue = models.ForeignKey('Queue',on_delete=models.CASCADE )
-	notify_email =  models.BooleanField(default=False)
-	avatar =  models.FileField(upload_to='./avatar/')
-
 #=> Groups
+
 #Group's rights
 class Rights(models.Model):
 	enabled=models.BooleanField(default=True)
 	grp_src=models.ForeignKey(Group, related_name = "src_grp", blank=True, null=True)
-	queue_dst=models.ForeignKey('Queue', related_name = "dst_queue", blank=True, null=True)
+	queue_dst=models.ForeignKey(Queue, related_name = "dst_queue", blank=True, null=True)
 	#Permited actions
 	can_view=models.BooleanField(default=False)
 	can_create=models.BooleanField(default=False)
@@ -156,8 +163,8 @@ class Ticket(models.Model):
 	date = models.DateTimeField(default=datetime.now)
 	create_user = models.ForeignKey(User, related_name = "c_user", blank=True, null=True,)
 	assigned_user = models.ForeignKey(User, blank=True, null=True, related_name = "a_user")
-	assigned_queue = models.ForeignKey('Queue', blank=True, null=True)
-	assigned_company = models.ForeignKey('Company', blank=True, null=True)
+	assigned_queue = models.ForeignKey(Queue, blank=True, null=True)
+	assigned_company = models.ForeignKey(Company, blank=True, null=True)
 	subject =  models.CharField(max_length=40)
 	body = models.TextField(null=True,blank=True)
 	assigned_state = models.ForeignKey(State)
@@ -203,6 +210,8 @@ class TicketForm(ModelForm):
 			if user_object_rights.can_edit != True:
 				raise forms.ValidationError(cantsave)
 
+#=> Attachments
+
 class Attachment(models.Model):
 	ticket_rel = models.ForeignKey(Ticket,null=True, blank=True)
 	file_name = models.FileField(upload_to='ticket_files/',null=True, blank=True)
@@ -212,3 +221,15 @@ class AttachmentForm(ModelForm):
 	class Meta:
 		model =  Attachment
 		fields = '__all__'
+
+#=> Comments
+
+class CommentsOps(models.Model):
+	date=models.DateTimeField(default=datetime.now)
+	comment=models.TextField(null=True,blank=True)
+	private=models.BooleanField(default=False)
+
+
+class CommentsUser(models.Model):
+	date=models.DateTimeField(default=datetime.now)
+	comment=models.TextField(null=True,blank=True)

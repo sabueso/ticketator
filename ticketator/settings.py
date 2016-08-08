@@ -147,3 +147,6 @@ DATE_FORMAT = ['%d/%m/%y']
 #Auth settings
 LOGIN_REDIRECT_URL="/"
 LOGIN_URL="/login"
+
+#Auth custom settings
+AUTH_USER_MODEL = 'core.User'

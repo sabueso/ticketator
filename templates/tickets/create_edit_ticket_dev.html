@@ -11,7 +11,7 @@
     {% url_tickets as urlt %}
     <div class="x_panel">
                     <div class="x_title">
-                        <h2>New ticket  </h2><span class="label">NEW UI</span>
+                        <h2>New ticket</h2><span class="label">DEV</span>
                         <ul class="nav navbar-right panel_toolbox">
                         
                         <!--chevron-->
@@ -77,72 +77,9 @@
                                             
                                         
                                 {%endif%}
-                                <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                            <label>Subject:</label>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %}>
-                                                {{form_ticket.subject.errors}}                                
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                            <label>Description:</label>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
-                                                {{form_ticket.body.errors}}                    
-                                    </div>
-                                    <hr></hr>
 
-                                    {% if actual_files %}
-                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                                <label for="id_file_name">Uploaded files:</label>
-                                        </div>
-                                                                    
-                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                            <ul class="list-unstyled timeline">
-                                            {% for i in actual_files %}
-                                            <li>
-                                                    <div class="block">
-                                                    <div class="tags">
-                                                      <a class="tag" href="/static/media/{{i.file_name}}" download>
-                                                        <span>{{i.file_name|filename_text}}</span>
-                                                      </a>
-                                                    </div>
-                                                    <div class="block_content">
-                                                      <p class="excerpt"><a href="#" data-toggle="modal" data-target="#img{{i.id}}"><img width=50% height=50% src="/static/media/{{i.file_name}}"></a></p>
-                                                    </div>
-                                                  </div>
-                                                    <!--modal part-->
-                                                    <div id="img{{i.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-body">
-                                                                    <img src="/static/media/{{i.file_name}}" class="img-responsive">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--modal final-->
-                                            </li>
-                                            {%endfor%}
-                                            </ul>
-                                        </div>
-                                    {%endif%}
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                            <label>Attach files:</label>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                            <input id="id_attach-file_name" type="file" name="attach-file_name">
-                                            {{form_attach.file_name.errors}}
-                                    </div>
-                                    <!--><!-->
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <ln></ln>
-                                    </div>
-                                </div>
-                                <!--Right side-->
-                                <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                <!--Status-->
+                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <label class="pull-center">Queue</label>
                                     </div>
@@ -201,9 +138,93 @@
                                         </select>
                                         {{form_ticket.assigned_prio.errors}}
                                     </div>
-
                                 </div>
-                                <!--Buttons line-->
+                                <!--Ticket body-->
+                                <div class="col-md-10 col-sm-12 col-xs-12 form-group">
+                                    <!--only in mobile/ipad setup-->
+                                    
+                                    <!--end-->
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <div id="MobileSep" class="visible-sm">
+                                        <hr>
+                                        </div>
+                                            <label>Subject:</label>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %}>
+                                                {{form_ticket.subject.errors}}                                
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <label>Description:</label>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
+                                                {{form_ticket.body.errors}}                    
+                                    </div>
+                                    <hr></hr>
+
+                                    {% if actual_files %}
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <label for="id_file_name">Uploaded files:</label>
+                                        </div>
+                                                                    
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <ul class="list-unstyled timeline">
+                                            {% for i in actual_files %}
+                                            <li>
+                                                    <div class="block">
+                                                    <div class="tags">
+                                                      <a class="tag" href="/static/media/{{i.file_name}}" download>
+                                                        <span>{{i.file_name|filename_text}}</span>
+                                                      </a>
+                                                    </div>
+                                                    <div class="block_content">
+                                                      <p class="excerpt"><a href="#" data-toggle="modal" data-target="#img{{i.id}}"><img width=50% height=50% src="/static/media/{{i.file_name}}"></a></p>
+                                                    </div>
+                                                  </div>
+                                                    <!--modal part-->
+                                                    <div id="img{{i.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <img src="/static/media/{{i.file_name}}" class="img-responsive">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--modal final-->
+                                            </li>
+                                            {%endfor%}
+                                            </ul>
+                                        </div>
+                                    {%endif%}
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <label>Attach files:</label>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <input id="id_attach-file_name" type="file" name="attach-file_name">
+                                            {{form_attach.file_name.errors}}
+                                    </div>
+                                    <!--><!-->
+                                    <!--only in mobile/ipad setup-->
+                                    
+                                    
+                                    <!--end-->
+                                    <!--comments part --> 
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <hr>
+
+                                            <label>Comments:</label>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <div class="jumbotron">
+                                                <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                                                </div>
+                                    </div>
+                                </div>
+                                
+
+
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                     <div class="ln_solid"></div>
                                 </div>
