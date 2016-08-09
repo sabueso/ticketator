@@ -146,6 +146,11 @@ class State(models.Model):
 	active = models.BooleanField(default=True)
 	color = models.CharField(default='008ac6',max_length=10, null=True,blank=True)
 
+	def save(self, *args, **kwargs):
+		if self.color.startswith("#"):
+			self.color= self.color[1:]
+		super( State, self ).save( *args, **kwargs )
+
 	def __unicode__(self):
 		return self.name
 
@@ -154,9 +159,9 @@ class StateForm(ModelForm):
 		model =  State
 		fields = '__all__'		
 
-	def clean_color(self):
-		clean_color = self.cleaned_data.get('color').lstrip('#')
-		return clean_color
+	# def clean_color(self):
+	# 	clean_color = self.cleaned_data.get('color').lstrip('#')
+	# 	return clean_color
 
 #=> Prioritys
 class Priority(models.Model):
