@@ -1,1 +1,5 @@
 #Write usefull stuff here.....
+
+#Dependencies
+
+pip install django-colorfield

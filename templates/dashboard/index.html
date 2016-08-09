@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-{% load staticfiles %}
+    
 
     {% load core_settings_data %}
     <meta charset="utf-8">
@@ -10,29 +10,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{%site_vars as vars %}{{vars.name}}{{vars.version}}</title>
-    <!-- Bootstrap -->
-    <link href="{% static "vendors/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link href="{% static "vendors/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
+    {% load staticfiles %}
 
-    <!-- Timeline CSS -->
-    <link href="{% static "vendors/iCheck/skins/flat/green.css" %}" rel="stylesheet">
+    <script src="{% static "vendors/jquery/dist/jquery.min.js" %}"></script>
+    <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
+    <script src="{% static "vendors/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "vendors/fastclick/lib/fastclick.js" %}"></script>
+    <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
 
-    <!-- bootstrap-progressbar -->
-    <link href="{% static "vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" %}" rel="stylesheet">
-
-    <!-- jVectorMap -->
-    <link href="{% static "css/maps/jquery-jvectormap-2.0.3.css" %}" rel="stylesheet">
-
-    <!-- Custom Theme Style -->
-    <link href="{% static "build/css/custom.css" %}" rel="stylesheet" type="text/css">
-    {% block extend_js%}
+    {% block extend_js %}
     {% endblock %}
 
+      
+    <link href="{% static "vendors/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/iCheck/skins/flat/green.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/maps/jquery-jvectormap-2.0.3.css" %}" rel="stylesheet">
+    <link href="{% static "build/css/custom.css" %}" rel="stylesheet" type="text/css">
     
+    {% block extend_css %}
+    {% endblock %}
+
+
 </head>
-<body>
 
 <body class="nav-md">
     <div class="container body">
@@ -56,26 +58,14 @@
           <div class="clearfix"></div>
         </footer>
     <!-- /#wrapper -->
-
-    <script src="{% static "vendors/jquery/dist/jquery.min.js" %}"></script>
-    <!-- Bootstrap -->
-    <script src="{% static "vendors/bootstrap/dist/js/bootstrap.min.js" %}"></script>
-    <!-- FastClick -->
-    <script src="{% static "vendors/fastclick/lib/fastclick.js" %}"></script>
-    <!-- NProgress -->
-    <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
-
-    <!-- bootstrap-daterangepicker -->
-    <!--<script src="{% static "js/moment/moment.min.js" %}"></script>
-    <script src="{% static "js/datepicker/daterangepicker.js" %}"></script>-->
-    <!--<script src="/static/vendors/dropzone/dist/min/dropzone.min.js"></script>-->
-    <script src="/static/js/dropzone.js"></script>
-
-
-
-    <!-- Custom Theme Scripts -->
+    
     <script src="{% static "build/js/custom.min.js" %}"></script>
-
+    
+    
+    
 </body>
+
+
+
 
 </html>

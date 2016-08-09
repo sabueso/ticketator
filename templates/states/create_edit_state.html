@@ -1,5 +1,16 @@
 {% extends "dashboard/index.html" %}
 
+
+{%block extend_js%}
+    <script src="https://mjolnic.com/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+{%endblock%}
+
+{% block extend_css%}
+    <link href="https://mjolnic.com/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">  
+{%endblock%}
+
+
+
 {%block content %}
 	<div class="row">
                 <div class="col-lg-12">
@@ -9,9 +20,7 @@
                     <h1 class="page-header"><i class="glyphicon glyphicon-user"></i> New state</h1>
                     {% endif%}
                 </div>
-                <!-- /.col-lg-12 -->
     </div>
-
 
 {% load core_settings_data %}
 {%site_vars as vars %}
@@ -55,18 +64,44 @@
                                                     <p class="help-block"></p>
                                                     {{form.name.errors}}
                                         </div>
+
                                         <div class="form-group">
                                                     <label>Description</label>
                                                     {% if form.instance.description %}
                                                     <input id="description" name="description" value="{{form.instance.description}}" class="form-control">
                                                     {% else %}
                                                     <input id="description" name="description" class="form-control">
-                                                    {%endif%}
+                                                        {%endif%}
                                                     <p class="help-block"></p>
                                                     {{form.description.errors}}
                                         </div>
+                                        <!--Color for the state-->
 
-<!--                                         <div class="form-group">
+                                        <div class="form-group">
+                                                    <label>Color</label>
+                                                    <div id="color" class="input-group colorpicker-component">
+                                                    {% if form.instance.color %}
+                                                            <input name="color" type="text" data-format="hex" class="form-control" value="{{form.instance.color}}" />
+                                                    {% else %}
+                                                            <input name="color" type="text" data-format="hex" class="form-control" value="" /> 
+                                                    {%endif%}
+                                                    <span class="input-group-addon"><i></i></span> 
+                                                    </div>
+                                                    <p class="help-block"></p>
+                                                    {{form.color.errors}}
+                                        </div>
+                                                    <script type="text/javascript"> 
+                                                    $(function() { 
+                                                        $('#color').colorpicker(); 
+                                                                }); 
+                                                    </script>
+
+
+
+                                    <!-- /Bootstrap Colorpicker -->
+
+                                        <!--                    
+                                        <div class="form-group">
                                                     <label>First name</label>
                                                     {% if form.instance.first_name%}
                                                     <input id="first_name" name="first_name" value="{{form.instance.first_name}}" class="form-control">
@@ -102,7 +137,7 @@
                                 </div>
                                 
                                        
-                                
+                            <!-- final div -->                        
                             </div>
 
 

@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="x_content">
-                        <form method='post' action="/tickets/{%if form_ticket.instance.id%}edit/{{form_ticket.instance.id}}{%else%}create-new{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
+                        <form method='post' action="/tickets/{%if form_ticket.instance.id%}edit-dev/{{form_ticket.instance.id}}{%else%}create-new-devb{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
                             <div class="row">
                                 <!--Left side-->
                                 {% if vars.debug == True%}
@@ -228,10 +228,15 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                     <div class="ln_solid"></div>
                                 </div>
-                                <!--End of the box-->
-                                    <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save ticket</button>
-                                    <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
-                                    
+                                <!--End of the box-->   
+                                    <!--If ticket doenst exist-->
+                                    {% if form_ticket.instance.id %}
+                                        <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="save-signal" >Save</button>
+                                        <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="update-signal" >Update</button>
+                                    {% else %}
+                                        <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="save-signal" >Save</button>
+                                        <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                    {%endif%}
                             </div>
                         </form>
                     </div>

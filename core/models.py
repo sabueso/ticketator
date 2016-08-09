@@ -10,6 +10,8 @@ from core import rights
 from django.core.exceptions import ValidationError
 #Extending the Django User's model
 from django.contrib.auth.models import AbstractUser
+#Colors for models
+from colorfield.fields import ColorField
 
 #=> UserType (OP or simple user)
 class UserType(models.Model):
@@ -142,7 +144,8 @@ class State(models.Model):
 	description = models.CharField(max_length=130)
 	numvalue = models.IntegerField(null=True,blank=True,default=0)
 	active = models.BooleanField(default=True)
-	#color = ColorField()
+	color = models.CharField(default='008ac6',max_length=10, null=True,blank=True)
+
 	def __unicode__(self):
 		return self.name
 
@@ -150,6 +153,10 @@ class StateForm(ModelForm):
 	class Meta:
 		model =  State
 		fields = '__all__'		
+
+	def clean_color(self):
+		clean_color = self.cleaned_data.get('color').lstrip('#')
+		return clean_color
 
 #=> Prioritys
 class Priority(models.Model):

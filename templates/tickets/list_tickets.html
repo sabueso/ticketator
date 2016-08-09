@@ -80,7 +80,8 @@
                                     	   <tr class="odd gradeX">
                                     	   <td class="text-center"><a href="/tickets/edit/{{line.id}}">{{line.id}}</a>  || <a href="/tickets/edit-dev/{{line.id}}"><i class="fa fa-bomb" style="margin-right: 10px;"></i></a></td>
                                     	   <td class="text-center">{{line.subject}}</td>
-                                           <td class="text-center"><span class="label label-primary">{{line.assigned_state}}</span></td>   
+                                           <td class="text-center"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
+
                                            {% if line.assigned_queue %}
                                             <td class="text-center">{{line.assigned_queue}}</td>
                                         {%else%}

@@ -133,7 +133,13 @@ def manage_ticket_dev(request, ticket_id=None):
 				new_form_attach =  form_attach.save(commit=False)
 				new_form_attach.ticket_rel = new_ticket_form
 				new_form_attach.save()
-		 	return redirect("/tickets")
+				if 'update-signal' in request.POST:
+					return redirect("/tickets/edit-dev/"+ticket_id+"")
+				elif 'save-signal' in request.POST:
+		 			return redirect("/tickets")
+		 	else:
+		 		if 'save-signal' in request.POST:
+		 			return redirect("/tickets")
 	else:
 	#Non-POST mode, show only
 		form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
