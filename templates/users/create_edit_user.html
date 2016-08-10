@@ -16,7 +16,7 @@
 {% load core_settings_data %}
 {%site_vars as vars %}
 <!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
-<form method='post' action="/settings/user/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form">
+<form method='post' action="/settings/user/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">
 {% csrf_token %}
     <div class="row">
                 <div class="col-lg-8 col-md-offset-2">
@@ -88,6 +88,30 @@
                                                     <p class="help-block"></p>
                                                     {{form.email.errors}}
                                         </div>
+
+                                        <hr></hr>
+                                        <div class="form-group">
+                                            <label>Avatar</label>
+                                            <div class="flex">
+                                                  <ul class="list-inline widget_profile_box">
+                                                    <li>
+                                                        {%if form.instance.avatar%}
+                                                        <img class="img-circle profile_img" alt="..." src="/static/media/{{form.instance.avatar}}">
+                                                        {%else%}
+                                                        <img class="img-circle profile_img" alt="..." src="/static/images/user.png">
+                                                        {%endif%}
+                                                    </li>
+                                                    <li>
+                                                        
+                                                    </li>
+
+                                                  </ul>
+                                                </div>
+                                                {{form.avatar}}
+                 
+                                                                
+                                        </div>
+
                                         
                                 </div>
                                 
@@ -126,7 +150,7 @@
                                         </div>
 
 
-
+                                        <hr></hr>
                                         <div class="form-group">
                                             <label>Checkboxes</label>
                                             <div class="checkbox pull-right">
@@ -159,7 +183,7 @@
                                                 {{form.is_staff.errors}}
                                             </div>
                                         </div>
-
+                                        <hr></hr>
                                         <div class="form-group">
                                             <label>Groups</label>
                                             <div class="checkbox pull-right">
@@ -183,6 +207,9 @@
                          				<div class="form-group">
                          					<hr></hr>
                             <!--submit-->
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <div class="ln_solid"></div>
+                                </div>
                          				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save user</button>
                                       	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
                                       	</div>

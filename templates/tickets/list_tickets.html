@@ -66,9 +66,8 @@
                                             <th class="text-center">Subject</th>
                                             <th class="text-center">State</th>
                                             <th class="text-center">Queue</th>
-                                            <th class="text-center" width="180px">Date</th>
                                             <th class="text-center">Owner</th>
-                                            
+                                            <th class="text-center" width="180px">Date</th>
                                             <th class="text-center">Responsible</th>
                                             
                                             <!--<th class="text-center">Company</th>-->
@@ -79,7 +78,7 @@
                                     	{%for line in tickets_info %}
                                     	   <tr class="odd gradeX">
                                     	   <td class="text-center"><a href="/tickets/edit/{{line.id}}">{{line.id}}</a>  || <a href="/tickets/edit-dev/{{line.id}}"><i class="fa fa-bomb" style="margin-right: 10px;"></i></a></td>
-                                    	   <td class="text-center">{{line.subject}}</td>
+                                    	   <td class="text-center"><a href="/tickets/edit-dev/{{line.id}}">{{line.subject}}</a></td>
                                            <td class="text-center"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
 
                                            {% if line.assigned_queue %}
@@ -87,10 +86,10 @@
                                         {%else%}
                                             <td></td>
                                         {%endif%}
-                                    	   <td class="text-center">{{line.date|date:"d/m/y m:h:s"}}</td>
                                     	   <td class="text-center">{{line.create_user}}</td>
+                                           <td class="text-center">{{line.date|date:"d/m/y m:h:s"}}</td>
                                     	{% if line.assigned_user %}
-                                            <td class="text-center">{{line.assigned_user}}</td>
+                                            <td class="text-center">{{line.assigned_user.first_name}} {{line.assigned_user.last_name}}</td>
                                         {%else%}
                                             <td></td>
                                         {%endif%}

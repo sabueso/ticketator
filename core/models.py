@@ -23,8 +23,8 @@ class UserType(models.Model):
 #https://micropyramid.com/blog/how-to-create-custom-user-model-in-django/
 class User(AbstractUser):
 	status_rel = models.ForeignKey(UserType, on_delete=models.CASCADE, null=True, blank=True)
-	avatar =  models.FileField(upload_to='./avatar/', null=True, blank=True)
-	#test = models.CharField(max_length=40, null=True, blank=True)
+	avatar =  models.FileField(upload_to='avatar/', null=True, blank=True)
+
 
 #=> Auth forms
 class UserForm(ModelForm):

@@ -9,7 +9,12 @@
                 
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">{{request.user}}
+                    {% if request.user.avatar%}
+                    <img src="/static/media/{{request.user.avatar}}" alt="...">
+                    {%else%}
+                    <img src="/static/images/user.png" alt="">
+                    {%endif%}
+                    {{request.user}}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -25,7 +30,9 @@
                   </ul>
                 </li>
                 <li class="">
-                  <button class="btn btn-info btn-sm" type="button" style="margin-top: 8px; margin-right: 130px; display: block; position: relative;" onclick="location.href='/tickets/create-new'">Create ticket</button>
+                  <button class="btn btn-info btn-sm" type="button" style="margin-top: 10px; margin-right: 40px; position: relative;" onclick="location.href='/tickets/create-new-dev'">
+                      Ticket <span class="glyphicon glyphicon-plus" aria-hidden="true"> </span>
+                  </button>
                 </li>
               </ul>
             </nav>

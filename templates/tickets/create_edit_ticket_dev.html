@@ -138,6 +138,25 @@
                                         </select>
                                         {{form_ticket.assigned_prio.errors}}
                                     </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                        <label class="pull-center">Responsible</label>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <select class="form-control pointer" id="id_assigned_user" name="ticket-assigned_user" >
+                                                    <option value="" selected >--</option>
+                                                    {% for user_resp in common_data.users_info %}
+
+                                                        {%if user_resp.id  == form_ticket.instance.assigned_user.id %}
+                                                            <option value="{{user_resp.id}}" selected >{{user_resp.first_name}} {{user_resp.last_name}}</option>
+                                                        {%else%}
+                                                            <option value="{{user_resp.id}}">{{user_resp.first_name}} {{user_resp.last_name}}</option>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                        </select>
+                                        {{form_ticket.assigned_user.errors}}
+                                    </div>
                                 </div>
                                 <!--Ticket body-->
                                 <div class="col-md-10 col-sm-12 col-xs-12 form-group">
@@ -145,8 +164,8 @@
                                     
                                     <!--end-->
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                        <div id="MobileSep" class="visible-sm">
-                                        <hr>
+                                        <div id="MobileSep" class="visible-sm visible-xsm">
+                                            <hr>
                                         </div>
                                             <label>Subject:</label>
                                     </div>
