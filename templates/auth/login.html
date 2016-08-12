@@ -30,7 +30,7 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form role="form" action="{% url 'django.contrib.auth.views.login' %}" method="post"> {% csrf_token %}
+            <form role="form" action="{% url 'login' %}" method="post"> {% csrf_token %}
                   <h1><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Ticketator</h1>
               <div>
                <input class="form-control" id="login" placeholder="username" name="username" type="text" autofocus>
