@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^settings/$', views.settings, name='tickets-settings'),
 
     #Auth
-    url(r'^login', auth_views.login, {'template_name': 'auth/login.html'}),
+    url(r'^login$', auth_views.login, {'template_name': 'auth/login.html'}, name='login'),
 
     url(r'^logoff', vauth.logout_v, name='logout'),
 
