@@ -1,5 +1,12 @@
-#Write usefull stuff here.....
+#Ticketator
 
-#Dependencies
+Ticketator tends to be a simple ticketing system, developed in Django, highly customizable inspired in Jira ticketing system.
 
-pip install django-colorfield
+Some special features, are assign tickets to groups, comments, attach files and a dashboard plenty of reports to try to make your
+day organiztion, easier.
+
+
+#Requireiments
+
+-Django >= 1.9 
+-django-colorfield (avaliable trough pip)
