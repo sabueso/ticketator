@@ -1,6 +1,9 @@
 from django.conf.urls import include,url
 from django.contrib import admin
 
+#Auth
+from django.contrib.auth import views as auth_views
+
 #Import some modular views
 from core import views
 from core import views_users as vusers, views_company as vcompanies,\
@@ -20,7 +23,8 @@ urlpatterns = [
     url(r'^settings/$', views.settings, name='tickets-settings'),
 
     #Auth
-    url(r'^login','django.contrib.auth.views.login',{'template_name': 'auth/login.html'}),
+    url(r'^login', auth_views.login, {'template_name': 'auth/login.html'}),
+
     url(r'^logoff', vauth.logout_v, name='logout'),
 
     #Users   
