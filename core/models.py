@@ -245,3 +245,14 @@ class CommentsOps(models.Model):
 class CommentsUser(models.Model):
 	date=models.DateTimeField(default=datetime.now)
 	comment=models.TextField(null=True,blank=True)
+
+#=> Inventory Servers/PC 
+
+class InventoryGroup(models.Model):
+	name=models.CharField(max_length=100)
+	company_rel=models.ForeignKey(Company, null=True)
+
+class Inventory(models.Model):
+	name=models.CharField(max_length=100)
+	ip=models.GenericIPAddressField(protocol='ipv4')
+	group_rel=models.ForeignKey(InventoryGroup, null=True)

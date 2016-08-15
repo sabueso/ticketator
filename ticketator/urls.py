@@ -9,7 +9,7 @@ from core import views
 from core import views_users as vusers, views_company as vcompanies,\
                  views_queues as vqueues,views_tickets as vtickets, \
                  views_group as vgroup, views_right as vright,\
-                 views_auth as vauth, views_states as vstates
+                 views_auth as vauth, views_states as vstates, views_inventory as vinvent
 
 urlpatterns = [
 
