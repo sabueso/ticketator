@@ -77,7 +77,7 @@
                                     <tbody>
                                     	{%for line in tickets_info %}
                                     	   <tr class="odd gradeX">
-                                    	   <td class="text-center"><a href="/tickets/edit/{{line.id}}">{{line.id}}</a>  || <a href="/tickets/edit-dev/{{line.id}}"><i class="fa fa-bomb" style="margin-right: 10px;"></i></a></td>
+                                    	   <td class="text-center"><a href="/tickets/edit-dev/{{line.id}}">{{line.id}}</a></td>
                                     	   <td class="text-center"><a href="/tickets/edit-dev/{{line.id}}">{{line.subject}}</a></td>
                                            <td class="text-center"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
 
