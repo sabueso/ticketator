@@ -170,6 +170,18 @@ class Priority(models.Model):
 	def __unicode__(self):
 		return self.name
 
+#=> Inventory Servers/PC 
+
+class InventoryGroup(models.Model):
+	name=models.CharField(max_length=100)
+	company_rel=models.ForeignKey(Company, null=True)
+
+class Inventory(models.Model):
+	name=models.CharField(max_length=100)
+	ip=models.GenericIPAddressField(protocol='ipv4')
+	group_rel=models.ForeignKey(InventoryGroup, null=True)
+
+
 #=> Tickets
 class Ticket(models.Model):
 	date = models.DateTimeField(default=datetime.now)
@@ -181,6 +193,7 @@ class Ticket(models.Model):
 	body = models.TextField(null=True,blank=True)
 	assigned_state = models.ForeignKey(State)
 	assigned_prio = models.ForeignKey(Priority)
+	assigned_inventory = models.ForeignKey(Inventory, null=True,blank=True)
 
 	def __str__(self):
 		return '%s' % (self.id)
@@ -237,22 +250,14 @@ class AttachmentForm(ModelForm):
 #=> Comments
 
 class CommentsOps(models.Model):
+	ticket_rel=models.ForeignKey(Ticket, related_name ='ticket_rel_comm_op')
 	date=models.DateTimeField(default=datetime.now)
 	comment=models.TextField(null=True,blank=True)
 	private=models.BooleanField(default=False)
 
 
 class CommentsUser(models.Model):
+	ticket_rel=models.ForeignKey(Ticket, related_name ='ticket_rel_comm_user')
 	date=models.DateTimeField(default=datetime.now)
 	comment=models.TextField(null=True,blank=True)
 
-#=> Inventory Servers/PC 
-
-class InventoryGroup(models.Model):
-	name=models.CharField(max_length=100)
-	company_rel=models.ForeignKey(Company, null=True)
-
-class Inventory(models.Model):
-	name=models.CharField(max_length=100)
-	ip=models.GenericIPAddressField(protocol='ipv4')
-	group_rel=models.ForeignKey(InventoryGroup, null=True)

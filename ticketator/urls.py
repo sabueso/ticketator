@@ -69,6 +69,8 @@ urlpatterns = [
     url(r'^tickets/delete/(?P<ticket_id>\d+)?$', vtickets.delete_ticket, name='tickets-delete'),
     #Filtering view
     url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
+    #Comments post
+    url(r'^tickets/(?P<ticket_id>\d+)/add_comment/$', vtickets.add_comment_jx, name='tickets-add-comment'),
 
 ]
 

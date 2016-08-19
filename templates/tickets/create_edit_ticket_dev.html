@@ -3,6 +3,81 @@
 {% block extend_js%}
     {% load staticfiles %}
     <link href="{% static "vendors/dropzone/dist/min/dropzone.min.css" %}" rel="stylesheet">
+    <!--tickets JS-->
+    <!--script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>-->
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+    // AJAX GET
+    // $('.get-more').click(function(){
+
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "/ajax/more/",
+    //         success: function(data) {
+    //         for(i = 0; i < data.length; i++){
+    //             $('ul').append('<li>'+data[i]+'</li>');
+    //         }
+    //     }
+    //     });
+
+    // });
+
+
+    // AJAX POST
+    $('.add-message').click(function(){
+      console.log('am i called');
+
+        $.ajax({
+            type: "POST",
+            url: "/tickets/{{form_ticket.instance.id}}/add_comment/",
+            dataType: "json",
+            data: { "message_text": $("#message_data").val() },
+            success: function(data) {
+                //alert(data.message);
+                location.reload();
+            }
+        });
+
+    });
+
+
+
+    // CSRF code
+    function getCookie(name) {
+        var cookieValue = null;
+        var i = 0;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (i; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    }); 
+
+
+});
+    </script>
 {% endblock%}
 
 
@@ -230,19 +305,37 @@
                                     
                                     <!--end-->
                                     <!--comments part --> 
+                                    {% if form_ticket.instance.id %}
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <hr>
 
                                             <label>Comments:</label>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                                <div class="jumbotron">
-                                                <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-                                                </div>
+                                        <label for="message">Message (20 chars min, 100 max) :</label>
+                                        <textarea data-parsley-validation-threshold="10" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.." data-parsley-maxlength="100" data-parsley-minlength="20" data-parsley-trigger="keyup" name="message_data" class="form-control" required="required" id="message_data"></textarea>
+                                        <br>
+                                        <button class="btn btn-info btn-xs pull-right add-message" type="button">Add mesasge</button>
                                     </div>
+                                    <div class="col-sm-12 mail_list_column">
+                                    {% for comm in actual_comments %}
+                                        <a href="#">
+                                          <div class="mail_list">
+                                            <div class="left">
+                                              <i class="fa fa-circle"></i> <i class="fa fa-edit"></i>
+                                            </div>
+                                            <div class="right">
+                                              <h3>Dennis Mugo <small>3.00 PM</small></h3>
+                                              <p>{{comm.comment}}</p>
+                                            </div>
+                                          </div>
+                                        </a>
+                                      
+                                    {%endfor%}
+                                    </div>
+                                    {%endif%}
                                 </div>
-                                
-
+                               
 
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                     <div class="ln_solid"></div>
