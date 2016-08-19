@@ -70,7 +70,8 @@ urlpatterns = [
     #Filtering view
     url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
     #Comments post
-    url(r'^tickets/(?P<ticket_id>\d+)/add_comment/$', vtickets.add_comment_jx, name='tickets-add-comment'),
+    url(r'^tickets/add_comment/(?P<ticket_id>\d+)$', vtickets.add_comment_jx, name='tickets-add-comment'),
+    url(r'^tickets/get_comments/(?P<ticket_id>\d+)$', vtickets.get_comments_jx, name='tickets-get-comments'),
 
 ]
 

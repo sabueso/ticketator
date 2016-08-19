@@ -15,6 +15,7 @@ from django.db.models import Q
 from django.contrib.auth import get_user_model
 #JSON for comments
 import json
+from django.core import serializers
 
 
 User = get_user_model()
@@ -117,7 +118,7 @@ def manage_ticket_dev(request, ticket_id=None):
 		if ticket_rights.can_view == True :
 			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
 			actual_files=Attachment.objects.filter(ticket_rel=ticket_id)
-			actual_comments=CommentsOps.objects.filter(ticket_rel=ticket_id)
+			actual_comments=CommentsOps.objects.filter(ticket_rel=ticket_id).order_by('-id')
 		else:
 			raise Http404("You dont have enough permissions to see this ticket")
 	else:
@@ -170,3 +171,11 @@ def add_comment_jx(request, ticket_id=None):
 		return HttpResponse(json.dumps(data), content_type='application/json')
 	else:
 		raise Http404
+
+@login_required
+
+def get_comments_jx(request, ticket_id=None):
+	data = {}
+	data = serializers.serialize("json", CommentsOps.objects.filter(ticket_rel=ticket_id).order_by('-id'))
+	return HttpResponse(json.dumps(data), content_type='application/json')
+	

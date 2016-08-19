@@ -6,39 +6,79 @@
     <!--tickets JS-->
     <!--script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>-->
     <script type="text/javascript">
+    //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     $(document).ready(function() {
-
+        
     // AJAX GET
-    // $('.get-more').click(function(){
-
+    // $('.botonazo').click(function(){
     //     $.ajax({
     //         type: "GET",
-    //         url: "/ajax/more/",
+    //         dataType: "json",
+    //         url: "/tickets/get_comments/{{form_ticket.instance.id}}",
     //         success: function(data) {
-    //         for(i = 0; i < data.length; i++){
-    //             $('ul').append('<li>'+data[i]+'</li>');
-    //         }
-    //     }
-    //     });
+    //                     var dataparsed = JSON.parse(data);
+    //                     //console.log(data);
+    //                     //alert(data.length);
+    //                     $( ".comment_box" ).empty();
+    //                     $.each(dataparsed, function(i, item){
+    //                         $(".comment_box").append(
+    //                         '<div class="mail_list">'+
+    //                         '<div class="right">'+
+    //                         '<h3>'+'user_pending'+'</h3>'+
+    //                         '<p>'+ item.fields.comment +'</p>'+
+    //                         '</div>'+
+    //                         '</div>'    
 
+    //                         );
+    //                     });
+                        
+    //                 }
+    //          });
     // });
+
+
+    function update_comments()
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/tickets/get_comments/{{form_ticket.instance.id}}",
+            success: function(data) {
+                        var dataparsed = JSON.parse(data);
+                        //console.log(data);
+                        //alert(data.length);
+                        $( ".comment_box" ).empty();
+                        $.each(dataparsed, function(i, item){
+                            $(".comment_box").append(
+                            '<div class="mail_list">'+
+                            '<div class="right">'+
+                            '<h3>'+'user_pending'+'</h3>'+
+                            '<p>'+ item.fields.comment +'</p>'+
+                            '</div>'+
+                            '</div>'    
+
+                            );
+                        });
+                        
+                    }
+             });
+    }
 
 
     // AJAX POST
     $('.add-message').click(function(){
-      console.log('am i called');
-
+      //console.log('am i called');
         $.ajax({
             type: "POST",
-            url: "/tickets/{{form_ticket.instance.id}}/add_comment/",
+            url: "/tickets/add_comment/{{form_ticket.instance.id}}",
             dataType: "json",
             data: { "message_text": $("#message_data").val() },
             success: function(data) {
-                //alert(data.message);
-                location.reload();
-            }
-        });
-
+		                  $("#message_data").val("");
+                          //location.reload();
+                          update_comments();
+                    }
+            });
     });
 
 
@@ -311,28 +351,29 @@
 
                                             <label>Comments:</label>
                                     </div>
+                                    <div class"cold-md-12">
+                                        <label> TEST </label>
+                                        <button class="btn btn-info botonazo" type="button">Info</button>
+                                        <ul></ul>
+                                    </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <label for="message">Message (20 chars min, 100 max) :</label>
                                         <textarea data-parsley-validation-threshold="10" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.." data-parsley-maxlength="100" data-parsley-minlength="20" data-parsley-trigger="keyup" name="message_data" class="form-control" required="required" id="message_data"></textarea>
                                         <br>
                                         <button class="btn btn-info btn-xs pull-right add-message" type="button">Add mesasge</button>
                                     </div>
-                                    <div class="col-sm-12 mail_list_column">
+                                    <div class="col-sm-12 ">
+                                    <div class="comment_box">
                                     {% for comm in actual_comments %}
-                                        <a href="#">
                                           <div class="mail_list">
-                                            <div class="left">
-                                              <i class="fa fa-circle"></i> <i class="fa fa-edit"></i>
-                                            </div>
                                             <div class="right">
-                                              <h3>Dennis Mugo <small>3.00 PM</small></h3>
+						                      <h3>user_pending <small>{{comm.date}}</small></h3>
                                               <p>{{comm.comment}}</p>
                                             </div>
                                           </div>
-                                        </a>
-                                      
                                     {%endfor%}
                                     </div>
+                                   </dvi>  
                                     {%endif%}
                                 </div>
                                
