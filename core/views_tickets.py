@@ -37,7 +37,10 @@ def common_ticket_data():
 def list_tickets(request, state_id=None):
 	common_data = common_ticket_data()
 	if request.user.username == 'admin':
-		tickets_info = Ticket.objects.filter().order_by("-id")
+		if state_id:
+			tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
+		else:
+			tickets_info = Ticket.objects.filter().order_by("-id")
 	else:
 		#queue is used in template to debug profits
 		queues = rights.get_queues(request.user)
@@ -114,7 +117,7 @@ def manage_ticket_dev(request, ticket_id=None):
 		if ticket_rights.can_view == True :
 			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
 			actual_files=Attachment.objects.filter(ticket_rel=ticket_id)
-			actual_comments=CommentsOps.objects.filter()
+			actual_comments=CommentsOps.objects.filter(ticket_rel=ticket_id)
 		else:
 			raise Http404("You dont have enough permissions to see this ticket")
 	else:
@@ -149,8 +152,9 @@ def manage_ticket_dev(request, ticket_id=None):
 		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
 	return render(request,'tickets/create_edit_ticket_dev.html', locals())
 
-def save_comment_data(comment_data=None,private_data=None):
-	inst_data = CommentsOps.objects.create(comment=comment_data, private=private_data)
+def save_comment_data(comment_data=None,private_data=None, ticket_data=None):
+	inst_ticket =  Ticket.objects.get(id=ticket_data)
+	inst_data = CommentsOps.objects.create(comment=comment_data, private=private_data, ticket_rel=inst_ticket )
 	inst_data.save()
 	return "Saved comment"
 
@@ -161,7 +165,7 @@ def add_comment_jx(request, ticket_id=None):
 		#data = {'message': "OK"}
 		if request.POST.get('message_text'):
 			message_data=request.POST.get('message_text')
-			status = save_comment_data(comment_data=message_data, private_data = False)
+			status = save_comment_data(comment_data=message_data, private_data = False, ticket_data=ticket_id)
 		data = {'message': "%s added" % status}
 		return HttpResponse(json.dumps(data), content_type='application/json')
 	else:
