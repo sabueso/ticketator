@@ -22,7 +22,7 @@ def manage_user(request, user_id=None):
 		actual_user = User()
 	#POST mode
 	if request.method == 'POST':
-		form = UserForm(request.POST, request.FILES, instance=actual_user)
+		form = UserForm(request.POST, request.FILES, request=request, instance=actual_user)
 		if form.is_valid():
 			temp_form = form.save(commit = False)
 			if not form.cleaned_data["password"] and not form.cleaned_data["password_check"] and form.instance.pk:
@@ -34,7 +34,7 @@ def manage_user(request, user_id=None):
 			return redirect("/settings/user")
 	else:
 	#Non-POST mode, show only
-		form = UserForm(instance=actual_user)
+		form = UserForm(instance=actual_user,request=request)
 	return render(request,'users/create_edit_user.html', locals())
 
 def delete_user(request):

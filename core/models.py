@@ -12,6 +12,8 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 #Colors for models
 from colorfield.fields import ColorField
+from django.http import HttpResponse
+
 
 #=> UserType (OP or simple user)
 class UserType(models.Model):
@@ -32,6 +34,10 @@ class UserForm(ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput, required=False)
 	password_check = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=False)
 	is_active = forms.BooleanField(required=False, initial=True)
+	#Pass request to query wich user is trying ot modify the object User
+	def __init__(self, *args, **kwargs):	
+		self.request = kwargs.pop("request")
+		super(UserForm, self).__init__(*args, **kwargs)
 
 	class Meta:
 		model = User
@@ -50,6 +56,36 @@ class UserForm(ModelForm):
 		if self.instance.pk and not password_chk and password_raw:
 			pass
 		return password_chk
+
+	#Only admin can set is_superuser to TRUE or change it to normal users
+	def clean_is_superuser(self):
+		cleaned_superuser = self.cleaned_data.get('is_superuser')
+		user_obj=self.request.user
+		#If user exists
+		if self.instance.pk:
+			#If modifier is not admin
+			if user_obj.username != 'admin':
+				#Do nothing, return original instance
+				return self.instance.is_superuser
+			else:
+				#If admin, get the submitted value in the form and clean_it
+				self.is_superuser = cleaned_superuser
+				return self.is_superuser
+		#if not exists
+		else:
+			#If creator is admin, and no value is submitted for is_superuser set it to false
+			if user_obj.username == 'admin':
+				if not cleaned_superuser:
+					self.is_superuser =  False
+					return self.is_superuser
+			#If is not admin, dont permit to change 
+			else:
+				self.is_superuser =  False
+				return self.is_superuser
+
+	def clean_last_login(self):
+		return self.instance.last_login
+
 
 class GroupForm(ModelForm):
 	class Meta:
