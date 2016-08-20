@@ -28,10 +28,8 @@
     //                         '<p>'+ item.fields.comment +'</p>'+
     //                         '</div>'+
     //                         '</div>'    
-
     //                         );
     //                     });
-                        
     //                 }
     //          });
     // });
@@ -349,7 +347,7 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <hr>
 
-                                            <label>Comments:</label>
+                                            <label>Add comment:</label>
                                     </div>
                                     <!--<div class"cold-md-12">
                                         <label> TEST </label>
@@ -358,22 +356,24 @@
 					</div>-->
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <label for="message">Message (20 chars min, 100 max) :</label>
-                                        <textarea data-parsley-validation-threshold="10" data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.." data-parsley-maxlength="100" data-parsley-minlength="20" data-parsley-trigger="keyup" name="message_data" class="form-control" required="required" id="message_data"></textarea>
+                                        <textarea  data-parsley-maxlength="100" data-parsley-trigger="keyup" name="message_data" class="form-control" id="message_data"></textarea>
                                         <br>
                                         <button class="btn btn-info btn-xs pull-right add-message" type="button">Add mesasge</button>
                                     </div>
                                     <div class="col-sm-12 ">
+				     <label>Comments:</label>
+				     <hr>
                                     <div class="comment_box">
                                     {% for comm in actual_comments %}
                                           <div class="mail_list">
                                             <div class="right">
-						                      <h3>user_pending <small>{{comm.date}}</small></h3>
+			                      <h3>user_pending <small>{{comm.date}}</small></h3>
                                               <p>{{comm.comment}}</p>
                                             </div>
                                           </div>
                                     {%endfor%}
                                     </div>
-                                   </dvi>  
+                                   </div>  
                                     {%endif%}
                                 </div>
                                

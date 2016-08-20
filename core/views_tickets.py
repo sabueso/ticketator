@@ -52,44 +52,44 @@ def list_tickets(request, state_id=None):
 	return render(request, 'tickets/list_tickets.html', locals())
 
 #Create/Edit tickets
-@login_required
-def manage_ticket(request, ticket_id=None):
-	#site_vars = utils.site_vars()
-	#Common data
-	common_data = common_ticket_data()
-	if ticket_id:
-		#Check if existis or raise 404	
-		ticket_rights = rights.get_rights_for_ticket(user=request.user, queue=None, ticket_id=ticket_id)
-		if ticket_rights.can_view == True :
-			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
-			actual_files=Attachment.objects.filter(ticket_rel=ticket_id)
-		else:
-			raise Http404("You dont have enough permissions to see this ticket")
-	else:
-		#If not, assign a new ticket instance to be use as instance of form
-		actual_ticket = Ticket()
-	#POST mode
-	if request.method == 'POST':
-		form_ticket = TicketForm(request.POST, instance = actual_ticket , request=request, prefix="ticket")
-		form_attach = AttachmentForm(request.POST, request.FILES, prefix="attach") 
-		if form_ticket.is_valid() and form_attach.is_valid():
-			#The ticket part
-			new_ticket_form = form_ticket.save(commit=False)
-		 	new_ticket_form.create_user = request.user
-		 	saved_ticket = new_ticket_form.save()
-		 	#Seconf, save the attach part
-			#instance = Attachment(ticket_rel=new_ticket_form,file_name=request.FILES['attach-file_name'])
-			#instance.save()
-			if form_attach.has_changed():
-				new_form_attach =  form_attach.save(commit=False)
-				new_form_attach.ticket_rel = new_ticket_form
-				new_form_attach.save()
-		 	return redirect("/tickets")
-	else:
-	#Non-POST mode, show only
-		form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
-		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
-	return render(request,'tickets/create_edit_ticket_newui.html', locals())
+# @login_required
+# def manage_ticket(request, ticket_id=None):
+# 	#site_vars = utils.site_vars()
+# 	#Common data
+# 	common_data = common_ticket_data()
+# 	if ticket_id:
+# 		#Check if existis or raise 404	
+# 		ticket_rights = rights.get_rights_for_ticket(user=request.user, queue=None, ticket_id=ticket_id)
+# 		if ticket_rights.can_view == True :
+# 			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
+# 			actual_files=Attachment.objects.filter(ticket_rel=ticket_id)
+# 		else:
+# 			raise Http404("You dont have enough permissions to see this ticket")
+# 	else:
+# 		#If not, assign a new ticket instance to be use as instance of form
+# 		actual_ticket = Ticket()
+# 	#POST mode
+# 	if request.method == 'POST':
+# 		form_ticket = TicketForm(request.POST, instance = actual_ticket , request=request, prefix="ticket")
+# 		form_attach = AttachmentForm(request.POST, request.FILES, prefix="attach") 
+# 		if form_ticket.is_valid() and form_attach.is_valid():
+# 			#The ticket part
+# 			new_ticket_form = form_ticket.save(commit=False)
+# 		 	new_ticket_form.create_user = request.user
+# 		 	saved_ticket = new_ticket_form.save()
+# 		 	#Seconf, save the attach part
+# 			#instance = Attachment(ticket_rel=new_ticket_form,file_name=request.FILES['attach-file_name'])
+# 			#instance.save()
+# 			if form_attach.has_changed():
+# 				new_form_attach =  form_attach.save(commit=False)
+# 				new_form_attach.ticket_rel = new_ticket_form
+# 				new_form_attach.save()
+# 		 	return redirect("/tickets")
+# 	else:
+# 	#Non-POST mode, show only
+# 		form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
+# 		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
+# 	return render(request,'tickets/create_edit_ticket_newui.html', locals())
 
 
 @login_required
@@ -105,8 +105,6 @@ def delete_ticket(request, ticket_id=None):
 	return redirect("/tickets")
 
 
-
-#Jquery test version
 @login_required
 def manage_ticket_dev(request, ticket_id=None):
 	#site_vars = utils.site_vars()
@@ -159,6 +157,7 @@ def save_comment_data(comment_data=None,private_data=None, ticket_data=None):
 	inst_data.save()
 	return "Saved comment"
 
+#AJAX comments
 @login_required
 def add_comment_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:

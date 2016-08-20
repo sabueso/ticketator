@@ -154,6 +154,25 @@
                                         <div class="form-group">
                                             <label>Checkboxes</label>
                                             <div class="checkbox pull-right">
+
+                                            {% if request.user.username == 'admin' %}
+                                                <label>
+                                                    {% if form.instance.is_superuser %}
+
+                                                        {% if form.instance.is_superuser = True %}
+                                                        <input id="is_superuser" name="is_superuser" type="checkbox" checked> Superuser
+                                                            {% else %}
+                                                        <input id="is_superuser" name="is_superuser" type="checkbox"> Superuser
+                                                        {% endif %}
+
+                                                    {% else %}
+                                                        <input id="is_superuser" name="is_superuser" type="checkbox"> Superuser
+                                                    {% endif %}        
+                                                </label>
+                                            {%endif%}
+
+
+
                                                 <label>
                                                     {% if form.instance.is_staff %}
                                                         {% if form.instance.is_staff = True %}

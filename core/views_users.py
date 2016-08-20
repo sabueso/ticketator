@@ -37,4 +37,5 @@ def manage_user(request, user_id=None):
 		form = UserForm(instance=actual_user)
 	return render(request,'users/create_edit_user.html', locals())
 
-
+def delete_user(request):
+	return 
