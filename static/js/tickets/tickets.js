@@ -1,70 +1,116 @@
-// $(document).ready(function() {
-
-//     // AJAX GET
-//     // $('.get-more').click(function(){
-
-//     //     $.ajax({
-//     //         type: "GET",
-//     //         url: "/ajax/more/",
-//     //         success: function(data) {
-//     //         for(i = 0; i < data.length; i++){
-//     //             $('ul').append('<li>'+data[i]+'</li>');
-//     //         }
-//     //     }
-//     //     });
-
-//     // });
-
-
-//     // AJAX POST
-//     $('.add-message').click(function(){
-//       console.log('am i called');
-
-//         $.ajax({
-//             type: "POST",
-//             url: "tickets/{{form_ticket.instance.id}}/add_comment/",
-//             dataType: "json",
-//             data: { "item": $(".todo-item").val() },
-//             success: function(data) {
-//                 alert(data.message);
-//             }
-//         });
-
-//     });
+    //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
+    $(document).ready(function() {
+    
+    //we catch the values rendered by Django template
+    var idTicket = document.getElementById("idTicket").value;
+    
+    // deprecated: Django test function
+    // $('.botonazo').click(function(){
+    //     $.ajax({
+    //         type: "GET",
+    //         dataType: "json",
+    //         url: "/tickets/get_comments/{{form_ticket.instance.id}}",
+    //         success: function(data) {
+    //                     var dataparsed = JSON.parse(data);
+    //                     //console.log(data);
+    //                     //alert(data.length);
+    //                     $( ".comment_box" ).empty();
+    //                     $.each(dataparsed, function(i, item){
+    //                         $(".comment_box").append(
+    //                         '<div class="mail_list">'+
+    //                         '<div class="right">'+
+    //                         '<h3>'+'user_pending'+'</h3>'+
+    //                         '<p>'+ item.fields.comment +'</p>'+
+    //                         '</div>'+
+    //                         '</div>'    
+    //                         );
+    //                     });
+    //                 }
+    //          });
+    // });
 
 
+    function update_comments_new()
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/tickets/get_comments/"+idTicket+"",
+            success: function(data) {
+                        var dataparsed = (data);
+                        //console.log(data);
+                        //alert(data.length);
+                        $( ".comment_box" ).empty();
+                        $.each(dataparsed, function(i, item){
+                            $(".comment_box").append(
+                            '<div id="comment">'+
+                            '<p class="date text-info pull-right">'+item.date_data+'</p>'+
+                            '<img alt="Avatar" class="avatar" src="/static/media/'+item.avatar_data+'">'+
+                            '<h2>'+item.human_name+'</h2>'+
+                            '<div class="well">'+
+                            '<p class="message">'+item.comment_data+'</p>'+
+                            '</div>'+
+                            '</div>'
+                            
 
-//     // CSRF code
-//     function getCookie(name) {
-//         var cookieValue = null;
-//         var i = 0;
-//         if (document.cookie && document.cookie !== '') {
-//             var cookies = document.cookie.split(';');
-//             for (i; i < cookies.length; i++) {
-//                 var cookie = jQuery.trim(cookies[i]);
-//                 // Does this cookie string begin with the name we want?
-//                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
-//                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//                     break;
-//                 }
-//             }
-//         }
-//         return cookieValue;
-//     }
-//     var csrftoken = getCookie('csrftoken');
-
-//     function csrfSafeMethod(method) {
-//         // these HTTP methods do not require CSRF protection
-//         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-//     }
-//     $.ajaxSetup({
-//         crossDomain: false, // obviates need for sameOrigin test
-//         beforeSend: function(xhr, settings) {
-//             if (!csrfSafeMethod(settings.type)) {
-//                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
-//             }
-//         }
-//     }); 
+                             );
+                        });
+                        
+                    }
+             });
+    }
 
 
-// });
+
+    // AJAX POST
+    $('.add-message').click(function(){
+      //console.log('am i called');
+        $.ajax({
+            type: "POST",
+            url: "/tickets/add_comment/"+idTicket+"",
+            dataType: "json",
+            data: { "message_text": $("#message_data").val() },
+            success: function(data) {
+		                  $("#message_data").val("");
+                          //location.reload();
+                          update_comments_new();
+                    }
+            });
+    });
+
+
+
+    // CSRF code
+    function getCookie(name) {
+        var cookieValue = null;
+        var i = 0;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (i; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    }); 
+
+
+});
