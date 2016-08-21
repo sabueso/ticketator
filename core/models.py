@@ -13,7 +13,7 @@ from django.contrib.auth.models import AbstractUser
 #Colors for models
 from colorfield.fields import ColorField
 from django.http import HttpResponse
-
+from time import strftime
 
 #=> UserType (OP or simple user)
 class UserType(models.Model):
@@ -27,6 +27,12 @@ class User(AbstractUser):
 	status_rel = models.ForeignKey(UserType, on_delete=models.CASCADE, null=True, blank=True)
 	avatar =  models.FileField(upload_to='avatar/', null=True, blank=True)
 
+	#If is_superuser comes with NULL value, set it to FALSE
+	#(we use a personalized form and if not checked, comes as NULL)
+	def save(self, *args, **kwargs):
+		if not self.is_superuser:
+			self.is_superuser = False
+		super( User, self ).save( *args, **kwargs )
 
 #=> Auth forms
 class UserForm(ModelForm):
@@ -34,6 +40,7 @@ class UserForm(ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput, required=False)
 	password_check = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, required=False)
 	is_active = forms.BooleanField(required=False, initial=True)
+	#is_superuser = forms.BooleanField(initial=False)
 	#Pass request to query wich user is trying ot modify the object User
 	def __init__(self, *args, **kwargs):	
 		self.request = kwargs.pop("request")
@@ -60,6 +67,9 @@ class UserForm(ModelForm):
 	#Only admin can set is_superuser to TRUE or change it to normal users
 	def clean_is_superuser(self):
 		cleaned_superuser = self.cleaned_data.get('is_superuser')
+		#If we return a simple "HttpResponse" and the cleaned data
+		#we can raise the error for debug purpouses
+		#return HttpResponse(cleaned_superuser)
 		user_obj=self.request.user
 		#If user exists
 		if self.instance.pk:
@@ -72,19 +82,22 @@ class UserForm(ModelForm):
 				self.is_superuser = cleaned_superuser
 				return self.is_superuser
 		#if not exists
-		else:
-			#If creator is admin, and no value is submitted for is_superuser set it to false
-			if user_obj.username == 'admin':
-				if not cleaned_superuser:
-					self.is_superuser =  False
-					return self.is_superuser
-			#If is not admin, dont permit to change 
-			else:
-				self.is_superuser =  False
-				return self.is_superuser
+		# else:
+		# 	#HttpResponse("no hay instancia")
+		# 	#If creator is admin, and no value is submitted for is_superuser set it to false
+		# 	if user_obj.username == "admin":
+		# 		if not cleaned_superuser:
+		# 			self.is_superuser =  False
+		# 			return self.is_superuser
+		# 	#If is not admin, dont permit to change 
+		# 	else:
+		# 		self.is_superuser =  False
+		# 		return self.is_superuser
 
 	def clean_last_login(self):
 		return self.instance.last_login
+
+
 
 
 class GroupForm(ModelForm):
@@ -285,15 +298,19 @@ class AttachmentForm(ModelForm):
 
 #=> Comments
 
-class CommentsOps(models.Model):
-	ticket_rel=models.ForeignKey(Ticket, related_name ='ticket_rel_comm_op')
+class Comments(models.Model):
+	ticket_rel=models.ForeignKey(Ticket, related_name ='ticket_rel_comm')
+	user_rel=models.ForeignKey(User,related_name='user_rel_comm')
 	date=models.DateTimeField(default=datetime.now)
 	comment=models.TextField(null=True,blank=True)
 	private=models.BooleanField(default=False)
 
-
-class CommentsUser(models.Model):
-	ticket_rel=models.ForeignKey(Ticket, related_name ='ticket_rel_comm_user')
-	date=models.DateTimeField(default=datetime.now)
-	comment=models.TextField(null=True,blank=True)
+	#Return this dict to avoid the NO-NESTED objects in serialize library
+	def as_json(self):
+		return dict(
+			human_name=""+self.user_rel.first_name+" "+self.user_rel.last_name+"",
+			avatar_data=str(self.user_rel.avatar),
+			comment_data=str(self.comment),
+			date_data=str(self.date.strftime('%d de %B de %Y a las %H:%M'))
+			)
 

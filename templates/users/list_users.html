@@ -16,7 +16,7 @@
     
 
     <div class="row" style="margin-top: 20px;">
-                <div class="col-lg-8 col-md-offset-2">
+                <div class="col-lg-12 col-md-offset-0">
                     <div class="panel panel-default">
                             <div class="panel-heading">
                                 Actual users
@@ -37,6 +37,8 @@
                                             <th class="text-center" >Email</th>
                                             <th class="text-center" >Added</th>
                                             <th class="text-center" >Staff</th>
+                                            <th class="text-center" >UserType</th>
+                                            <th class="text-center" >SuperUser</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -50,6 +52,8 @@
                                         <td class="text-center" >{{line.email}}</td>
                                         <td class="text-center" >{{line.date_joined|date:"d/m/y m:h:s"}}</td>
                                         <td class="text-center" >{{line.is_staff}}</td>
+                                        <td class="text-center" >{% if line.status_rel.status == "Operator" %}<i class="fa fa-shield"></i>{%else%}<i class="fa fa-user"></i>{%endif%}</td>
+                                        <td class="text-center" >{% if line.is_superuser == True %}<img src="/static/images/superman.png">{%else%} - {%endif%}</td>
                                     	{%endfor%}
                                     </tbody>
 

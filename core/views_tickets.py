@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 #from core import views_utils as utils
-from core.models import Ticket,TicketForm, Attachment, AttachmentForm, State, Queue, Priority, Company, Rights,CommentsOps
+from core.models import Ticket,TicketForm, Attachment, AttachmentForm, State, Queue, Priority, Company, Rights, Comments
 from django.contrib.auth.models import User, Group
 #Needed for forms
 from django.views.decorators.csrf import csrf_protect
@@ -15,7 +15,10 @@ from django.db.models import Q
 from django.contrib.auth import get_user_model
 #JSON for comments
 import json
+#serialize is really working?
 from django.core import serializers
+#
+from django.http import JsonResponse
 
 
 User = get_user_model()
@@ -116,7 +119,7 @@ def manage_ticket_dev(request, ticket_id=None):
 		if ticket_rights.can_view == True :
 			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
 			actual_files=Attachment.objects.filter(ticket_rel=ticket_id)
-			actual_comments=CommentsOps.objects.filter(ticket_rel=ticket_id).order_by('-id')
+			actual_comments=Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
 		else:
 			raise Http404("You dont have enough permissions to see this ticket")
 	else:
@@ -151,9 +154,9 @@ def manage_ticket_dev(request, ticket_id=None):
 		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
 	return render(request,'tickets/create_edit_ticket_dev.html', locals())
 
-def save_comment_data(comment_data=None,private_data=None, ticket_data=None):
+def save_comment_data(request, comment_data=None,private_data=None, ticket_data=None):
 	inst_ticket =  Ticket.objects.get(id=ticket_data)
-	inst_data = CommentsOps.objects.create(comment=comment_data, private=private_data, ticket_rel=inst_ticket )
+	inst_data = Comments.objects.create(comment=comment_data, private=private_data, ticket_rel=inst_ticket, user_rel=request.user)
 	inst_data.save()
 	return "Saved comment"
 
@@ -165,7 +168,7 @@ def add_comment_jx(request, ticket_id=None):
 		#data = {'message': "OK"}
 		if request.POST.get('message_text'):
 			message_data=request.POST.get('message_text')
-			status = save_comment_data(comment_data=message_data, private_data = False, ticket_data=ticket_id)
+			status = save_comment_data(request=request, comment_data=message_data, private_data = False, ticket_data=ticket_id)
 		data = {'message': "%s added" % status}
 		return HttpResponse(json.dumps(data), content_type='application/json')
 	else:
@@ -174,7 +177,10 @@ def add_comment_jx(request, ticket_id=None):
 @login_required
 
 def get_comments_jx(request, ticket_id=None):
-	data = {}
-	data = serializers.serialize("json", CommentsOps.objects.filter(ticket_rel=ticket_id).order_by('-id'))
-	return HttpResponse(json.dumps(data), content_type='application/json')
-	
+	#As we comment in modules.py, in as_json function, serialize do not work with nested object
+	#so we construct that function to make 
+	#As view here => http://stackoverflow.com/questions/13031058/how-to-serialize-to-json-a-list-of-model-objects-in-django-python
+	#we can return all the data directly as a JSON an treat it in the ajax side
+	qry =  Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
+	data = [ob.as_json() for ob in qry]
+	return JsonResponse(data, safe=False)

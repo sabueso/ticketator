@@ -35,32 +35,36 @@
     // });
 
 
-    function update_comments()
+    function update_comments_new()
     {
         $.ajax({
             type: "GET",
             dataType: "json",
             url: "/tickets/get_comments/{{form_ticket.instance.id}}",
             success: function(data) {
-                        var dataparsed = JSON.parse(data);
+                        var dataparsed = (data);
                         //console.log(data);
                         //alert(data.length);
                         $( ".comment_box" ).empty();
                         $.each(dataparsed, function(i, item){
                             $(".comment_box").append(
-                            '<div class="mail_list">'+
-                            '<div class="right">'+
-                            '<h3>'+'user_pending'+'</h3>'+
-                            '<p>'+ item.fields.comment +'</p>'+
+                            '<div id="comment">'+
+                            '<p class="date text-info pull-right">'+item.date_data+'</p>'+
+                            '<img alt="Avatar" class="avatar" src="/static/media/'+item.avatar_data+'">'+
+                            '<h2>'+item.human_name+'</h2>'+
+                            '<div class="well">'+
+                            '<p class="message">'+item.comment_data+'</p>'+
                             '</div>'+
-                            '</div>'    
+                            '</div>'
+                            
 
-                            );
+                             );
                         });
                         
                     }
              });
     }
+
 
 
     // AJAX POST
@@ -74,7 +78,7 @@
             success: function(data) {
 		                  $("#message_data").val("");
                           //location.reload();
-                          update_comments();
+                          update_comments_new();
                     }
             });
     });
@@ -353,28 +357,52 @@
                                         <label> TEST </label>
                                         <button class="btn btn-info botonazo" type="button">Info</button>
                                         <ul></ul>
-					</div>-->
+					               </div>-->
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <label for="message">Message (20 chars min, 100 max) :</label>
                                         <textarea  data-parsley-maxlength="100" data-parsley-trigger="keyup" name="message_data" class="form-control" id="message_data"></textarea>
                                         <br>
                                         <button class="btn btn-info btn-xs pull-right add-message" type="button">Add mesasge</button>
                                     </div>
-                                    <div class="col-sm-12 ">
-				     <label>Comments:</label>
-				     <hr>
+                                    <!--new messages-->
+
+                                    <div class="col-sm-12">
+                                    <div class="comment_box">
+                                    {% for comm in actual_comments %}
+                                        <div id="comment">
+                                            <p class="date text-info pull-right">{{comm.date}}</p>
+                                            <img alt="Avatar" class="avatar" src="/static/media/{{comm.user_rel.avatar}}">
+                                            <h2>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}} </h2>
+                                            <div class="well">
+                                                <p class="message">{{comm.comment}}</p>
+                                            </div>
+                                        </div>
+                                    {%endfor%}
+                                    </div>
+                                    </div>
+                                    <!--new messages-->
+
+
+
+                                    <!--end new messages-->
+                                    <!-- <div class="col-sm-12 ">
+				                    <label>Comments:</label>
+				                    <hr>
                                     <div class="comment_box">
                                     {% for comm in actual_comments %}
                                           <div class="mail_list">
                                             <div class="right">
-			                      <h3>user_pending <small>{{comm.date}}</small></h3>
+			                                 <h3>user_pending <small>{{comm.date}}</small></h3>
                                               <p>{{comm.comment}}</p>
                                             </div>
                                           </div>
                                     {%endfor%}
-                                    </div>
+                                    </div> -->
                                    </div>  
                                     {%endif%}
+
+
+
                                 </div>
                                
 
@@ -397,3 +425,4 @@
 
 
 {%endblock%}
+
