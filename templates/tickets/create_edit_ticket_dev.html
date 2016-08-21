@@ -128,37 +128,44 @@
     {% url_tickets as urlt %}
     <div class="x_panel">
                     <div class="x_title">
-                        <h2>New ticket</h2><span class="label">DEV</span>
-                        <ul class="nav navbar-right panel_toolbox">
+                        <h2 >New ticket</h2><span class="label">DEV</span>
+                                    
+                                    {% if form_ticket.instance.id %}
+                                        <button form="ticketform" class="btn btn-default  btn-sm pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Save</button>
+                                        <button form="ticketform" class="btn btn-default   btn-sm pull-right" style="margin-right: 5px" type="submit" name="update-signal" >Update</button>
+                                    {% else %}
+                                        <button form="ticketform" class="btn btn-default pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Save</button>
+                                        <button form="ticketform" class="btn btn-default pull-right" style="margin-left: 5px" type="reset">Clear form</button>
+                                    {%endif%}
+                                    
+                        <!--<ul class="nav navbar-right panel_toolbox">
+                        <li>
+                        </li>
                         
-                        <!--chevron-->
                         <li>
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
 
-                        
                         <li class="dropdown">
-                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-wrench"></i></a>
-                                {% if form_ticket.instance.id %}
-                                    <ul role="menu" class="dropdown-menu">
-                                        <li><a href="{{urlt.ticket_delete}}/{{form_ticket.instance.id}}">Delete</a>
-                                        </li>
-                                    <!--<li><a href="#">Settings 2</a>
-                                    </li>-->
-                                    </ul>
-                                {% endif %}        
-                        </li>
-                        
-                        <!--close-->    
+                       <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-wrench"></i></a>
+                              {% if form_ticket.instance.id %}
+                                   <ul role="menu" class="dropdown-menu">
+                                       <li><a href="{{urlt.ticket_delete}}/{{form_ticket.instance.id}}">Delete</a>
+                                       </li>
+                                   </ul>
+                               {% endif %}        
+                            </li>
                             <li>
                                 <a href="{{urlt.ticket_list}}"><i class="fa fa-close"></i></a>
                             </li>
-                        </ul>
+                        </ul>-->
+                        
                         <div class="clearfix"></div>
+
                     </div>
 
                     <div class="x_content">
-                        <form method='post' action="/tickets/{%if form_ticket.instance.id%}edit-dev/{{form_ticket.instance.id}}{%else%}create-new-devb{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
+                        <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit-dev/{{form_ticket.instance.id}}{%else%}create-new-devb{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
                             <div class="row">
                                 <!--Left side-->
                                 {% if vars.debug == True%}
@@ -382,22 +389,6 @@
                                     </div>
                                     <!--new messages-->
 
-
-
-                                    <!--end new messages-->
-                                    <!-- <div class="col-sm-12 ">
-				                    <label>Comments:</label>
-				                    <hr>
-                                    <div class="comment_box">
-                                    {% for comm in actual_comments %}
-                                          <div class="mail_list">
-                                            <div class="right">
-			                                 <h3>user_pending <small>{{comm.date}}</small></h3>
-                                              <p>{{comm.comment}}</p>
-                                            </div>
-                                          </div>
-                                    {%endfor%}
-                                    </div> -->
                                    </div>  
                                     {%endif%}
 
@@ -411,6 +402,7 @@
                                 </div>
                                 <!--End of the box-->   
                                     <!--If ticket doenst exist-->
+                                    <!--
                                     {% if form_ticket.instance.id %}
                                         <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="save-signal" >Save</button>
                                         <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="update-signal" >Update</button>
@@ -418,6 +410,7 @@
                                         <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="save-signal" >Save</button>
                                         <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
                                     {%endif%}
+                                    -->
                             </div>
                         </form>
                     </div>
