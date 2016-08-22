@@ -15,15 +15,21 @@
     <!--All the rest-->
     <div class="x_panel">
                     <div class="x_title">
-                        <h2 >New ticket</h2><span class="label">DEV</span>
+                        <h2 >New ticket</h2>
                                     
-                                    {% if form_ticket.instance.id %}
-                                        <button form="ticketform" class="btn btn-default  btn-sm pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Save</button>
-                                        <button form="ticketform" class="btn btn-default   btn-sm pull-right" style="margin-right: 5px" type="submit" name="update-signal" >Update</button>
-                                    {% else %}
-                                        <button form="ticketform" class="btn btn-default pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Save</button>
-                                        <button form="ticketform" class="btn btn-default pull-right" style="margin-left: 5px" type="reset">Clear form</button>
-                                    {%endif%}
+                            {% if form_ticket.instance.id %}
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 3px;" type="submit" name="save-signal">
+                                Save
+                                </button>
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right"  style="margin-right: 5px;"type="submit" name="update-signal"><i class="fa fa-pencil"></i> Update</button>
+
+                            {% else %}
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Save
+                                </button>
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="reset">
+                                Clear
+                                </button>
+                            {%endif%}
                                     
                         <!--<ul class="nav navbar-right panel_toolbox">
                         <li>
@@ -263,10 +269,10 @@
                                     <div class="col-sm-12">
                                     <div class="comment_box">
                                     {% for comm in actual_comments %}
-                                        <div id="comment">
-                                            <p class="date text-info pull-right">{{comm.date}}</p>
-                                            <img alt="Avatar" class="avatar" src="/static/media/{{comm.user_rel.avatar}}">
-                                            <h2>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}} </h2>
+                                        <div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <img alt="Avatar" class="avatar" src="/static/media/{{comm.user_rel.avatar}}">
+                                                <span class="pull-right" style="margin-top: 10px;">{{comm.date|date:'d-m-Y H:i'}}</span>
+                                                <h5>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}}</h5>
                                             <div class="well">
                                                 <p class="message">{{comm.comment}}</p>
                                             </div>

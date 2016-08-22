@@ -12,7 +12,9 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 #Colors for models
 from colorfield.fields import ColorField
+#Only for tests here
 from django.http import HttpResponse
+#TIme formatting for comments
 from time import strftime
 
 #=> UserType (OP or simple user)
@@ -310,7 +312,8 @@ class Comments(models.Model):
 		return dict(
 			human_name=""+self.user_rel.first_name+" "+self.user_rel.last_name+"",
 			avatar_data=str(self.user_rel.avatar),
-			comment_data=str(self.comment),
-			date_data=str(self.date.strftime('%d de %B de %Y a las %H:%M'))
+			#UTF8 in order to avoid encoding problems
+			comment_data=str(self.comment.encode('utf8')),
+			date_data=str(self.date.strftime('%d-%m-%Y %H:%m'))
 			)
 

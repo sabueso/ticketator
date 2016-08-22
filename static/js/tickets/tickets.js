@@ -43,10 +43,10 @@
                         $( ".comment_box" ).empty();
                         $.each(dataparsed, function(i, item){
                             $(".comment_box").append(
-                            '<div id="comment">'+
-                            '<p class="date text-info pull-right">'+item.date_data+'</p>'+
+                            '<div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">'+
                             '<img alt="Avatar" class="avatar" src="/static/media/'+item.avatar_data+'">'+
-                            '<h2>'+item.human_name+'</h2>'+
+                            '<span class="pull-right" style="margin-top: 10px;">'+item.date_data+'</span>'+
+                            '<h5>'+item.human_name+'</h5>'+
                             '<div class="well">'+
                             '<p class="message">'+item.comment_data+'</p>'+
                             '</div>'+
