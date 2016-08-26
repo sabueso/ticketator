@@ -67,11 +67,18 @@ urlpatterns = [
     #url(r'^tickets/edit/(?P<ticket_id>\d+)?$', vtickets.manage_ticket, name='tickets-edit'),
     #url(r'^tickets/view/(?P<ticket_id>\d+)?$', vtickets.view_ticket, name='tickets-view'),
     url(r'^tickets/delete/(?P<ticket_id>\d+)?$', vtickets.delete_ticket, name='tickets-delete'),
-    #Filtering view
+    #Listing tickets
+    url(r'^tickets/list/?/?$', vtickets.list_tickets, name='tickets-list-state'),
+    #Filtering states
     url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
+    #Filtering queues
+    url(r'^tickets/queue/(?P<queue_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
     #Comments post
     url(r'^tickets/add_comment/(?P<ticket_id>\d+)$', vtickets.add_comment_jx, name='tickets-add-comment'),
     url(r'^tickets/get_comments/(?P<ticket_id>\d+)$', vtickets.get_comments_jx, name='tickets-get-comments'),
+    #Post percentage
+    url(r'^tickets/set_percentage/(?P<ticket_id>\d+)/range/$', vtickets.set_percentage_jx, name='tickets-set-percentage'),
+    url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
 
 ]
 

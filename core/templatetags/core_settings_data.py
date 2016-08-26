@@ -1,9 +1,16 @@
 from django import template
 from django.conf import settings as settings_file
-from core.models import State
+from core.models import State, Queue
 import os
 
 register = template.Library()
+
+@register.filter
+def abssub(value, arg):
+    try:
+        return abs(value - arg)
+    except:
+        return 'error'
 
 @register.simple_tag
 def site_vars():
@@ -26,6 +33,11 @@ def all_states():
 	return state_objs
 
 @register.simple_tag
+def all_queues():
+	queue_objs = Queue.objects.all()
+	return queue_objs
+
+@register.simple_tag
 def status_name(status_id):
 	status_obj_name = State.objects.get(id=status_id)
 	return status_obj_name.name
@@ -38,3 +50,12 @@ def addcss(field, css):
 @register.filter(name='filename_text')
 def filename_text(value):
     return os.path.basename(value.file.name)
+
+
+@register.inclusion_tag('templatetags/pagination-menu.html', takes_context=True)
+def paginate_menu(context, pagination, query):
+    return {
+        'pagination': pagination,
+        'query': query,
+        'context': context,
+    }

@@ -135,6 +135,8 @@ SITE_VERSION = '0.1'
 DATE_INPUT_FORMATS = ['%d/%m/%y']
 DATE_FORMAT = ['%d/%m/%y']
 
+#Pagination seq
+PAGINATE_BY = 15
 
 #Auth settings
 LOGIN_REDIRECT_URL="/"

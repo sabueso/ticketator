@@ -46,15 +46,41 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                         <div class="form-group">
-                                                    <label>name</label>
+                                                    <label>Name</label>
                                                     {% if form.instance.name %}
                                                     <input id="name" name="name" value="{{form.instance.name}}" class="form-control">
                                                     {% else %}
                                                     <input id="name" name="name" class="form-control">
                                                     {%endif%}
+                                                    <p>Name for the queue</p>
                                                     <p class="help-block"></p>
                                                     {{form.name.errors}}
                                         </div>
+
+
+                                        <div class="form-group">
+                                                    <label>Short Code</label>
+                                                    {% if form.instance.shortcode %}
+                                                    <input id="shortcode" name="shortcode" value="{{form.instance.shortcode}}" class="form-control">
+                                                    {% else %}
+                                                    <input id="shortcode" name="shortcode" class="form-control">
+                                                    {%endif%}
+                                                    <p><b>Important:</b> use short code as distinctive short notation for this queue.</br>You can use something as [YourQuue]</p>
+                                                    <p class="help-block"></p>
+                                                    {{form.shortcode.errors}}
+                                        </div>
+
+                                        <div class="form-group">
+                                                    <label>Description</label>
+                                                    {% if form.instance.description %}
+                                                    <input id="description" description="description" value="{{form.instance.description}}" class="form-control">
+                                                    {% else %}
+                                                    <input id="description" description="description" class="form-control">
+                                                    {%endif%}
+                                                    <p class="help-block"></p>
+                                                    {{form.description.errors}}
+                                        </div>
+
 
                                         <div class="form-group">
                                                     <label>Company</label>

@@ -19,7 +19,8 @@ import json
 from django.core import serializers
 #
 from django.http import JsonResponse
-
+#Filtering data with multiple params
+from util import query_view
 
 User = get_user_model()
 
@@ -38,62 +39,19 @@ def common_ticket_data():
 
 @login_required
 #List tickets
-def list_tickets(request, state_id=None):
+#def list_tickets(request, state_id=None, queue_id=None):
+def list_tickets(request, **kwargs):
 	common_data = common_ticket_data()
 	if request.user.username == 'admin':
-		if state_id:
-			tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
-		else:
-			tickets_info = Ticket.objects.filter().order_by("-id")
+		tickets_info = query_view(Ticket, request.GET, **kwargs)
 	else:
 		#queue is used in template to debug profits
 		queues = rights.get_queues(request.user)
-		if state_id:	
-			tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
+		if state_id or queue_id:	
+			tickets_info = Ticket.objects.filter(assigned_state=state_id,assigned_queue=queue_id).order_by("-id")
 		else:
 			tickets_info = Ticket.objects.filter(queues).order_by("-id")
 	return render(request, 'tickets/list_tickets.html', locals())
-
-#Create/Edit tickets
-# @login_required
-# def manage_ticket(request, ticket_id=None):
-# 	#site_vars = utils.site_vars()
-# 	#Common data
-# 	common_data = common_ticket_data()
-# 	if ticket_id:
-# 		#Check if existis or raise 404	
-# 		ticket_rights = rights.get_rights_for_ticket(user=request.user, queue=None, ticket_id=ticket_id)
-# 		if ticket_rights.can_view == True :
-# 			actual_ticket=get_object_or_404(Ticket,pk=ticket_id)
-# 			actual_files=Attachment.objects.filter(ticket_rel=ticket_id)
-# 		else:
-# 			raise Http404("You dont have enough permissions to see this ticket")
-# 	else:
-# 		#If not, assign a new ticket instance to be use as instance of form
-# 		actual_ticket = Ticket()
-# 	#POST mode
-# 	if request.method == 'POST':
-# 		form_ticket = TicketForm(request.POST, instance = actual_ticket , request=request, prefix="ticket")
-# 		form_attach = AttachmentForm(request.POST, request.FILES, prefix="attach") 
-# 		if form_ticket.is_valid() and form_attach.is_valid():
-# 			#The ticket part
-# 			new_ticket_form = form_ticket.save(commit=False)
-# 		 	new_ticket_form.create_user = request.user
-# 		 	saved_ticket = new_ticket_form.save()
-# 		 	#Seconf, save the attach part
-# 			#instance = Attachment(ticket_rel=new_ticket_form,file_name=request.FILES['attach-file_name'])
-# 			#instance.save()
-# 			if form_attach.has_changed():
-# 				new_form_attach =  form_attach.save(commit=False)
-# 				new_form_attach.ticket_rel = new_ticket_form
-# 				new_form_attach.save()
-# 		 	return redirect("/tickets")
-# 	else:
-# 	#Non-POST mode, show only
-# 		form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
-# 		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
-# 	return render(request,'tickets/create_edit_ticket_newui.html', locals())
-
 
 @login_required
 def delete_ticket(request, ticket_id=None):
@@ -184,3 +142,30 @@ def get_comments_jx(request, ticket_id=None):
 	qry =  Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
 	data = [ob.as_json() for ob in qry]
 	return JsonResponse(data, safe=False)
+
+
+@login_required
+def add_comment_jx(request, ticket_id=None):
+	if request.is_ajax() and request.POST:
+		#Object creation
+		#data = {'message': "OK"}
+		if request.POST.get('message_text'):
+			message_data=request.POST.get('message_text')
+			status = save_comment_data(request=request, comment_data=message_data, private_data = False, ticket_data=ticket_id)
+		data = {'message': "%s added" % status}
+		return HttpResponse(json.dumps(data), content_type='application/json')
+	else:
+		raise Http404
+
+@login_required
+def set_percentage_jx(request, ticket_id=None):
+	if request.is_ajax() and request.POST:
+		percentage_val = request.POST.get('range_value')
+		if percentage_val:
+			percent_update=Ticket.objects.get(pk=ticket_id)
+			percent_update.percentage  = percentage_val
+			percent_update.save()
+			data = {'message': "%s added" % percent_update}
+			return HttpResponse(json.dumps(data), content_type='application/json')
+	else:
+		raise Http404

@@ -1,39 +1,19 @@
-
 {% extends "dashboard/index.html" %}
 
+{% block extend_css%}
+{% load staticfiles %}
+    <link href="{% static "css/tickets-list-custom.css" %}" rel="stylesheet">
+
+{%endblock%}
+
 {%block content %}
-    
-    <!--<div class="page-title">
-              <div class="title_left">
-                <h3>List tickets</h3>
-              </div>
-
-              <div class="title_right">
-
-              </div>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <div class="row">
-                <div class="col-lg-12">
-                    <a href="/tickets/create" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 10px;"></i>Add ticket</a>
-                </div>
-    </div>-->
-    
+   
 {% load core_settings_data %}
 
     <div class="row">
         
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
-
-                        <!--{% if state_id %}
-                            <div class="panel-heading">
-                            {% status_name state_id %} tickets
-                            </div>
-                        {% endif %}-->
-                    
                     
                     <div class="x_title">
                     <h2>List tickets</h2>
@@ -58,62 +38,77 @@
                         
                         <!-- /.panel-heading -->
                     <div class="x_content">
+                      {{tickets_info}}
                             <div class="table-responsive">
                                 <table class="table table-striped jambo_table">
                                     <thead>
                                         <tr class="headings">
-                                            <th class="text-center">ID</th>
-                                            <th class="text-center">Subject</th>
-                                            <th class="text-center">State</th>
-                                            <th class="text-center">Queue</th>
-                                            <th class="text-center">Owner</th>
-                                            <th class="text-center" width="180px">Date</th>
-                                            <th class="text-center">Responsible</th>
-                                            
-                                            <!--<th class="text-center">Company</th>-->
-                                            <th class="text-center">Priority</th>
+                                            <th class="text-center" style="vertical-align:middle">ID</th>
+                                            <th class="text-center" style="vertical-align:middle">Subject</th>
+                                            <th class="text-center" style="vertical-align:middle">State</th>
+                                            <th class="text-center" style="vertical-align:middle">Queue</th>
+                                            <th class="text-center" style="vertical-align:middle">Owner</th>
+                                            <th class="text-center" style="vertical-align:middle" width="150px">Date</th>
+                                            <th class="text-center" style="vertical-align:middle">Responsible</th>
+                                            <th class="text-center" style="vertical-align:middle" width="150px" >%</th>
+                                            <th class="text-center" style="vertical-align:middle">Priority</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	{%for line in tickets_info %}
+                                    	{%for line in tickets_info.data %}
                                     	   <tr class="odd gradeX">
-                                    	   <td class="text-center"><a href="/tickets/edit-dev/{{line.id}}">{{line.id}}</a></td>
-                                    	   <td class="text-center"><a href="/tickets/edit-dev/{{line.id}}">{{line.subject}}</a></td>
-                                           <td class="text-center"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
+                                    	   <td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/{{line.id}}">{{line.id}}</a></td>
+                                    	   <td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/{{line.id}}">{{line.subject}}</a></td>
+                                           <td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
+                                           <td class="text-center" style="vertical-align:middle">{% if line.assigned_queue %}{{line.assigned_queue}}{%else%}{%endif%}</td>
+                                    	   <td class="text-center" style="vertical-align:middle">{{line.create_user}}</td>
+                                           <td class="text-center" style="vertical-align:middle">{{line.date|date:"d/m/y m:h:s"}}</td>
+                                           <td class="text-center" style="vertical-align:middle">{% if line.assigned_user %}{{line.assigned_user.first_name}} {{line.assigned_user.last_name}}{%endif%}</td>
 
-                                           {% if line.assigned_queue %}
-                                            <td class="text-center">{{line.assigned_queue}}</td>
-                                        {%else%}
-                                            <td></td>
-                                        {%endif%}
-                                    	   <td class="text-center">{{line.create_user}}</td>
-                                           <td class="text-center">{{line.date|date:"d/m/y m:h:s"}}</td>
-                                    	{% if line.assigned_user %}
-                                            <td class="text-center">{{line.assigned_user.first_name}} {{line.assigned_user.last_name}}</td>
-                                        {%else%}
-                                            <td></td>
-                                        {%endif%}
-                                        <!--{% if line.assigned_company %}
-                                            <td class="text-center">{{line.assigned_company}}</td>
-                                        {%else%}
-                                            <td></td>
-                                        {%endif%}-->
-                                        <td class="text-center">{{line.assigned_prio}}</td>
+
+                                            <td class="project_progress">
+                                                  <div class="progress progress_sm" >
+                                                      <div aria-valuenow="{{line.percentage}}" style="width: {{line.percentage}}%" class="progress-bar 
+                                                                              {%if line.percentage <= 30 and line.percentage >= 0 %}  bg-red {%endif%}
+                                                                              {%if line.percentage <= 60 and line.percentage >= 40 %} bg-orange {%endif%}
+                                                                              {%if line.percentage <= 100 and line.percentage >= 70 %} bg-green {%endif%}" 
+                                                                              role="progressbar" data-transitiongoal="{{line.percentage}}">
+                                                      </div>
+                                                  </div>
+
+                                                  <div class="percentage_range" >
+                                                    <small>{{line.percentage}}%</small>
+                                                  </div>
+
+                                                
+                                                
+                                                
+                                            </td>
+
+                                                
+                                                
+                                            </td>
+                                            <td class="text-center" style="vertical-align:middle">{{line.assigned_prio}}</td>
                                     	{%endfor%}
                                         
                                     </tbody>
 
                                 </table>
+                          {% paginate_menu tickets_info.pagination tickest_info.query %}                              
                             </div>
-                          
+
                      </div>       
                         <!--</div>-->
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 <!--</div>-_>
-                <!-- /.col-lg-12 -->
+                <!-/.col-lg-12 -->
+
+
             </div>
         </div>
+
+
     </div>
 {%endblock%}

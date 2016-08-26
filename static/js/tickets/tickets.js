@@ -3,7 +3,8 @@
     
     //we catch the values rendered by Django template
     var idTicket = document.getElementById("idTicket").value;
-    
+    var idPercentage = document.getElementById("idPercentage").value;
+
     // deprecated: Django test function
     // $('.botonazo').click(function(){
     //     $.ajax({
@@ -28,6 +29,40 @@
     //                 }
     //          });
     // });
+
+    function update_percentage(final_value)
+    {
+     $.ajax({
+            type: "POST",
+            url: "/tickets/set_percentage/"+idTicket+"/range/",
+            dataType: "json",
+            data: { "range_value": final_value },
+            success: function(data) {
+                    console.log("Post update_percentage: " + final_value);
+                    }
+            });
+     }
+
+    var $range = $(".range_time24");
+
+    $(".range_time24").ionRangeSlider({
+          type: "single",
+          min: 0,
+          max: 100,
+          step: 10,
+          from: idPercentage,
+          max_interval: 0,
+          onFinish: function (data) {
+                    //Log final value for test purpouses
+                    var raw_value = data.from;
+                    console.log("Value: " + raw_value);
+                    update_percentage(raw_value);
+                }
+
+        });
+
+        
+    var slider = $(".range_time24").data("ionRangeSlider");
 
 
     function update_comments_new()
@@ -111,6 +146,9 @@
             }
         }
     }); 
+
+
+
 
 
 });

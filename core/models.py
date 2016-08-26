@@ -83,22 +83,9 @@ class UserForm(ModelForm):
 				#If admin, get the submitted value in the form and clean_it
 				self.is_superuser = cleaned_superuser
 				return self.is_superuser
-		#if not exists
-		# else:
-		# 	#HttpResponse("no hay instancia")
-		# 	#If creator is admin, and no value is submitted for is_superuser set it to false
-		# 	if user_obj.username == "admin":
-		# 		if not cleaned_superuser:
-		# 			self.is_superuser =  False
-		# 			return self.is_superuser
-		# 	#If is not admin, dont permit to change 
-		# 	else:
-		# 		self.is_superuser =  False
-		# 		return self.is_superuser
 
 	def clean_last_login(self):
 		return self.instance.last_login
-
 
 
 
@@ -125,6 +112,8 @@ class CompanyForm(ModelForm):
 #=> Queues (ex Departments)
 class Queue(models.Model):
 	name = models.CharField(max_length=100)
+	shortcode = models.CharField(max_length=10)
+	description = models.CharField(max_length=30,null=True,blank=True)
 	company_rel = models.ForeignKey(Company, on_delete=models.CASCADE )
 	#logo = pending....
 	#color  = if needed....
@@ -192,8 +181,8 @@ class RightForm(ModelForm):
 #=> States  
 class State(models.Model):
 	name = models.CharField(max_length=30)
-	description = models.CharField(max_length=130)
-	numvalue = models.IntegerField(null=True,blank=True,default=0)
+	description = models.CharField(max_length=150, null=True, blank=True)
+	#numvalue = models.IntegerField(null=True,blank=True,default=0)
 	active = models.BooleanField(default=True)
 	color = models.CharField(default='008ac6',max_length=10, null=True,blank=True)
 
@@ -209,10 +198,6 @@ class StateForm(ModelForm):
 	class Meta:
 		model =  State
 		fields = '__all__'		
-
-	# def clean_color(self):
-	# 	clean_color = self.cleaned_data.get('color').lstrip('#')
-	# 	return clean_color
 
 #=> Prioritys
 class Priority(models.Model):
@@ -245,6 +230,8 @@ class Ticket(models.Model):
 	assigned_state = models.ForeignKey(State)
 	assigned_prio = models.ForeignKey(Priority)
 	assigned_inventory = models.ForeignKey(Inventory, null=True,blank=True)
+	percentage=models.IntegerField(default=0,blank=True,null=True)
+
 
 	def __str__(self):
 		return '%s' % (self.id)
@@ -258,6 +245,7 @@ class TicketForm(ModelForm):
 	class Meta:
 		model =  Ticket
 		fields = '__all__'
+		exclude = ['percentage']
 
 	#Assign the company to the ticket instance
 	def clean_assigned_company(self):
@@ -265,6 +253,11 @@ class TicketForm(ModelForm):
 		queue_obj = Queue.objects.get(id=cleared_queue)
 		company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
 		return company_to_assign
+
+	# def clean_percentage(self):
+	# 	if not self.percentage:
+	# 		return self.instance.percentage
+
 	
 	def clean(self):
 		#Some messages
