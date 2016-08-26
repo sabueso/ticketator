@@ -83,11 +83,14 @@ def get_queues(user):
 	return granted_queues
 
 #Return the rights as Q objects
-def get_queues_as_q(user):
+def get_queues_as_q_for_tickets(user):
 	#Return a Q query with the "OR" operator, to be used as argument for filter in views_ticket
 	#Magic sponsored by stackoverflow => http://stackoverflow.com/questions/852414/how-to-dynamically-compose-an-or-query-filter-in-django
 	queries = [Q(assigned_queue_id=value) for value in get_queues(user)]
-	query = queries.pop()
+	if not queries:
+		query = {'assigned_queue_id': ''}
+	else:
+		query = queries.pop()
 	for item in queries:
 		query |= item
 	#End of magic
@@ -98,3 +101,17 @@ def get_queues_as_serial(user):
  	dict_pre = {'assigned_queue_id': ','.join(map(str, get_queues(user)))}
  	params = {key: value for key, value in dict_pre.iteritems() if value}
  	return params
+
+
+def get_queues_as_q_for_queues(user):
+	queries = [Q(id=value) for value in get_queues(user)]
+	if not queries:
+		query = {'id':''}
+	else:
+		query = queries.pop()
+	for item in queries:
+		query |= item
+	#End of magic
+	return query
+
+

@@ -42,7 +42,7 @@ def common_ticket_data():
 #def list_tickets(request, state_id=None, queue_id=None):
 def list_tickets(request, **kwargs):
 	common_data = common_ticket_data()
-	queues = rights.get_queues_as_q(request.user)
+	queues = rights.get_queues_as_q_for_tickets(request.user)
 	#We pass always granted_queues as a roundup to query_view requirements
 	tickets_info = query_view(Ticket, request.GET, granted_queues = queues, **kwargs)
 	return render(request, 'tickets/list_tickets.html', locals())

@@ -2,6 +2,7 @@ from django import template
 from django.conf import settings as settings_file
 from core.models import State, Queue
 import os
+from core.rights import get_queues, get_queues_as_q_for_queues
 
 register = template.Library()
 
@@ -32,9 +33,13 @@ def all_states():
 	state_objs = State.objects.all()
 	return state_objs
 
-@register.simple_tag
-def all_queues():
-	queue_objs = Queue.objects.all()
+@register.simple_tag(takes_context=True)
+def all_queues_for_user(context):
+	request = context['request']
+	try:
+		queue_objs = Queue.objects.filter(get_queues_as_q_for_queues(request.user))
+	except:
+		queue_objs = Queue.objects.none()
 	return queue_objs
 
 @register.simple_tag
@@ -46,11 +51,9 @@ def status_name(status_id):
 def addcss(field, css):
    return field.as_widget(attrs={"class":css})
 
-
 @register.filter(name='filename_text')
 def filename_text(value):
     return os.path.basename(value.file.name)
-
 
 @register.inclusion_tag('templatetags/pagination-menu.html', takes_context=True)
 def paginate_menu(context, pagination, query):
