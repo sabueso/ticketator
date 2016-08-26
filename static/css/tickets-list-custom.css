@@ -1,0 +1,22 @@
+
+/* http://jsbin.com/xayuy/1/edit?html,css,output */
+/*.progress {height: 10px; margin-bottom: 10px;}*/
+
+                                                 
+.progress {
+ 	position: relative;
+ 	width: 80%;
+ 	float: left;
+}
+
+.progress_sm {
+ 	position: relative;
+ 	width: 70%;
+ 	float: left;
+}
+
+.percentage_range {
+	position: relative;
+	float: right;
+	width: 20%;
+}

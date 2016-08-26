@@ -1,0 +1,29 @@
+{% load core_settings_data %}
+
+<table class="table table-striped table-bordered bootstrap-datatable paginator">
+<tr>
+{% for pg in pagination.pages %}
+
+		{% if forloop.last and pagination.page_count > 20 %}
+		<td class="page">...</td>
+		{% endif %}
+
+		{% if forloop.first or forloop.last or pg|abssub:tickets_info.pagination.page <= 10 %}
+
+		<td class="page {% if pg == tickest_info.pagination.page %}current-page{% endif %}">
+
+		    {% if pg == tcikets_info.pagination.page %}
+		        <a href="?page={{ pg }}">{{ pg }}</a>
+		    {% else %}
+		        <a href="?page={{ pg }}{% if context.query %}&amp;{{ context.query }}{% endif %}">{{ pg }}</a>
+		    {% endif %}
+
+			</td>
+			{% if forloop.first and tickets_info.pagination.page_count > 20 %}
+			<td class="page">...</td>
+			{% endif %}
+
+		{% endif %}
+{% endfor %}
+</tr>
+</table>
