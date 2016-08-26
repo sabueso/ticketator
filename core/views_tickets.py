@@ -42,15 +42,9 @@ def common_ticket_data():
 #def list_tickets(request, state_id=None, queue_id=None):
 def list_tickets(request, **kwargs):
 	common_data = common_ticket_data()
-	if request.user.username == 'admin':
-		tickets_info = query_view(Ticket, request.GET, **kwargs)
-	else:
-		#queue is used in template to debug profits
-		queues = rights.get_queues(request.user)
-		if state_id or queue_id:	
-			tickets_info = Ticket.objects.filter(assigned_state=state_id,assigned_queue=queue_id).order_by("-id")
-		else:
-			tickets_info = Ticket.objects.filter(queues).order_by("-id")
+	queues = rights.get_queues_as_q(request.user)
+	#We pass always granted_queues as a roundup to query_view requirements
+	tickets_info = query_view(Ticket, request.GET, granted_queues = queues, **kwargs)
 	return render(request, 'tickets/list_tickets.html', locals())
 
 @login_required

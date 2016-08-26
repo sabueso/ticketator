@@ -2,7 +2,8 @@ from django.contrib.auth.models import User, Group
 import models
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
-
+#Debug
+from django.http import HttpResponse, Http404
 
 #Check the rights for user =>  ticket or for user =>  queue to bind this in actions
 def get_rights_for_ticket(user, queue=None, ticket_id=None):
@@ -68,20 +69,32 @@ def get_rights_for_ticket(user, queue=None, ticket_id=None):
 	return u_rights_obj()
 
 #queues to be listed in the "/tickets" section
+#One action for admin, and another for the rest of the mortals
 def get_queues(user):
 	granted_queues=[]
-	#Obtain the user group
-	u_group=Group.objects.filter(user=user)
-	u_rights=models.Rights.objects.filter(grp_src=u_group)
-	#Now iterate over the groups, obtain the  "can_view" groups
-	for queue in u_rights:
-		if queue.can_view == True:
-			granted_queues.append(queue.queue_dst_id)
-	#And now, make a Q query with the "OR" operator, to be used as argument for filter in views_ticket
+	#If admin, we return all queues
+	if user.username == 'admin':
+		[granted_queues.append(queue.id) for queue in models.Queue.objects.all()]
+	else:
+		#Obtain the user group => #Obtain the rights for that group
+		u_rights=models.Rights.objects.filter(grp_src=Group.objects.filter(user=user))
+		#Now iterate over the groups, obtain the  "can_view" groups
+		[granted_queues.append(queue.queue_dst_id) for queue in u_rights if queue.can_view == True ]
+	return granted_queues
+
+#Return the rights as Q objects
+def get_queues_as_q(user):
+	#Return a Q query with the "OR" operator, to be used as argument for filter in views_ticket
 	#Magic sponsored by stackoverflow => http://stackoverflow.com/questions/852414/how-to-dynamically-compose-an-or-query-filter-in-django
-	queries = [Q(assigned_queue_id=value) for value in granted_queues]
+	queries = [Q(assigned_queue_id=value) for value in get_queues(user)]
 	query = queries.pop()
 	for item in queries:
 		query |= item
 	#End of magic
 	return query
+
+#Return the rights as serial (used?)
+def get_queues_as_serial(user):
+ 	dict_pre = {'assigned_queue_id': ','.join(map(str, get_queues(user)))}
+ 	params = {key: value for key, value in dict_pre.iteritems() if value}
+ 	return params
