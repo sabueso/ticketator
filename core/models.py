@@ -16,6 +16,8 @@ from colorfield.fields import ColorField
 from django.http import HttpResponse
 #TIme formatting for comments
 from time import strftime
+#Logger class
+from core.views_logs import logger
 
 #=> UserType (OP or simple user)
 class UserType(models.Model):
@@ -253,11 +255,6 @@ class TicketForm(ModelForm):
 		queue_obj = Queue.objects.get(id=cleared_queue)
 		company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
 		return company_to_assign
-
-	# def clean_percentage(self):
-	# 	if not self.percentage:
-	# 		return self.instance.percentage
-
 	
 	def clean(self):
 		#Some messages
@@ -278,6 +275,11 @@ class TicketForm(ModelForm):
 		else:
 			if user_object_rights.can_edit != True:
 				raise forms.ValidationError(cantsave)
+
+	def clean_assigned_state(self):
+		if self.instance.assigned_state != self.cleaned_data.get('assigned_state'):
+			logger(Ticket.objects.get(id=self.instance.id), self.request.user, "Changed", "State "+self.cleaned_data.get('assigned_state').name+"")
+			return self.cleaned_data.get('assigned_state')
 
 #=> Attachments
 
@@ -310,3 +312,8 @@ class Comments(models.Model):
 			date_data=str(self.date.strftime('%d-%m-%Y %H:%m'))
 			)
 
+class Logs(models.Model):
+	log_ticket=models.ForeignKey(Ticket, related_name = 'ticket_log')
+	log_user=models.ForeignKey(User, related_name = 'user_log')
+	log_action=models.CharField(max_length=200)
+	log_destiny=models.CharField(max_length=200)
