@@ -9,3 +9,4 @@ Some special features, are assign tickets to groups, comments, attach files and 
 
 -Django >= 1.9 
 -django-colorfield (avaliable trough pip)
+-django-extensions (pip install django-extensions)

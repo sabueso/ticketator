@@ -279,11 +279,16 @@
                                         <div class="comment_box">
                                         {% for comm in actual_comments %}
                                             <div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                               
                                                     <img alt="Avatar" class="avatar" src="/static/media/{{comm.user_rel.avatar}}">
                                                     <span class="pull-right" style="margin-top: 10px;">{{comm.date|date:'d-m-Y H:i'}}</span>
                                                     <h5>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}}</h5>
-                                                <div class="well">
+                                                    <div class="well">
                                                     <p class="message">{{comm.comment}}</p>
+                                                    <div class="comment-toolbar pull-right">
+                                                         <input type="hidden" id="idPMessage" name="idPMessage" value="{{comm.id}}">
+                                                          <a href="#" class="del-message" onClick="return false;">Delete comment</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         {%endfor%}

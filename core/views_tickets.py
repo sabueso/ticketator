@@ -114,8 +114,13 @@ def save_comment_data(request, comment_data=None, private_data=None, ticket_data
 	inst_data = Comments.objects.create(comment=comment_data, private=private_data, ticket_rel=inst_ticket, user_rel=request.user)
 	inst_data.save()
 ##Log action
-	logger(inst_ticket, request.user, "Add", "Comment")
+	##logger(inst_ticket, request.user, "Add", "Comment")
 	return "Saved comment"
+
+def del_comment(request, message_id=None):
+	msg_to_del=Comments.objects.get(id=message_id)
+	msg_to_del.delete()
+	return "Deleted comment"
 
 #AJAX comments
 @login_required
@@ -126,6 +131,20 @@ def add_comment_jx(request, ticket_id=None):
 		if request.POST.get('message_text'):
 			message_data=request.POST.get('message_text')
 			status = save_comment_data(request=request, comment_data=message_data, private_data = False, ticket_data=ticket_id)
+		data = {'message': "%s added" % status}
+		return HttpResponse(json.dumps(data), content_type='application/json')
+	else:
+		raise Http404
+
+@login_required
+def del_comment_jx(request, ticket_id=None):
+	if request.is_ajax() and request.POST:
+		#Object creation
+		#data = {'message': "OK"}
+		if request.POST.get('message_id'):
+			message_data=request.POST.get('message_id')
+			#ticket_rel_id=request.POST.get('ticket_id')
+			status = del_comment(request=request, message_id=message_data)
 		data = {'message': "%s added" % status}
 		return HttpResponse(json.dumps(data), content_type='application/json')
 	else:

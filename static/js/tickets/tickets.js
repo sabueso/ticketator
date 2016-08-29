@@ -4,7 +4,7 @@
     //we catch the values rendered by Django template
     var idTicket = document.getElementById("idTicket").value;
     var idPercentage = document.getElementById("idPercentage").value;
-
+    
     // deprecated: Django test function
     // $('.botonazo').click(function(){
     //     $.ajax({
@@ -61,7 +61,6 @@
 
         });
 
-        
     var slider = $(".range_time24").data("ionRangeSlider");
 
 
@@ -84,10 +83,12 @@
                             '<h5>'+item.human_name+'</h5>'+
                             '<div class="well">'+
                             '<p class="message">'+item.comment_data+'</p>'+
+                            '<div class="comment-toolbar pull-right">'+
+                            '<input type="hidden" id="idPMessage" name="idPMessage" value="'+item.id+'">'+
+                            '<a href="#" class="del-message" onClick="return false;">Delete comment</a>'+
+                            '</div>'+
                             '</div>'+
                             '</div>'
-                            
-
                              );
                         });
                         
@@ -113,7 +114,20 @@
             });
     });
 
-
+    //With ON class we can keep changes in new dinamically created objects!
+    $('.comment_box').on("click", ".del-message", function(){
+        //var idActualMessage = $(".del-message").closest("#idPMessage").attr("value");
+        var idActualMessage = $(this).closest("div#comment").find("input[name='idPMessage']").val();
+        $.ajax({
+            type: "POST",
+            url: "/tickets/del_comment/",
+            dataType: "json",
+            data: { "message_id": idActualMessage, "ticket_id": idTicket},
+            success: function(data) {
+                    update_comments_new();
+                    }
+            });
+    });
 
     // CSRF code
     function getCookie(name) {

@@ -309,6 +309,7 @@ class Comments(models.Model):
 			avatar_data=str(self.user_rel.avatar),
 			#UTF8 in order to avoid encoding problems
 			comment_data=str(self.comment.encode('utf8')),
+			id=str(self.id),
 			date_data=str(self.date.strftime('%d-%m-%Y %H:%m'))
 			)
 
