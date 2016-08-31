@@ -277,17 +277,31 @@ class TicketForm(ModelForm):
 				raise forms.ValidationError(cantsave)
 
 	def field_checker(self, source=None, destiny=None, destiny_name=None):
-		if self.instance.pk is not None:  # new instance only
-			if source != destiny:
-				logger(self.instance, self.request.user, "Changed", ""+str(destiny)+"")
+		if source != destiny:
+			logger(self.instance, self.request.user, "Changed", ""+str(destiny)+"")
+
+	'''
+	We log all changes in important field to be tracked	
+	The field_checker function test if both are the same and if it found changes, 
+	call "logger" function and pass data
+	TODO: Maybe, "if self.instance.pk is not None:" can be improved to not call if all 
+	times to make the check (and save N checks at save time)
+	'''
 
 	def clean_assigned_state(self):
-		self.field_checker(self.instance.assigned_state, self.cleaned_data.get('assigned_state') )
+		if self.instance.pk is not None:  # new instance only
+			self.field_checker(self.instance.assigned_state, self.cleaned_data.get('assigned_state') )
 		return self.cleaned_data.get('assigned_state')
 
 	def clean_assigned_queue(self):
-		self.field_checker(self.instance.assigned_queue, self.cleaned_data.get('assigned_queue') )
+		if self.instance.pk is not None:  # new instance only
+			self.field_checker(self.instance.assigned_queue, self.cleaned_data.get('assigned_queue') )
 		return self.cleaned_data.get('assigned_queue')
+
+	def clean_assigned_user(self):
+		if self.instance.pk is not None:  # new instance only
+			self.field_checker(self.instance.assigned_user, self.cleaned_data.get('assigned_user') )
+		return self.cleaned_data.get('assigned_user')
 
 	# def clean_assigned_state(self):
 	# 	self.field_checker(self.instance.assigned_state, self.cleaned_data.get('assigned_state') )
