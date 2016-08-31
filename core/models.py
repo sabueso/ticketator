@@ -276,10 +276,22 @@ class TicketForm(ModelForm):
 			if user_object_rights.can_edit != True:
 				raise forms.ValidationError(cantsave)
 
+	def field_checker(self, source=None, destiny=None, destiny_name=None):
+		if self.instance.pk is not None:  # new instance only
+			if source != destiny:
+				logger(self.instance, self.request.user, "Changed", ""+str(destiny)+"")
+
 	def clean_assigned_state(self):
-		if self.instance.assigned_state != self.cleaned_data.get('assigned_state'):
-			logger(Ticket.objects.get(id=self.instance.id), self.request.user, "Changed", "State "+self.cleaned_data.get('assigned_state').name+"")
-			return self.cleaned_data.get('assigned_state')
+		self.field_checker(self.instance.assigned_state, self.cleaned_data.get('assigned_state') )
+		return self.cleaned_data.get('assigned_state')
+
+	def clean_assigned_queue(self):
+		self.field_checker(self.instance.assigned_queue, self.cleaned_data.get('assigned_queue') )
+		return self.cleaned_data.get('assigned_queue')
+
+	# def clean_assigned_state(self):
+	# 	self.field_checker(self.instance.assigned_state, self.cleaned_data.get('assigned_state') )
+	# 	return self.cleaned_data.get('assigned_state')
 
 #=> Attachments
 
