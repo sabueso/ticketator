@@ -1,4 +1,6 @@
+# -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django.db import models
 from django import forms
 from django.forms import ModelForm
@@ -141,11 +143,13 @@ class Rights(models.Model):
 	can_edit=models.BooleanField(default=False)
 	can_comment=models.BooleanField(default=False)
 
-	#Check at database state if registry is created or we can create it:
-	#If you use the admin, to mantain the non-duplicity of the rules, we make a secondary 
-	#check at time to save the object to the DB.
-	#Yes, you have 2 querys but this is the unique way to avoid errors if you use the admin
-	#panel to insert some righths
+	''''
+	Check at database state if registry is created or we can create it:
+	If you use the admin, to mantain the non-duplicity of the rules, we make a secondary 
+	check at time to save the object to the DB.
+	Yes, you have 2 querys but this is the unique way to avoid errors if you use the admin
+	panel to insert some righths
+	'''
 
 	def detect_rights_exists(self, grp, queue):
 		return_query={}
@@ -183,8 +187,7 @@ class RightForm(ModelForm):
 #=> States  
 class State(models.Model):
 	name = models.CharField(max_length=30)
-	description = models.CharField(max_length=150, null=True, blank=True)
-	#numvalue = models.IntegerField(null=True,blank=True,default=0)
+	description = models.CharField(max_length=150, null=True, blank=True)	
 	active = models.BooleanField(default=True)
 	color = models.CharField(default='008ac6',max_length=10, null=True,blank=True)
 
@@ -224,16 +227,15 @@ class Inventory(models.Model):
 class Ticket(models.Model):
 	date = models.DateTimeField(default=datetime.now)
 	create_user = models.ForeignKey(User, related_name = "c_user", blank=True, null=True,)
+	subject =  models.CharField(max_length=40)
+	body = models.TextField(null=True,blank=True)
 	assigned_user = models.ForeignKey(User, blank=True, null=True, related_name = "a_user")
 	assigned_queue = models.ForeignKey(Queue, blank=True, null=True)
 	assigned_company = models.ForeignKey(Company, blank=True, null=True)
-	subject =  models.CharField(max_length=40)
-	body = models.TextField(null=True,blank=True)
 	assigned_state = models.ForeignKey(State)
 	assigned_prio = models.ForeignKey(Priority)
 	assigned_inventory = models.ForeignKey(Inventory, null=True,blank=True)
 	percentage=models.IntegerField(default=0,blank=True,null=True)
-
 
 	def __str__(self):
 		return '%s' % (self.id)
@@ -249,13 +251,7 @@ class TicketForm(ModelForm):
 		fields = '__all__'
 		exclude = ['percentage']
 
-	#Assign the company to the ticket instance
-	def clean_assigned_company(self):
-		cleared_queue = self.cleaned_data.get('assigned_queue').id
-		queue_obj = Queue.objects.get(id=cleared_queue)
-		company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
-		return company_to_assign
-	
+		
 	def clean(self):
 		#Some messages
 		ruledefined='Some rule defined'
@@ -276,16 +272,27 @@ class TicketForm(ModelForm):
 			if user_object_rights.can_edit != True:
 				raise forms.ValidationError(cantsave)
 
+	'''Assign company to ticket (needed? can we improve it?)'''
+
+	def clean_assigned_company(self):
+		cleared_queue = self.cleaned_data.get('assigned_queue').id
+		queue_obj = Queue.objects.get(id=cleared_queue)
+		company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
+		return company_to_assign
+
+	'''
+	Check source=>destiny object and if it's not the same, log it
+	'''
+
 	def field_checker(self, source=None, destiny=None, destiny_name=None):
 		if source != destiny:
 			logger(self.instance, self.request.user, "Changed", ""+str(destiny)+"")
 
 	'''
-	We log all changes in important field to be tracked	
-	The field_checker function test if both are the same and if it found changes, 
-	call "logger" function and pass data
-	TODO: Maybe, "if self.instance.pk is not None:" can be improved to not call if all 
-	times to make the check (and save N checks at save time)
+	We log all importante changes in fields to be tracked	
+	The field_checker test if both are the same and if it found changes, call "logger" passing data
+	TODO: Maybe, "if self.instance.pk is not None:" can be improved to not call 
+	all  times to make the check (and save N checks at save time)
 	'''
 
 	def clean_assigned_state(self):
@@ -303,9 +310,10 @@ class TicketForm(ModelForm):
 			self.field_checker(self.instance.assigned_user, self.cleaned_data.get('assigned_user') )
 		return self.cleaned_data.get('assigned_user')
 
-	# def clean_assigned_state(self):
-	# 	self.field_checker(self.instance.assigned_state, self.cleaned_data.get('assigned_state') )
-	# 	return self.cleaned_data.get('assigned_state')
+	def clean_body(self):
+		if self.instance.pk is not None:  # new instance only
+			self.field_checker(self.instance.body, self.cleaned_data.get('body') )
+		return self.cleaned_data.get('body')
 
 #=> Attachments
 
@@ -328,7 +336,8 @@ class Comments(models.Model):
 	comment=models.TextField(null=True,blank=True)
 	private=models.BooleanField(default=False)
 
-	#Return this dict to avoid the NO-NESTED objects in serialize library
+	'''Return this dict to avoid the NO-NESTED objects in serialize library'''
+
 	def as_json(self):
 		return dict(
 			human_name=""+self.user_rel.first_name+" "+self.user_rel.last_name+"",
