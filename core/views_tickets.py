@@ -108,7 +108,7 @@ def manage_ticket_dev(request, ticket_id=None):
 		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
 	return render(request,'tickets/create_edit_ticket_dev.html', locals())
 
-def save_comment_data(request, comment_data=None, private_data=None, ticket_data=None):
+def save_comment(request, comment_data=None, private_data=None, ticket_data=None):
 #Save data
 	inst_ticket =  Ticket.objects.get(id=ticket_data)
 	inst_data = Comments.objects.create(comment=comment_data, private=private_data, ticket_rel=inst_ticket, user_rel=request.user)
@@ -128,12 +128,11 @@ def add_comment_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:
 		if request.POST.get('message_text'):
 			user_obj = request.user
-			#queue_obj=  Ticket.objects.get(id=ticket_id)
 			'''Check if we can add comment trought get_rights_for_ticket'''
 			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
 			if user_object_rights.can_comment == True:
 				message_data=request.POST.get('message_text')
-				status = save_comment_data(request=request, comment_data=message_data, private_data = False, ticket_data=ticket_id)
+				status = save_comment(request=request, comment_data=message_data, private_data = False, ticket_data=ticket_id)
 				data = {'message': "%s added" % status}
 				return HttpResponse(json.dumps(data), content_type='application/json')
 			else:
@@ -148,9 +147,21 @@ def add_comment_jx(request, ticket_id=None):
 def del_comment_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:
 		if request.POST.get('message_id'):
-			message_data=request.POST.get('message_id')
-			#ticket_rel_id=request.POST.get('ticket_id')
-			status = del_comment(request=request, message_id=message_data)
+			user_obj = request.user
+			'''Check if we can add comment trought get_rights_for_ticket'''
+			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
+			if user_object_rights.can_comment == True:
+				message_data=request.POST.get('message_id')
+				status = del_comment(request=request, message_id=message_data)
+				data = {'message': "%s delete" % status}
+				return HttpResponse(json.dumps(data), content_type='application/json')
+			else:
+				data = {'message': 'You don\'t have rights to delete comment' }
+				response = HttpResponse(json.dumps(data), content_type='application/json')
+				response.status_code = 400
+				return response
+
+			
 		data = {'message': "%s added" % status}
 		return HttpResponse(json.dumps(data), content_type='application/json')
 	else:

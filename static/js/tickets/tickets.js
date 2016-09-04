@@ -1,10 +1,12 @@
-    //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
-    $(document).ready(function() {
+$(document).ready(function() {
 
+    //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     //we catch the values rendered by Django template
     var idTicket = document.getElementById("idTicket").value;
     var idPercentage = document.getElementById("idPercentage").value;
-    
+
+
+    //Update the percentage via ajax call
     function update_percentage(final_value)
     {
      $.ajax({
@@ -18,8 +20,8 @@
             });
      }
 
+     //Catch the value on the range slider
     var $range = $(".range_time24");+
-
     $(".range_time24").ionRangeSlider({
           type: "single",
           min: 0,
@@ -35,10 +37,10 @@
                 }
 
         });
-
     var slider = $(".range_time24").data("ionRangeSlider");
 
 
+    //Create all divs with updated data
     function update_comments_new()
     {
         $.ajax({
@@ -72,8 +74,21 @@
     }
 
 
+    function notif(type, title, text){
+    new PNotify({
+                    title: ''+title+'',
+                    text: ''+text+'',
+                    type: ''+type+'',
+                    styling: 'bootstrap3',
+                    nonblock: true,
+                    hide: true,
+                    delay: 2000,
+                });
+    }
 
-    // AJAX POST
+
+
+    //Post new message
     $('.add-message').click(function(){
       //console.log('am i called');
         $.ajax({
@@ -84,23 +99,20 @@
             success: function(data) {
 		                    $("#message_data").val("");
                             //console.log(data);
+                            notif('info','Success','Message addded');
                             update_comments_new();
+
                     },
             error: function(xhr, status, error) {
                             //$("#message_data").val("");
                             var json = JSON.parse(xhr.responseText);
                             var error_message = json.message;
-                            new PNotify({
-                                  title: 'Oops!',
-                                  text: ''+error_message+'',
-                                  type: 'error',
-                                  styling: 'bootstrap3'
-                              });
-                            //update_comments_new();
+                            notif('error','Oops!',error_message);
                     }
             });
     });
 
+    //Post delete meessage
     //With ON class we can keep changes in new dinamically created objects!
     $('.comment_box').on("click", ".del-message", function(){
         //var idActualMessage = $(".del-message").closest("#idPMessage").attr("value");
@@ -111,12 +123,18 @@
             dataType: "json",
             data: { "message_id": idActualMessage, "ticket_id": idTicket},
             success: function(data) {
-                    update_comments_new();
+                            update_comments_new();
+                    },
+            error: function(xhr, status, error) {
+                        //$("#message_data").val("");
+                            var json = JSON.parse(xhr.responseText);
+                            var error_message = json.message;
+                            notif('error','Oops!',error_message);
                     }
             });
     });
 
-    // CSRF code
+    // CSRF magic
     function getCookie(name) {
         var cookieValue = null;
         var i = 0;
@@ -147,9 +165,6 @@
             }
         }
     }); 
-
-
-
 
 
 });
