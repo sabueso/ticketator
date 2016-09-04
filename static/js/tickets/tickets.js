@@ -16,6 +16,7 @@ $(document).ready(function() {
             data: { "range_value": final_value },
             success: function(data) {
                     //console.log("Post update_percentage: " + final_value);
+                    notif('info','Success','Percentage updated');
                     }
             });
      }
@@ -99,7 +100,7 @@ $(document).ready(function() {
             success: function(data) {
 		                    $("#message_data").val("");
                             //console.log(data);
-                            notif('info','Success','Message addded');
+                            notif('info','Success','Message added');
                             update_comments_new();
 
                     },
