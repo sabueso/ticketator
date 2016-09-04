@@ -1,35 +1,10 @@
     //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     $(document).ready(function() {
-    
+
     //we catch the values rendered by Django template
     var idTicket = document.getElementById("idTicket").value;
     var idPercentage = document.getElementById("idPercentage").value;
     
-    // deprecated: Django test function
-    // $('.botonazo').click(function(){
-    //     $.ajax({
-    //         type: "GET",
-    //         dataType: "json",
-    //         url: "/tickets/get_comments/{{form_ticket.instance.id}}",
-    //         success: function(data) {
-    //                     var dataparsed = JSON.parse(data);
-    //                     //console.log(data);
-    //                     //alert(data.length);
-    //                     $( ".comment_box" ).empty();
-    //                     $.each(dataparsed, function(i, item){
-    //                         $(".comment_box").append(
-    //                         '<div class="mail_list">'+
-    //                         '<div class="right">'+
-    //                         '<h3>'+'user_pending'+'</h3>'+
-    //                         '<p>'+ item.fields.comment +'</p>'+
-    //                         '</div>'+
-    //                         '</div>'    
-    //                         );
-    //                     });
-    //                 }
-    //          });
-    // });
-
     function update_percentage(final_value)
     {
      $.ajax({
@@ -38,12 +13,12 @@
             dataType: "json",
             data: { "range_value": final_value },
             success: function(data) {
-                    console.log("Post update_percentage: " + final_value);
+                    //console.log("Post update_percentage: " + final_value);
                     }
             });
      }
 
-    var $range = $(".range_time24");
+    var $range = $(".range_time24");+
 
     $(".range_time24").ionRangeSlider({
           type: "single",
@@ -55,7 +30,7 @@
           onFinish: function (data) {
                     //Log final value for test purpouses
                     var raw_value = data.from;
-                    console.log("Value: " + raw_value);
+                    //console.log("Value: " + raw_value);
                     update_percentage(raw_value);
                 }
 
@@ -107,9 +82,21 @@
             dataType: "json",
             data: { "message_text": $("#message_data").val() },
             success: function(data) {
-		                  $("#message_data").val("");
-                          //location.reload();
-                          update_comments_new();
+		                    $("#message_data").val("");
+                            //console.log(data);
+                            update_comments_new();
+                    },
+            error: function(xhr, status, error) {
+                            //$("#message_data").val("");
+                            var json = JSON.parse(xhr.responseText);
+                            var error_message = json.message;
+                            new PNotify({
+                                  title: 'Oops!',
+                                  text: ''+error_message+'',
+                                  type: 'error',
+                                  styling: 'bootstrap3'
+                              });
+                            //update_comments_new();
                     }
             });
     });

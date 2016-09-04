@@ -5,7 +5,11 @@ from django.core.exceptions import ObjectDoesNotExist
 #Debug
 from django.http import HttpResponse, Http404
 
-#Check the rights for user =>  ticket or for user =>  queue to bind this in actions
+'''
+Check rights for user:
+You can pass a queue, or a ticket_id to retrieve all the rights 
+defined for the users group
+'''
 def get_rights_for_ticket(user, queue=None, ticket_id=None):
 	#If admin, we define can_edit, if not, we check it via query
 	class u_rights_obj(object):
@@ -28,7 +32,7 @@ def get_rights_for_ticket(user, queue=None, ticket_id=None):
 					self.can_view = r_obj.can_view
 					self.can_create = r_obj.can_create
 					self.can_delete = r_obj.can_delete
-					self.can_comment = r_obj.can_comment
+					self.can_comment = r_obj.can_comment	
 				return self
 			#Super-admin benefits :)
 			if user.username == 'admin':

@@ -126,21 +126,27 @@ def del_comment(request, message_id=None):
 @login_required
 def add_comment_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:
-		#Object creation
-		#data = {'message': "OK"}
 		if request.POST.get('message_text'):
-			message_data=request.POST.get('message_text')
-			status = save_comment_data(request=request, comment_data=message_data, private_data = False, ticket_data=ticket_id)
-		data = {'message': "%s added" % status}
-		return HttpResponse(json.dumps(data), content_type='application/json')
+			user_obj = request.user
+			#queue_obj=  Ticket.objects.get(id=ticket_id)
+			'''Check if we can add comment trought get_rights_for_ticket'''
+			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
+			if user_object_rights.can_comment == True:
+				message_data=request.POST.get('message_text')
+				status = save_comment_data(request=request, comment_data=message_data, private_data = False, ticket_data=ticket_id)
+				data = {'message': "%s added" % status}
+				return HttpResponse(json.dumps(data), content_type='application/json')
+			else:
+				data = {'message': 'You don\'t have rights to comment' }
+				response = HttpResponse(json.dumps(data), content_type='application/json')
+				response.status_code = 400
+				return response
 	else:
 		raise Http404
 
 @login_required
 def del_comment_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:
-		#Object creation
-		#data = {'message': "OK"}
 		if request.POST.get('message_id'):
 			message_data=request.POST.get('message_id')
 			#ticket_rel_id=request.POST.get('ticket_id')
@@ -152,10 +158,12 @@ def del_comment_jx(request, ticket_id=None):
 
 @login_required
 def get_comments_jx(request, ticket_id=None):
-	#As we comment in modules.py, in as_json function, serialize do not work with nested object
-	#so we construct that function to make 
-	#As view here => http://stackoverflow.com/questions/13031058/how-to-serialize-to-json-a-list-of-model-objects-in-django-python
-	#we can return all the data directly as a JSON an treat it in the ajax side
+	''''
+	As we comment in modules.py, in as_json function, serialize do not work with nested object
+	so we construct that function to make 
+	As view here => http://stackoverflow.com/questions/13031058/how-to-serialize-to-json-a-list-of-model-objects-in-django-python
+	we can return all the data directly as a JSON an treat it in the ajax side
+	'''
 	qry =  Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
 	data = [ob.as_json() for ob in qry]
 	return JsonResponse(data, safe=False)

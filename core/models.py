@@ -250,14 +250,45 @@ class TicketForm(ModelForm):
 		model =  Ticket
 		fields = '__all__'
 		exclude = ['percentage']
-
 		
+
+	'''
+	Error codes:
+	'''
+
+	def clean_error_cantedit(self):
+		cantedit='You don\'t have permissions to edit this ticket'
+		return cantedit
+
+	def clean_error_cantview(self):
+		cantview='You don\'t have permissions to view this ticket'
+		return cantview
+
+	def clean_error_cantcreate(self):
+		cantcreate='You don\'t have permissions to create this ticket'
+		return cantcreate
+
+	def clean_error_cantsave(self):
+		cantsave='You don\'t have permissions to save this ticket'
+		return cantsave
+
+	'''
+	Functions:
+	Check source=>destiny object and if it's not the same, log it
+	'''
+
+	def field_checker(self, source=None, destiny=None, destiny_name=None):
+		if source != destiny:
+			logger(self.instance, self.request.user, "Changed", ""+str(destiny)+"")
+
+
+	'''Clean methods:
+	'''
+	'''Assign company to ticket (needed? can we improve it?)'''
+
 	def clean(self):
 		#Some messages
 		ruledefined='Some rule defined'
-		cantsave='You don\'t have permissions to edit this ticket' 
-		cantview='You don\'t have permissions to view this ticket'
-		cantcreate='You don\'t have permissions to create this ticket'
 		#Some essential vars
 		user_obj=self.request.user
 		queue_obj=self.cleaned_data.get('assigned_queue')
@@ -266,27 +297,11 @@ class TicketForm(ModelForm):
 		#New ticket
 		if not self.instance.id:
 			if user_object_rights.can_create != True:
-				raise forms.ValidationError(cantcreate)
+				raise forms.ValidationError(self.clean_error_cantcreate())
 		#Existing ticket
 		else:
 			if user_object_rights.can_edit != True:
-				raise forms.ValidationError(cantsave)
-
-	'''Assign company to ticket (needed? can we improve it?)'''
-
-	def clean_assigned_company(self):
-		cleared_queue = self.cleaned_data.get('assigned_queue').id
-		queue_obj = Queue.objects.get(id=cleared_queue)
-		company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
-		return company_to_assign
-
-	'''
-	Check source=>destiny object and if it's not the same, log it
-	'''
-
-	def field_checker(self, source=None, destiny=None, destiny_name=None):
-		if source != destiny:
-			logger(self.instance, self.request.user, "Changed", ""+str(destiny)+"")
+				raise forms.ValidationError(self.clean_error_cantedit())
 
 	'''
 	We log all importante changes in fields to be tracked	
@@ -314,6 +329,15 @@ class TicketForm(ModelForm):
 		if self.instance.pk is not None:  # new instance only
 			self.field_checker(self.instance.body, self.cleaned_data.get('body') )
 		return self.cleaned_data.get('body')
+
+	'''Another simple clean checks'''
+
+	def clean_assigned_company(self):
+		cleared_queue = self.cleaned_data.get('assigned_queue').id
+		queue_obj = Queue.objects.get(id=cleared_queue)
+		company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
+		return company_to_assign
+
 
 #=> Attachments
 
