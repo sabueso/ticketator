@@ -18,7 +18,7 @@ Ticketator is about tickets, queues, users and groups.
 * HTML responsible design
 * Only a few AJAX calls, not a Javascript/Jquery monster
 
-Start to use Ticketator is as simple as installit, load initial data, create a superuser, a queue, and you're ready to create tickets.
+Start to use Ticketator is as simple as install it, load initial data, create a superuser, a queue, and you're ready to create tickets!
 
 Give a try to Ticketator, and give us your feedback!
 
@@ -39,7 +39,7 @@ Once installed, satisfy some dependencies manually
 pip install django-colorfield
 pip install django-extensions
 ```
-
+TODO: first steps to put Ticketator on road.
 
 ### Docker demo
 Docker image to test Ticketator without effort
