@@ -30,7 +30,21 @@
                                     
                             {% if form_ticket.instance.id %}
                                 <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 3px;" type="submit" name="save-signal">Save</button>
-                                <button form="ticketform" class="btn btn-default btn-sm pull-right"  style="margin-right: 5px;"type="submit" name="update-signal">Update</button>
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right"  style="margin-right: 5px;" type="submit" name="update-signal">Update</button>
+                                    <div class="btn-group pull-right" style="margin-right: 5px;">
+                                          <button class="btn btn-default btn-sm" type="button">More</button>
+                                          <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                          </button>
+                                          <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#" data-target=".bs-example-modal-lg" data-toggle="modal">Delete</a>
+                                            </li>
+                                            </li>
+                                          </ul>
+                                    </div>
+                                    {% include "tickets/delete_modal.html" %}
+
                             {% else %}
                                 <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Save</button>
                                 <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="reset" name="save-signal">Clear</button>
