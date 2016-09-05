@@ -50,14 +50,20 @@ def list_tickets(request, **kwargs):
 
 @login_required
 def delete_ticket(request, ticket_id=None):
-	obj_to_delete = get_object_or_404(Ticket,pk=ticket_id)
-	try:
-		attach_to_delete = Attachment.objects.filter(ticket_rel=ticket_id)
-	except DoesNotExist:
-		pass
+	user_obj = request.user
+	'''Check if we can add comment trought get_rights_for_ticket'''
+	user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
+	if user_object_rights.can_delete == True:
+		obj_to_delete = get_object_or_404(Ticket,pk=ticket_id)
+		try:
+			attach_to_delete = Attachment.objects.filter(ticket_rel=ticket_id)
+		except DoesNotExist:
+			pass
+		else:
+			attach_to_delete.delete()		
+		obj_to_delete.delete()
 	else:
-		attach_to_delete.delete()
-	obj_to_delete.delete()
+		pass
 	return redirect("/tickets")
 
 
