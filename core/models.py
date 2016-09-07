@@ -293,7 +293,10 @@ class TicketForm(ModelForm):
 		user_obj=self.request.user
 		queue_obj=self.cleaned_data.get('assigned_queue')
 		#Check if some right is defined for this action
-		user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=queue_obj, ticket_id=None)
+		if not self.instance.id:
+			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=queue_obj, ticket_id=None)
+		else:
+			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=queue_obj, ticket_id=self.instance.id)
 		#New ticket
 		if not self.instance.id:
 			if user_object_rights.can_create != True:

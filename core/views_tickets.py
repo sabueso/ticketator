@@ -38,12 +38,14 @@ def common_ticket_data():
 	return {'status_info':status_info, 'prio_info':prio_info, \
 	'queue_info':queue_info, 'users_info':users_info, 'now_str':now_str, 'comp_info':comp_info}
 
+'''
+list_tickets: list functions called in urls.py used to list tickets under /tickets url
+
+'''
 @login_required
-#List tickets
-#def list_tickets(request, state_id=None, queue_id=None):
 def list_tickets(request, **kwargs):
 	common_data = common_ticket_data()
-	queues = rights.get_queues_as_q_for_tickets(request.user)
+	queues = rights.get_queues_as_q_for_ticket_model(request.user)
 	#We pass always granted_queues as a roundup to query_view requirements
 	tickets_info = query_view(Ticket, request.GET, granted_queues = queues, **kwargs)
 	return render(request, 'tickets/list_tickets.html', locals())
@@ -62,10 +64,9 @@ def delete_ticket(request, ticket_id=None):
 		else:
 			attach_to_delete.delete()		
 		obj_to_delete.delete()
+		return redirect("/tickets")
 	else:
-		pass
-	return redirect("/tickets")
-
+		raise Http404("You dont have enough permissions to delete this ticket")
 
 @login_required
 def manage_ticket_dev(request, ticket_id=None):

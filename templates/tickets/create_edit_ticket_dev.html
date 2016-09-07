@@ -118,13 +118,29 @@
 
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <select class="form-control pointer" id="id_ticket-assigned_queue" name="ticket-assigned_queue">
-                                                    {% for queue in common_data.queue_info %}
-                                                    {% if queue.id == form_ticket.instance.assigned_queue.id %}
-                                                    <option value="{{queue.id}}" selected >{{queue}}</option>
-                                                    {% else %}
-                                                    <option value="{{queue.id}}" >{{queue}}</option>    
-                                                    {% endif %}
-                                                {%endfor%}
+                                                {% if form_ticket.instance.id %}
+
+                                                {% all_queues_for_user "cv_cc" as queues %}
+                                                    {% for queue in queues %}
+                                                        {% if queue.id == form_ticket.instance.assigned_queue.id %}
+                                                            <option value="{{queue.id}}" selected >{{queue}}</option>
+                                                        {% else %}
+                                                            <option value="{{queue.id}}" >{{queue}}</option>    
+                                                        {% endif %}
+                                                    {%endfor%}
+
+
+                                                {%else%}
+
+                                                {% all_queues_for_user "can_create" as queues %}
+                                                    {% for queue in queues %}
+                                                        {% if queue.id == form_ticket.instance.assigned_queue.id %}
+                                                            <option value="{{queue.id}}" selected >{{queue}}</option>
+                                                        {% else %}
+                                                            <option value="{{queue.id}}" >{{queue}}</option>    
+                                                        {% endif %}
+                                                    {%endfor%}
+                                                {%endif%}
                                             </select>   
                                                     {{form_ticket.assigned_queue.errors}}
                                         </div>
@@ -134,12 +150,12 @@
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 ">
                                             <select class="form-control pointer" id="id_tciket-assigned_state" name="ticket-assigned_state">
-                                                {% for status in common_data.status_info %}
-                                                    {%if status.id  == form_ticket.instance.assigned_state.id %}
-                                                        <option value="{{status.id}}" selected >{{status}}</option>
-                                                    {%else%}
-                                                        <option value="{{status.id}}">{{status}}</option>
-                                                    {%endif%}
+                                                    {% for status in common_data.status_info %}
+                                                        {%if status.id  == form_ticket.instance.assigned_state.id %}
+                                                            <option value="{{status.id}}" selected >{{status}}</option>
+                                                        {%else%}
+                                                            <option value="{{status.id}}">{{status}}</option>
+                                                        {%endif%}
                                                 {%endfor%}
                                             </select>
                                             {{form_ticket.assigned_state.errors}}

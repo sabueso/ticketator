@@ -2,7 +2,7 @@ from django import template
 from django.conf import settings as settings_file
 from core.models import State, Queue
 import os
-from core.rights import get_queues, get_queues_as_q_for_queues
+from core.rights import get_queues, get_queues_as_q_for_queue_model
 
 register = template.Library()
 
@@ -33,11 +33,11 @@ def all_states():
 	state_objs = State.objects.all()
 	return state_objs
 
-@register.simple_tag(takes_context=True)
-def all_queues_for_user(context):
+@register.simple_tag(takes_context=True, name='all_queues_for_user')
+def all_queues_for_user(context, perm_level):
 	request = context['request']
 	try:
-		queue_objs = Queue.objects.filter(get_queues_as_q_for_queues(request.user))
+		queue_objs = Queue.objects.filter(get_queues_as_q_for_queue_model(request.user, perm_level))
 	except:
 		queue_objs = Queue.objects.none()
 	return queue_objs
