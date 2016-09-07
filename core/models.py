@@ -293,19 +293,16 @@ class TicketForm(ModelForm):
 		user_obj=self.request.user
 		queue_obj=self.cleaned_data.get('assigned_queue')
 		#Check if some right is defined for this action
-		if not self.instance.id:
+		if not self.instance.pk:
 			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=queue_obj, ticket_id=None)
-		else:
-			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=queue_obj, ticket_id=self.instance.id)
-		#New ticket
-		if not self.instance.id:
 			if user_object_rights.can_create != True:
 				raise forms.ValidationError(self.clean_error_cantcreate())
-		#Existing ticket
 		else:
+			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=queue_obj, ticket_id=self.instance.id)
 			if user_object_rights.can_edit != True:
 				raise forms.ValidationError(self.clean_error_cantedit())
 
+			
 	'''
 	We log all importante changes in fields to be tracked	
 	The field_checker test if both are the same and if it found changes, call "logger" passing data
@@ -318,9 +315,17 @@ class TicketForm(ModelForm):
 			self.field_checker(self.instance.assigned_state, self.cleaned_data.get('assigned_state') )
 		return self.cleaned_data.get('assigned_state')
 
+		
+	'''
+	Check if the new queue assigned is permited...
+	'''
 	def clean_assigned_queue(self):
 		if self.instance.pk is not None:  # new instance only
-			self.field_checker(self.instance.assigned_queue, self.cleaned_data.get('assigned_queue') )
+			user_object_rights=rights.get_rights_for_ticket(user=self.request.user, queue=self.cleaned_data.get('assigned_queue'), ticket_id=None)
+			if user_object_rights.can_create != True:
+				raise forms.ValidationError(self.clean_error_cantcreate())
+			else:
+				self.field_checker(self.instance.assigned_queue, self.cleaned_data.get('assigned_queue'))
 		return self.cleaned_data.get('assigned_queue')
 
 	def clean_assigned_user(self):
@@ -333,13 +338,13 @@ class TicketForm(ModelForm):
 			self.field_checker(self.instance.body, self.cleaned_data.get('body') )
 		return self.cleaned_data.get('body')
 
-	'''Another simple clean checks'''
+	# '''Another simple clean checks'''
 
-	def clean_assigned_company(self):
-		cleared_queue = self.cleaned_data.get('assigned_queue').id
-		queue_obj = Queue.objects.get(id=cleared_queue)
-		company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
-		return company_to_assign
+	# def clean_assigned_company(self):
+	# 	cleared_queue = self.cleaned_data.get('assigned_queue').id
+	# 	queue_obj = Queue.objects.get(id=cleared_queue)
+	# 	company_to_assign = Company.objects.get(id=queue_obj.company_rel_id)
+	# 	return company_to_assign
 
 
 #=> Attachments
