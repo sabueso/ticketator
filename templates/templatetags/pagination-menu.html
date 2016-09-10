@@ -5,32 +5,29 @@
 		<div class="dataTables_paginate paging_simple_numbers" id="datatable-responsive_paginate">
 			<ul class="pagination">
 			{% for pg in pagination.pages %}
-			{% if forloop.last and pagination.page_count > 20 %}
-				<li class="paginate_button "><a href="#" aria-controls="datatable-responsive">...</a></li>
-			{% endif %}
+				{% if forloop.last and pagination.page_count > 20 %}
+					<li class="paginate_button "><a href="#" aria-controls="datatable-responsive">...</a></li>
+				{% endif %}
 
-			{% if forloop.first or forloop.last or pg|abssub:pagination.page <= 10 %}
+					{% if forloop.first or forloop.last or pg|abssub:pagination.page <= 10 %}
+						<li class="paginate_button {% if pg == pagination.page %}active {% endif %}"">
+						    {% if pg == tcikets_info.pagination.page %}
+						        <a href="?page={{ pg }}" aria-controls="datatable-responsive" data-dt-idx="1" tabindex="0">{{ pg }}</a>
+						    {% else %}
+						        <a href="?page={{ pg }} {% if context.tickets_info.query %}&amp;{{ context.tickets_info.query }}{% endif %}" aria-controls="datatable-responsive" data-dt-idx="1" tabindex="0">{{ pg }}</a>
+						    {% endif %}
+						</li>
+					
+							{% if forloop.first and pagination.page_count > 20 %}
+								<li class="paginate_button "><a href="#" aria-controls="datatable-responsive" data-dt-idx="6" tabindex="0">...</a></li>
+							{% endif %}
 
-			<li class="paginate_button {% if pg == tickest_info.pagination.page %}active {% endif %}"">
-
-		    {% if pg == tcikets_info.pagination.page %}
-		        <a href="?page={{ pg }}" aria-controls="datatable-responsive" data-dt-idx="1" tabindex="0">{{ pg }}</a>
-		    {% else %}
-		        <a href="?page={{ pg }} {% if context.query %}&amp;{{ context.query }}{% endif %}" aria-controls="datatable-responsive" data-dt-idx="1" tabindex="0">{{ pg }}</a>
-		    {% endif %}
-			</li>
-			
-			{% if forloop.first and tickets_info.pagination.page_count > 20 %}
-			<li class="paginate_button "><a href="#" aria-controls="datatable-responsive" data-dt-idx="6" tabindex="0">...</a></li>
-			{% endif %}
-			{%else%}
+					{%else%}
 
 
-		{% endif %}
-
+				{% endif %}
 
 			{% endfor %}
 			</ul>
-
 		</div>		
 	
