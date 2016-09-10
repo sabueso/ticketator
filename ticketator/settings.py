@@ -137,7 +137,7 @@ DATE_INPUT_FORMATS = ['%d/%m/%y']
 DATE_FORMAT = ['%d/%m/%y']
 
 #Pagination seq
-PAGINATE_BY = 15
+PAGINATE_BY = 20
 
 #Auth settings
 LOGIN_REDIRECT_URL="/"

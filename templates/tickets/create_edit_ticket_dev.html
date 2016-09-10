@@ -226,7 +226,8 @@
                                                 <label>Subject:</label>
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                            <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %}>
+                                            <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" autofocus="autofocus" 
+                                            {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %} >
                                                     {{form_ticket.subject.errors}}                                
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">

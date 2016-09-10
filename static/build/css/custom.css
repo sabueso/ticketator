@@ -4186,3 +4186,21 @@ ul.notifications {
 .pointer {
   cursor: pointer !important; 
 }
+
+.feature-box {
+    background-color: #fff;
+    border: 1px solid #e3e3e3;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    min-height: 20px;
+    padding: 19px;
+    text-align: center;
+}
+
+#hoeapp-wrapper {
+    color: #7e7e7e;
+    direction: ltr;
+    font-family: "lato",sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+}

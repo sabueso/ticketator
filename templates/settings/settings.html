@@ -6,12 +6,104 @@
                     <h1 class="page-header">Settings</h1>
                 </div>
                 <!-- /.col-lg-22 -->                
-    </div>
-    
-    <div class="row">
+        </div>
+
+<div class="panel-body">
+                            <div class="row clearfix">
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-code"></i></span>
+                                        <h4>One Code for All Device </h4>
+                                        <span>One code used for all device</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-mobile"></i></span>
+                                        <h4>Fully Responsive</h4>
+                                        <span>Desktops, Tablets and Mobile</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-th-list"></i></span>
+                                        <h4>Minimized Menu </h4>
+                                        <span>Minimized Menu on Toggle</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-list-alt"></i></span>
+                                        <h4>Responsive SubMenu</h4>
+                                        <span>4 level SubMenu added</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-file-code-o"></i></span>
+                                        <h4>Light weight</h4>
+                                        <span>Using Minified CSS File </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-css3"></i></span>
+                                        <h4>Jquery/CSS3 animations</h4>
+                                        <span>Using Jquery,CSS3,Animation</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-flag"></i></span>
+                                        <h4>Vector icons</h4>
+                                        <span>Using Font Awesome Web font</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-angellist"></i></span>
+                                        <h4>Collapsible menu</h4>
+                                        <span>Collapsible menu in Tablets </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-file-text"></i></span>
+                                        <h4>Well documentation</h4>
+                                        <span>Step by step instructions to use menu</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-life-ring"></i></span>
+                                        <h4>Free Support</h4>
+                                        <span>you Can contact me in my profile</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-pencil-square-o"></i></span>
+                                        <h4>Easy to use/customizable</h4>
+                                        <span>Well coded Easy to use in website</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-eye"></i></span>
+                                        <h4>Coming Soon</h4>
+                                        <span>Theme Option Coming Soon</span>
+                                    </div>
+                                </div>
+                            </div>
+</div>
+
+
+
         <!--users-->
-        <div class="col-lg-22">    
-            <div class="col-lg-2">
                 <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
@@ -19,12 +111,14 @@
                                         <i class="fa fa-user fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="medium">Users</div>
-                                        <div>Manage users</div>
+                                        <div class="medium">
+                                        <h3>Users</h3>
+                                        <p>Manage users</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="/settings/user">
+                            <a href="/settings/user">   
                                 <div class="panel-footer">
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                     <span class="pull-right">Go</span>
@@ -32,19 +126,23 @@
                                 </div>
                             </a>
                         </div>
-            </div>
+  
+
+            {% if request.user.is_superuser == True %}
+ 
             <!--groups-->
-            <div class="col-lg-2">
                 <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-users fa-2x"></i>
+                                        <i class="fa fa-th fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="medium">Groups</div>
-                                        <div>Manage groups </div>
-                                    </div>
+                                        <div class="medium">
+                                        <h3>Groups</h3>
+                                        <p>Manage groups</p>
+                                        </div>
+                                </div>
                                 </div>
                             </div>
                             <a href="/settings/groups">
@@ -55,9 +153,15 @@
                                 </div>
                             </a>
                         </div>
-            </div>
+
             <!--Queues-->
-            <div class="col-lg-2">
+
+
+
+
+  
+    <div class="row">
+            
                 <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
@@ -65,9 +169,11 @@
                                         <i class="fa fa-th fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="medium">Queues</div>
-                                        <div>Manage queues</div>
-                                    </div>
+                                        <div class="medium">
+                                        <h3>Queues</h3>
+                                        <p>Manage queues</p>
+                                        </div>
+                                </div>
                                 </div>
                             </div>
                             <a href="/settings/queue">
@@ -78,10 +184,10 @@
                                 </div>
                             </a>
                         </div>
-            </div>
+
      
             <!--Company-->
-            <div class="col-lg-2">
+            
                 <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
@@ -89,8 +195,10 @@
                                         <i class="fa fa-building fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="medium">Company</div>
-                                        <div>Add/Remove companys</div>
+                                        <div class="medium">
+                                        <h3>Company</h3>
+                                        <p>Add/Remove companys</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -101,10 +209,10 @@
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
-                        </div>
-            </div>
+                            </div>
+
             <!--rights-->
-            <div class="col-lg-2">
+            
                 <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
@@ -112,8 +220,11 @@
                                         <i class="fa fa-key fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="medium">Rights</div>
-                                        <div>Manage rights/queues</div>
+                                        <div class="medium">
+                                        <h3>Rights</h3>
+                                        <p>Manage rights/queues</p>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -125,18 +236,20 @@
                                 </div>
                             </a>
                         </div>
-            </div>
+            
             <!--States-->
-            <div class="col-lg-2">
+            
                 <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-key fa-2x"></i>
+                                        <i class="fa 1fa-key fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="medium">States</div>
-                                        <div>Manage states for tickets</div>
+                                        <div class="medium">
+                                        <h3>States</h3>
+                                        <p>Manage states for tickets</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -148,10 +261,12 @@
                                 </div>
                             </a>
                         </div>
-            </div>
+                    
+            
+
+            {%endif%}
 
             <!--config-->
-            <div class="col-lg-2">
                 <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
@@ -159,8 +274,10 @@
                                         <i class="fa fa-gear  fa-2x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="medium">Config</div>
-                                        <div>App config</div>
+                                        <div class="medium">
+                                        <h3>Config</h3>
+                                        <p>App config</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -171,8 +288,7 @@
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
-                        </div>
-            </div>
+                        </div>            
         </div>
 
     </div>
