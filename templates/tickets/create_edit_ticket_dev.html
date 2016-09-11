@@ -58,12 +58,12 @@
 
                     <div class="" role="tabpanel" data-example-id="togglable-tabs">
                       <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#tab_content1" id="main-tab" role="tab" data-toggle="tab" aria-expanded="true">Main</a>
+                        <li role="presentation" class="active"><a href="#tab_content1" id="main-tab" role="tabpanel" data-toggle="tab" aria-expanded="false">Main</a>
                         </li>
                         {% if form_ticket.instance.id %}
-                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="microtask-tab" data-toggle="tab" aria-expanded="false">Microtasks</a>
+                        <li role="presentation" class=""><a href="#tab_content2" role="tabpanel" id="microtask-tab" data-toggle="tab" aria-expanded="false">Microtasks</a>
                         </li>
-                        <li role="presentation" class=""><a href="#tab_content3" role="tab" id="log-tab" data-toggle="tab" aria-expanded="false">Log</a>
+                        <li role="presentation" class=""><a href="#tab_content3" role="tabpanel" id="log-tab" data-toggle="tab" aria-expanded="false">Log</a>
                         </li>
 
                         {%endif%}
@@ -338,66 +338,91 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <div class="ln_solid"></div>
                                     </div>
-                                    <!--End of the box-->   
-                                        <!--If ticket doenst exist-->
-                                        <!--
-                                        {% if form_ticket.instance.id %}
-                                            <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="save-signal" >Save</button>
-                                            <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="update-signal" >Update</button>
-                                        {% else %}
-                                            <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="save-signal" >Save</button>
-                                            <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
-                                        {%endif%}
-                                        -->
                                         </form>
                                 </div>
                                 
-                            
                             {% if form_ticket.instance.id %}
+                            <!--button add microtask-->
                             <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="microtask-tab">
+                            <button type="button" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#microtask_modal">
+                              Add new microtask
+                            </button>
+
+                            <!--modal microtask-->
+                                <div class="modal fade" id="microtask_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">Add new microtask</h4>
+                                      </div>
+                                      <div class="modal-body">
+
+                                      <label for="message">Task</label>
+
+                                      <input id="subject_mk" name="subject_mk" type="text" placeholder="Little task description" class="form-control" >
+
+                                      <label for="message">Description</label>
+
+                                      <textarea  id="body_mk" name="body_mk"  data-parsley-maxlength="100" data-parsley-trigger="keyup" class="form-control"  placeholder="Some more details..."></textarea>
+
+                                      <label for="message">State</label>
+
+                                        <select class="form-control pointer" id="state_mk" name="state_mk">
+                                                    {% for status in common_data.status_info %}
+                                                        {%if status.id  == form_ticket.instance.assigned_state.id %}
+                                                            <option value="{{status.id}}" selected >{{status}}</option>
+                                                        {%else%}
+                                                            <option value="{{status.id}}">{{status}}</option>
+                                                        {%endif%}
+                                                {%endfor%}
+                                        </select>
+                                        
+                                      </div>
+
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary add-microtask">Save</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <!--table with microtasks-->
                                 <table class="table table-striped projects">
                                   <thead>
                                     <tr>
                                       <th style="width: 1%">#</th>
-                                      <th style="width: 20%">Project Name</th>
-                                      <th>Team Members</th>
-                                      <th>Project Progress</th>
+                                      <th style="width: 20%">Microtask name</th>
+                                      <th>Description</th>
+                                      <th style="width: 20%">Project Progress</th>
                                       <th>Status</th>
                                       <th style="width: 20%">#Edit</th>
                                     </tr>
                                   </thead>
                                   <tbody>
+                                    {% for i in actual_microtasks%}
                                     <tr>
-                                      <td>#</td>
+                                      <td>{{i.id}}</td>
                                       <td>
-                                        <a>Pesamakini Backend UI</a>
+                                        <a>{{i.subject}}</a>
                                         <br>
                                         <small>Created 01.01.2015</small>
                                       </td>
                                       <td>
-                                        <ul class="list-inline">
-                                          <li>
-                                            <img alt="Avatar" class="avatar" src="images/user.png">
-                                          </li>
-                                          <li>
-                                            <img alt="Avatar" class="avatar" src="images/user.png">
-                                          </li>
-                                          <li>
-                                            <img alt="Avatar" class="avatar" src="images/user.png">
-                                          </li>
-                                          <li>
-                                            <img alt="Avatar" class="avatar" src="images/user.png">
-                                          </li>
-                                        </ul>
+                                        {{i.body}}
                                       </td>
+                                      
                                       <td class="project_progress">
                                         <div class="progress progress_sm">
-                                          <div data-transitiongoal="57" role="progressbar" class="progress-bar bg-green" style="width: 57%;" aria-valuenow="56"></div>
+                                          <div data-transitiongoal="{{i.percentage}}" role="progressbar" class="progress-bar bg-green" style="width: 45%;" aria-valuenow="{{i.percentage}}"></div>
                                         </div>
-                                        <small>57% Complete</small>
+                                        <small>{{i.percentage}}% Complete</small>
                                       </td>
                                       <td>
-                                        <button class="btn btn-success btn-xs" type="button">Success</button>
+                                        <!--<button class="btn btn-success btn-xs" type="button">Success</button>-->
+                                        <span class="label" style="background-color:#{{i.assigned_state.color}}"><font color="black">{{i.assigned_state}}</font></span>
                                       </td>
                                       <td>
                                         <a class="btn btn-primary btn-xs" href="#"><i class="fa fa-folder"></i> View </a>
@@ -405,39 +430,7 @@
                                         <a class="btn btn-danger btn-xs" href="#"><i class="fa fa-trash-o"></i> Delete </a>
                                       </td>
                                     </tr>
-                                    <tr>
-                                      <td>#</td>
-                                      <td>
-                                        <a>Pesamakini Backend UI</a>
-                                        <br>
-                                        <small>Created 01.01.2015</small>
-                                      </td>
-                                      <td>
-                                        <ul class="list-inline">
-                                          <li>
-                                            <img alt="Avatar" class="avatar" src="images/user.png">
-                                          </li>
-                                          <li>
-                                            <img alt="Avatar" class="avatar" src="images/user.png">
-                                          </li>
-                                        </ul>
-                                      </td>
-                                      <td class="project_progress">
-                                        <div class="progress progress_sm">
-                                          <div data-transitiongoal="47" role="progressbar" class="progress-bar bg-green" style="width: 47%;" aria-valuenow="46"></div>
-                                        </div>
-                                        <small>47% Complete</small>
-                                      </td>
-                                      <td>
-                                        <button class="btn btn-success btn-xs" type="button">Success</button>
-                                      </td>
-                                      <td>
-                                        <a class="btn btn-primary btn-xs" href="#"><i class="fa fa-folder"></i> View </a>
-                                        <a class="btn btn-info btn-xs" href="#"><i class="fa fa-pencil"></i> Edit </a>
-                                        <a class="btn btn-danger btn-xs" href="#"><i class="fa fa-trash-o"></i> Delete </a>
-                                      </td>
-                                    </tr>
-
+                                    {% endfor %}
                                   </tbody>
                                 </table>
                             </div>

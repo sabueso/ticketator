@@ -80,6 +80,8 @@ urlpatterns = [
     #Post percentage
     url(r'^tickets/set_percentage/(?P<ticket_id>\d+)/range/$', vtickets.set_percentage_jx, name='tickets-set-percentage'),
     url(r'^tickets/state/(?P<state_id>\d+)?$', vtickets.list_tickets, name='tickets-list-state'),
+    #Microtask post
+    url(r'^tickets/add_microtask/(?P<ticket_id>\d+)$', vtickets.add_microtask_jx, name='tickets-add-microtask'),
 
 ]
 

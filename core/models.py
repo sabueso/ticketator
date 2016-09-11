@@ -375,6 +375,13 @@ class Comments(models.Model):
 			date_data=str(self.date.strftime('%d-%m-%Y %H:%m'))
 			)
 
+class Microtasks(models.Model):
+	ticket_rel=models.ForeignKey(Ticket, related_name ='ticket_rel_mtask')
+	subject =  models.CharField(max_length=40)
+	body = models.TextField(null=True,blank=True)
+	assigned_state = models.ForeignKey(State,null=True,blank=True)
+	percentage=models.IntegerField(default=0,blank=True,null=True)
+
 class Logs(models.Model):
 	log_ticket=models.ForeignKey(Ticket, related_name = 'ticket_log')
 	log_user=models.ForeignKey(User, related_name = 'user_log')

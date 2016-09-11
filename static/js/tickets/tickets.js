@@ -135,6 +135,38 @@ $(document).ready(function() {
             });
     });
 
+
+
+    //Post new microtask
+    $('.add-microtask').click(function(){
+      //console.log('am i called');
+        $.ajax({
+            type: "POST",
+            url: "/tickets/add_microtask/"+idTicket+"",
+            dataType: "json",
+            data: { "subject_text": $("#subject_mk").val(),
+                    "body_text": $("#body_mk").val(),
+                    "state_id": $("#state_mk").val()},
+            success: function(data) {
+                            $("#subject_mk").val("");
+                            $("#body_mk").val("");
+                            $("#state_mk").val("");
+                            //console.log(data);
+                            notif('info','Success','Message added');
+                            update_comments_new();
+                            $('#microtask_modal').hide();
+                    },
+             error: function(xhr, status, error) {
+                             //$("#message_data").val("");
+                             var json = JSON.parse(xhr.responseText);
+                             var error_message = json.message;
+                             notif('error','Oops!',error_message);
+                     }
+            });
+    });
+
+
+
     // CSRF magic
     function getCookie(name) {
         var cookieValue = null;
