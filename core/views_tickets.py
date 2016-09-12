@@ -151,7 +151,7 @@ def add_comment_jx(request, ticket_id=None):
 	else:
 		raise Http404
 
-@login_required
+
 def del_comment_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:
 		if request.POST.get('message_id'):
@@ -175,7 +175,7 @@ def del_comment_jx(request, ticket_id=None):
 	else:
 		raise Http404
 
-@login_required
+
 def get_comments_jx(request, ticket_id=None):
 	''''
 	As we comment in modules.py, in as_json function, serialize do not work with nested object
@@ -188,7 +188,7 @@ def get_comments_jx(request, ticket_id=None):
 	return JsonResponse(data, safe=False)
 
 
-@login_required
+
 def set_percentage_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:
 		percentage_val = request.POST.get('range_value')
@@ -240,3 +240,15 @@ def add_microtask_jx(request, ticket_id=None):
 			return response
 	else:
 		raise Http404
+
+@login_required
+def get_microtasks_jx(request, ticket_id=None):
+	''''
+	As we comment in modules.py, in as_json function, serialize do not work with nested object
+	so we construct that function to make 
+	As view here => http://stackoverflow.com/questions/13031058/how-to-serialize-to-json-a-list-of-model-objects-in-django-python
+	we can return all the data directly as a JSON an treat it in the ajax side
+	'''
+	qry =  Microtasks.objects.filter(ticket_rel=ticket_id).order_by('-id')
+	data = [ob.as_json() for ob in qry]
+	return JsonResponse(data, safe=False)

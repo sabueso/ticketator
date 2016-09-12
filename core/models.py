@@ -382,6 +382,18 @@ class Microtasks(models.Model):
 	assigned_state = models.ForeignKey(State,null=True,blank=True)
 	percentage=models.IntegerField(default=0,blank=True,null=True)
 
+	def as_json(self):
+		return dict(
+			#UTF8 in order to avoid encoding problems
+			id=str(self.id),
+			subject_data=str(self.subject.encode('utf8')),
+			body_data=str(self.body.encode('utf8')),
+			state_data=str(self.assigned_state),
+			state_color_data=str(self.assigned_state.color), 
+			#date_data=str(self.date.strftime('%d-%m-%Y %H:%m'))
+			percentage_data=int(self.percentage)
+			)
+
 class Logs(models.Model):
 	log_ticket=models.ForeignKey(Ticket, related_name = 'ticket_log')
 	log_user=models.ForeignKey(User, related_name = 'user_log')

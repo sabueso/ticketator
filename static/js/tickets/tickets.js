@@ -136,6 +136,51 @@ $(document).ready(function() {
     });
 
 
+    //Update all microtask table
+    function update_microtasks()
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/tickets/get_microtasks/"+idTicket+"",
+            success: function(data) {
+                        var dataparsed = (data);
+                        //console.log(data);
+                        //alert(data.length);
+                        $("#tblmicrotasks").empty();
+                        $.each(dataparsed, function(i, item){
+                            $("#tblmicrotasks").append(
+                                    '<tr>'+
+                                      '<td>'+item.id+'</td>'+
+                                      '<td>'+
+                                        '<a>'+item.subject_data+'</a>'+
+                                        '<br>'+
+                                        '<small>Created 01.01.2015</small>'+
+                                      '</td>'+
+                                      '<td>'+item.body_data+'</td>'+
+                                      '<td class="project_progress">'+
+                                        '<div class="progress progress_sm">'+
+                                          '<div data-transitiongoal="{{i.percentage}}" role="progressbar" class="progress-bar bg-green" style="width: 45%;" aria-valuenow="'+i.percentage_data+'"></div>'+
+                                        '</div>'+
+                                        '<small>'+item.percentage_data+'% Complete</small>'+
+                                      '</td>'+
+                                      '<td>'+
+                                        '<span class="label" style="background-color:#'+item.state_color_data+'"><font color="black">'+item.state_data+'</font></span>'+
+                                      '</td>'+
+                                      '<td>'+
+                                        '<a class="btn btn-primary btn-xs" href="#"><i class="fa fa-folder"></i> View </a>'+
+                                        '<a class="btn btn-info btn-xs" href="#"><i class="fa fa-pencil"></i> Edit </a>'+
+                                        '<a class="btn btn-danger btn-xs" href="#"><i class="fa fa-trash-o"></i> Delete </a>'+
+                                      '</td>'+
+                                    '</tr>'
+                             );
+                        });
+                        
+                    }
+             });
+    }
+
+
 
     //Post new microtask
     $('.add-microtask').click(function(){
@@ -153,7 +198,7 @@ $(document).ready(function() {
                             $("#state_mk").val("");
                             //console.log(data);
                             notif('info','Success','Message added');
-                            update_comments_new();
+                            update_microtasks();
                             $('#microtask_modal').hide();
                     },
              error: function(xhr, status, error) {
