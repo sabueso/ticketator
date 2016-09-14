@@ -123,12 +123,12 @@ def save_comment(request, comment_data=None, private_data=None, ticket_data=None
 	inst_data.save()
 ##Log action
 	##logger(inst_ticket, request.user, "Add", "Comment")
-	return "Saved comment"
+	return "Comment saved"
 
 def del_comment(request, message_id=None):
 	msg_to_del=Comments.objects.get(id=message_id)
 	msg_to_del.delete()
-	return "Deleted comment"
+	return "Comment deleted"
 
 #AJAX comments
 @login_required
@@ -158,7 +158,7 @@ def del_comment_jx(request, ticket_id=None):
 			user_obj = request.user
 			'''Check if we can add comment trought get_rights_for_ticket'''
 			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
-			if user_object_rights.can_comment == True:
+			if user_object_rights.can_comment == True or request.user.is_superuser == True:
 				message_data=request.POST.get('message_id')
 				status = del_comment(request=request, message_id=message_data)
 				data = {'message': "%s delete" % status}
@@ -202,19 +202,23 @@ def set_percentage_jx(request, ticket_id=None):
 		raise Http404
 
 
-def save_microtask(request, subject_data=None, body_data=None, state_data=None, ticket_data=None):
+def save_microtask(request, subject_data=None, body_data=None, state_data=None, percentage_data=None, ticket_data=None):
 #Save data
 	inst_ticket =  Ticket.objects.get(id=ticket_data)
-	inst_data = Microtasks.objects.create(ticket_rel= inst_ticket, assigned_state=state_data, subject=subject_data, body=body_data)
+	inst_data = Microtasks.objects.create(ticket_rel= inst_ticket, assigned_state=state_data, subject=subject_data, body=body_data, percentage=percentage_data)
 	inst_data.save()
 	##Log action
 	##logger(inst_ticket, request.user, "Add", "Comment")
-	return "Saved comment"
+	return "Microtask saved"
+
+def del_microtask(request, mk_id=None):
+	mk_to_del=Microtasks.objects.get(id=mk_id)
+	mk_to_del.delete()
+	return "Microtask deleted"
 
 
 
 #AJAX microtask
-@login_required
 def add_microtask_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:
 		if request.POST.get('subject_text') and request.POST.get('body_text') and request.POST.get('state_id'):
@@ -225,7 +229,8 @@ def add_microtask_jx(request, ticket_id=None):
 				subject_clean=request.POST.get('subject_text')
 				body_clean=request.POST.get('body_text')
 				state_clean=State.objects.get(id=int(request.POST.get('state_id')))
-				status = save_microtask(request=request, subject_data=subject_clean, body_data=body_clean, state_data=state_clean, ticket_data=ticket_id)
+				percentage_clean=request.POST.get('percentage_num')
+				status = save_microtask(request=request, subject_data=subject_clean, body_data=body_clean, state_data=state_clean, percentage_data=percentage_clean, ticket_data=ticket_id)
 				data = {'message': "%s added" % status}
 				return HttpResponse(json.dumps(data), content_type='application/json')
 			else:
@@ -241,7 +246,7 @@ def add_microtask_jx(request, ticket_id=None):
 	else:
 		raise Http404
 
-@login_required
+
 def get_microtasks_jx(request, ticket_id=None):
 	''''
 	As we comment in modules.py, in as_json function, serialize do not work with nested object
@@ -252,3 +257,27 @@ def get_microtasks_jx(request, ticket_id=None):
 	qry =  Microtasks.objects.filter(ticket_rel=ticket_id).order_by('-id')
 	data = [ob.as_json() for ob in qry]
 	return JsonResponse(data, safe=False)
+
+
+def del_microtask_jx(request, ticket_id=None):
+	if request.is_ajax() and request.POST:
+		if request.POST.get('mk_id'):
+			user_obj = request.user
+			'''Check if we can add comment trought get_rights_for_ticket'''
+			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
+			if user_object_rights.can_comment == True or request.user.is_superuser == True:
+				mk_data=request.POST.get('mk_id')
+				status = del_microtask(request=request, mk_id=mk_data)
+				data = {'message': "%s delete" % status}
+				return HttpResponse(json.dumps(data), content_type='application/json')
+			else:
+				data = {'message': 'You don\'t have rights to delete comment' }
+				response = HttpResponse(json.dumps(data), content_type='application/json')
+				response.status_code = 400
+				return response
+
+			
+		data = {'message': "%s deleted" % status}
+		return HttpResponse(json.dumps(data), content_type='application/json')
+	else:
+		raise Http404

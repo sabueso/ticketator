@@ -83,6 +83,7 @@ urlpatterns = [
     #Microtask post
     url(r'^tickets/add_microtask/(?P<ticket_id>\d+)$', vtickets.add_microtask_jx, name='tickets-add-microtask'),
     url(r'^tickets/get_microtasks/(?P<ticket_id>\d+)$', vtickets.get_microtasks_jx, name='tickets-get-microtasks'),
+    url(r'^tickets/del_microtask/$', vtickets.del_microtask_jx, name='tickets-del-microtasks'),
 
 ]
 

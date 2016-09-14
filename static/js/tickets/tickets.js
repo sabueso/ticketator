@@ -5,7 +5,6 @@ $(document).ready(function() {
     var idTicket = document.getElementById("idTicket").value;
     var idPercentage = document.getElementById("idPercentage").value;
 
-
     //Update the percentage via ajax call
     function update_percentage(final_value)
     {
@@ -38,6 +37,7 @@ $(document).ready(function() {
                 }
 
         });
+
     var slider = $(".range_time24").data("ionRangeSlider");
 
 
@@ -160,17 +160,18 @@ $(document).ready(function() {
                                       '<td>'+item.body_data+'</td>'+
                                       '<td class="project_progress">'+
                                         '<div class="progress progress_sm">'+
-                                          '<div data-transitiongoal="{{i.percentage}}" role="progressbar" class="progress-bar bg-green" style="width: 45%;" aria-valuenow="'+i.percentage_data+'"></div>'+
+                                          '<div data-transitiongoal="'+item.percentage_data+'" role="progressbar" class="progress-bar bg-green" style="width: '+item.percentage_data+'%;" aria-valuenow="'+item.percentage_data+'"></div>'+
                                         '</div>'+
                                         '<small>'+item.percentage_data+'% Complete</small>'+
                                       '</td>'+
                                       '<td>'+
                                         '<span class="label" style="background-color:#'+item.state_color_data+'"><font color="black">'+item.state_data+'</font></span>'+
                                       '</td>'+
-                                      '<td>'+
+                                      '<td id="buttons">'+
+                                      '<input type="hidden" id="idmk" name="idmk" value="'+item.id+'">'+
                                         '<a class="btn btn-primary btn-xs" href="#"><i class="fa fa-folder"></i> View </a>'+
                                         '<a class="btn btn-info btn-xs" href="#"><i class="fa fa-pencil"></i> Edit </a>'+
-                                        '<a class="btn btn-danger btn-xs" href="#"><i class="fa fa-trash-o"></i> Delete </a>'+
+                                        '<a class="btn btn-danger btn-xs del-mk" href="#"><i class="fa fa-trash-o"></i> Delete </a>'+
                                       '</td>'+
                                     '</tr>'
                              );
@@ -191,15 +192,17 @@ $(document).ready(function() {
             dataType: "json",
             data: { "subject_text": $("#subject_mk").val(),
                     "body_text": $("#body_mk").val(),
-                    "state_id": $("#state_mk").val()},
+                    "state_id": $("#state_mk").val(),
+                    "percentage_num": PercentageNewMK },
             success: function(data) {
                             $("#subject_mk").val("");
                             $("#body_mk").val("");
-                            $("#state_mk").val("");
+                            $("#state_mk option:first-child").attr("selected", "selected");
+                            slider_new.reset();
                             //console.log(data);
                             notif('info','Success','Message added');
                             update_microtasks();
-                            $('#microtask_modal').hide();
+                            $('#microtask_modal').modal('toggle');
                     },
              error: function(xhr, status, error) {
                              //$("#message_data").val("");
@@ -207,6 +210,49 @@ $(document).ready(function() {
                              var error_message = json.message;
                              notif('error','Oops!',error_message);
                      }
+            });
+    });
+
+
+    //Microtask percentage
+
+    var PercentageNewMK = 0;
+
+    //Catch the value on the range slider
+    var $range = $(".range_new_mk");+
+    $(".range_new_mk").ionRangeSlider({
+          type: "single",
+          min: 0,
+          max: 100,
+          step: 10,
+          from: PercentageNewMK,
+          max_interval: 0,
+          onFinish: function (data) {
+                PercentageNewMK = data.from;
+                }
+
+        });
+    var slider_new = $(".range_new_mk").data("ionRangeSlider");
+
+
+
+    $('#tblmicrotasks').on("click", ".del-mk", function(){
+        //var idActualMessage = $(".del-message").closest("#idPMessage").attr("value");
+        var ActualMK = $(this).closest("td#buttons").find("input[name='idmk']").val();
+        $.ajax({
+            type: "POST",
+            url: "/tickets/del_microtask/",
+            dataType: "json",
+            data: { "mk_id": ActualMK, "ticket_id": idTicket},
+            success: function(data) {
+                            update_microtasks();
+                    },
+            error: function(xhr, status, error) {
+                        //$("#message_data").val("");
+                            var json = JSON.parse(xhr.responseText);
+                            var error_message = json.message;
+                            notif('error','Oops!',error_message);
+                    }
             });
     });
 

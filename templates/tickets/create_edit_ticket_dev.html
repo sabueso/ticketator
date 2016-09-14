@@ -377,8 +377,11 @@
                                                         {%endif%}
                                                 {%endfor%}
                                         </select>
+
+                                    <label for="message">Percentage</label>
+                                        <input type="text" name="percentage_mk" id="percentage_mk" class="range_new_mk" value=""/>
                                         
-                                      </div>
+                                    </div>
 
                                       <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -424,10 +427,11 @@
                                         <!--<button class="btn btn-success btn-xs" type="button">Success</button>-->
                                         <span class="label" style="background-color:#{{i.assigned_state.color}}"><font color="black">{{i.assigned_state}}</font></span>
                                       </td>
-                                      <td>
+                                      <td id="buttons">
+                                        <input type="hidden" id="idmk" name="idmk" value="{{i.id}}">
                                         <a class="btn btn-primary btn-xs" href="#"><i class="fa fa-folder"></i> View </a>
                                         <a class="btn btn-info btn-xs" href="#"><i class="fa fa-pencil"></i> Edit </a>
-                                        <a class="btn btn-danger btn-xs" href="#"><i class="fa fa-trash-o"></i> Delete </a>
+                                        <a class="btn btn-danger btn-xs del-mk" href="#"><i class="fa fa-trash-o"></i> Delete </a>
                                       </td>
                                     </tr>
                                     {% endfor %}

@@ -340,7 +340,7 @@ class TicketForm(ModelForm):
 		'''Force to assign company'''
 		cleaned_data['assigned_company'] = queue_obj.company_rel
 
-		'''Put percentage 100% when close ticket'''
+		'''Put percentage 100% when closed ticket is detected'''
 		if cleaned_data['assigned_state'].id ==  3:
 			self.instance.percentage = int(100)
 
