@@ -209,7 +209,14 @@
                                             <label class="pull-center">Percentage</label>
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                               <input type="text" name="percentage" id="percentage" class="range_time24" value=""/>
+                                               {% if form_ticket.instance.id%}
+                                               <input type="text" name="percentage" id="percentage" class="range_base_ticket" value=""/>
+                                               {% else %}
+                                               <input type="text" name="percentage" id="percentage" class="range_base_ticket_for_submit" value=""/>
+                                               {% endif %}
+                                            
+
+
                                         </div>
 
 

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+    $(document).ready(function() {
 
     //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     //we catch the values rendered by Django template
@@ -21,8 +21,8 @@ $(document).ready(function() {
      }
 
     //Catch the value on the range slider
-    var $range = $(".range_time24");+
-    $(".range_time24").ionRangeSlider({
+    var $range = $(".range_base_ticket");+
+    $(".range_base_ticket").ionRangeSlider({
           type: "single",
           min: 0,
           max: 100,
@@ -38,7 +38,38 @@ $(document).ready(function() {
 
         });
 
-    var slider = $(".range_time24").data("ionRangeSlider");
+    var slider = $(".range_base_ticket").data("ionRangeSlider");
+
+
+
+    //Catch the value on the range slider and set it when no instance is definded (new tickets only)
+    var $range = $(".range_base_ticket_for_submit");+
+    $(".range_base_ticket_for_submit").ionRangeSlider({
+          type: "single",
+          min: 0,
+          max: 100,
+          step: 10,
+          from: idPercentage,
+          max_interval: 0,
+          onFinish: function (data) {
+                    //Log final value for test purpouses
+                    var raw_value = data.from;
+                    //console.log("Value: " + raw_value);
+                    if($('#id_ticket-percentage').val())
+                    {   
+                        $('#id_ticket-percentage').val(raw_value)
+                    }
+                    else
+                    {
+                        $('#ticketform').append('<input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="'+raw_value+'">');
+                    }
+                    
+                    //update_percentage(raw_value);
+                }
+
+        });
+
+    var slider = $(".range_base_ticket_for_submit").data("ionRangeSlider");
 
 
     //Create all divs with updated data
