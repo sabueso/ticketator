@@ -201,6 +201,10 @@ def set_percentage_jx(request, ticket_id=None):
 	else:
 		raise Http404
 
+def get_percentage_jx(request, ticket_id=None):
+	qry =  Ticket.objects.get(id=ticket_id)
+	data = [ob.as_json() for ob in qry]
+	return JsonResponse(data, safe=False)
 
 def save_microtask(request, subject_data=None, body_data=None, state_data=None, percentage_data=None, ticket_data=None):
 #Save data

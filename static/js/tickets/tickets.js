@@ -24,6 +24,7 @@
     var $range = $(".range_base_ticket");+
     $(".range_base_ticket").ionRangeSlider({
           type: "single",
+          keyboard: "true",
           min: 0,
           max: 100,
           step: 10,
@@ -38,7 +39,7 @@
 
         });
 
-    var slider = $(".range_base_ticket").data("ionRangeSlider");
+    var slider_for_existing = $(".range_base_ticket").data("ionRangeSlider");
 
 
 
@@ -46,6 +47,7 @@
     var $range = $(".range_base_ticket_for_submit");+
     $(".range_base_ticket_for_submit").ionRangeSlider({
           type: "single",
+          keyboard: "true",
           min: 0,
           max: 100,
           step: 10,
@@ -69,7 +71,7 @@
 
         });
 
-    var slider = $(".range_base_ticket_for_submit").data("ionRangeSlider");
+    var slider_for_new = $(".range_base_ticket_for_submit").data("ionRangeSlider");
 
 
     //Create all divs with updated data
@@ -219,6 +221,7 @@
     var $range = $(".range_new_mk");+
     $(".range_new_mk").ionRangeSlider({
           type: "single",
+          keyboard: "true",
           min: 0,
           max: 100,
           step: 10,
@@ -233,7 +236,7 @@
 
         });
 
-    var slider_new = $(".range_new_mk").data("ionRangeSlider");
+    var slider_new_microtask = $(".range_new_mk").data("ionRangeSlider");
 
 
 
@@ -253,17 +256,22 @@
                     "state_id": $("#state_mk").val(),
                     "percentage_num": PercentageNewMK },
             success: function(data) {
+                            //Clean some inserted data
                             $("#subject_mk").val("");
                             $("#body_mk").val("");
-                            //$("#state_mk option:first-child").attr("selected", "selected");
-                            //$("#state_mk option:first").val();
-                            //$("#state_mk").val('');
+                            //Select the firs option in select list
                             $("#state_mk").val($("#state_mk option:first").val());
-                            slider_new.update({ from: 0 });
+                            //Reset the microtask slider state
+                            slider_new_microtask.update({ from: 0 });
+                            //Remove the microtask id reference from modal
                             $('.modal-footer').find('[name="idmk"]').remove();
                             //console.log(data);
                             notif('info','Success','Message added');
+                            //Close the modal
                             $('#microtask_modal').modal('toggle');
+                            //Disable the slider if its the firs microtask
+                            slider_for_existing.update({disable: true});
+                            //Update all microtask from table
                             update_microtasks();
                     },
              error: function(xhr, status, error) {
@@ -297,7 +305,7 @@
                         $('#microtask_modal').find('[name="subject_mk"]').val(data.subject_data);
                         $('#microtask_modal').find('[name="body_mk"]').val(data.body_data);
                         $('#microtask_modal').find('[name="state_mk"]').val(data.state_data_id);
-                        slider_new.update({ from: data.percentage_data });
+                        slider_new_microtask.update({ from: data.percentage_data });
                         $('.modal-footer').append('<input type="hidden" id="idmk" name="idmk" value="'+mk_id+'">');
                         $('#microtask_modal').modal('show');
                         
