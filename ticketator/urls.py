@@ -4,6 +4,8 @@ from django.contrib import admin
 #Auth
 from django.contrib.auth import views as auth_views
 
+import core.signals
+
 #Import some modular views
 from core import views
 from core import views_users as vusers, views_company as vcompanies,\

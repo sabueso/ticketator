@@ -398,6 +398,7 @@ class Microtasks(models.Model):
 			percentage_data=int(self.percentage)
 			)
 
+
 class Logs(models.Model):
 	log_ticket=models.ForeignKey(Ticket, related_name = 'ticket_log')
 	log_user=models.ForeignKey(User, related_name = 'user_log')
