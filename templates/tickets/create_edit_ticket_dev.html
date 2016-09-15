@@ -205,8 +205,9 @@
                                             </select>
                                             {{form_ticket.assigned_user.errors}}
                                         </div>
-
-
+                                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                            <label class="pull-center">Percentage</label>
+                                        </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                <input type="text" name="percentage" id="percentage" class="range_time24" value=""/>
                                         </div>
@@ -372,8 +373,9 @@
                                                         {%else%}
                                                             <option value="{{status.id}}">{{status}}</option>
                                                         {%endif%}
-                                                {%endfor%}
-                                    </select>
+                                                    {%endfor%}
+                                    </select>   
+
 
                                     <label for="message">Percentage</label>
                                     <input type="text" name="percentage_mk" id="percentage_mk" class="range_new_mk" value=""/>
