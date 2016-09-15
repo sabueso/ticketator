@@ -20,7 +20,7 @@ $(document).ready(function() {
             });
      }
 
-     //Catch the value on the range slider
+    //Catch the value on the range slider
     var $range = $(".range_time24");+
     $(".range_time24").ionRangeSlider({
           type: "single",
@@ -168,9 +168,8 @@ $(document).ready(function() {
                                         '<span class="label" style="background-color:#'+item.state_color_data+'"><font color="black">'+item.state_data+'</font></span>'+
                                       '</td>'+
                                       '<td id="buttons">'+
-                                      '<input type="hidden" id="idmk" name="idmk" value="'+item.id+'">'+
-                                        '<a class="btn btn-primary btn-xs" href="#"><i class="fa fa-folder"></i> View </a>'+
-                                        '<a class="btn btn-info btn-xs" href="#"><i class="fa fa-pencil"></i> Edit </a>'+
+                                        '<input type="hidden" id="idmk" name="idmk" value="'+item.id+'">'+
+                                        '<a class="btn btn-info btn-xs edit-mk" href="#"><i class="fa fa-pencil"></i> Edit </a>'+
                                         '<a class="btn btn-danger btn-xs del-mk" href="#"><i class="fa fa-trash-o"></i> Delete </a>'+
                                       '</td>'+
                                     '</tr>'
@@ -183,26 +182,58 @@ $(document).ready(function() {
 
 
 
+    //Microtask percentage
+    var PercentageNewMK = 0 ;
+    //Catch the value on the range slider
+    var $range = $(".range_new_mk");+
+    $(".range_new_mk").ionRangeSlider({
+          type: "single",
+          min: 0,
+          max: 100,
+          step: 10,
+          from: 0,
+          max_interval: 0,
+          onFinish: function (data) {
+                PercentageNewMK = data.from;
+                },
+          onUpdate: function (data) {
+               PercentageNewMK = data.from;
+          }
+
+        });
+
+    var slider_new = $(".range_new_mk").data("ionRangeSlider");
+
+
+
     //Post new microtask
     $('.add-microtask').click(function(){
-      //console.log('am i called');
+        //console.log('am i called');
+        //Try if ID exists and instance the variable
+        //var ActualMK = $(this).closest("#microtask_modal").find("input[name='idmk']").val();
+        var ActualMK = $(this).closest(".modal-footer").find("input[name='idmk']").val();
         $.ajax({
             type: "POST",
             url: "/tickets/add_microtask/"+idTicket+"",
             dataType: "json",
-            data: { "subject_text": $("#subject_mk").val(),
+            data: { "id_mk": ActualMK,
+                    "subject_text": $("#subject_mk").val(),
                     "body_text": $("#body_mk").val(),
                     "state_id": $("#state_mk").val(),
                     "percentage_num": PercentageNewMK },
             success: function(data) {
                             $("#subject_mk").val("");
                             $("#body_mk").val("");
-                            $("#state_mk option:first-child").attr("selected", "selected");
-                            slider_new.reset();
+                            //$("#state_mk option:first-child").attr("selected", "selected");
+                            //$("#state_mk option:first").val();
+                            //$("#state_mk").val('');
+                            $("#state_mk").val($("#state_mk option:first").val());
+                            slider_new.update({ from: 0 });
+                            $('.modal-footer').find('[name="idmk"]').remove();
                             //console.log(data);
                             notif('info','Success','Message added');
-                            update_microtasks();
                             $('#microtask_modal').modal('toggle');
+                            update_microtasks();
                     },
              error: function(xhr, status, error) {
                              //$("#message_data").val("");
@@ -214,29 +245,50 @@ $(document).ready(function() {
     });
 
 
-    //Microtask percentage
 
-    var PercentageNewMK = 0;
 
-    //Catch the value on the range slider
-    var $range = $(".range_new_mk");+
-    $(".range_new_mk").ionRangeSlider({
-          type: "single",
-          min: 0,
-          max: 100,
-          step: 10,
-          from: PercentageNewMK,
-          max_interval: 0,
-          onFinish: function (data) {
-                PercentageNewMK = data.from;
+
+
+    //Edit microtasks modal
+
+
+    function edit_microtask(mk_id)
+
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/tickets/get_microtask/"+mk_id+"",
+            success: function(data)
+                {
+                    
+                    var dataparsed = (data);
+                        $('#microtask_modal').find('[name="subject_mk"]').val(data.subject_data);
+                        $('#microtask_modal').find('[name="body_mk"]').val(data.body_data);
+                        $('#microtask_modal').find('[name="state_mk"]').val(data.state_data_id);
+                        slider_new.update({ from: data.percentage_data });
+                        $('.modal-footer').append('<input type="hidden" id="idmk" name="idmk" value="'+mk_id+'">');
+                        $('#microtask_modal').modal('show');
+                        
+
+
                 }
 
-        });
-    var slider_new = $(".range_new_mk").data("ionRangeSlider");
+        })
+    }
+
+
+    $('#tblmicrotasks ').on("click", ".edit-mk", function(){
+      //console.log('am i called');
+     var idActualMK = $(this).closest("td#buttons").find("input[name='idmk']").val();
+     edit_microtask(idActualMK);
+
+    });
 
 
 
-    $('#tblmicrotasks').on("click", ".del-mk", function(){
+    //Delete microtask by ID
+        $('#tblmicrotasks').on("click", ".del-mk", function(){
         //var idActualMessage = $(".del-message").closest("#idPMessage").attr("value");
         var ActualMK = $(this).closest("td#buttons").find("input[name='idmk']").val();
         $.ajax({
@@ -254,8 +306,7 @@ $(document).ready(function() {
                             notif('error','Oops!',error_message);
                     }
             });
-    });
-
+        });
 
 
     // CSRF magic

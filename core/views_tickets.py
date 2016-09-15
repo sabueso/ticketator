@@ -211,38 +211,73 @@ def save_microtask(request, subject_data=None, body_data=None, state_data=None, 
 	##logger(inst_ticket, request.user, "Add", "Comment")
 	return "Microtask saved"
 
+def update_microtask(request, subject_data=None, body_data=None, state_data=None, percentage_data=None, mk_data=None):
+#Save data
+	#inst_ticket = Ticket.objects.get(id=ticket_data)
+	#inst_data = Microtasks.objects.update(ticket_rel= inst_ticket, assigned_state=state_data, subject=subject_data, body=body_data, percentage=percentage_data)
+	inst_data = Microtasks.objects.filter(id=mk_data).update(assigned_state=state_data, subject=subject_data, body=body_data, percentage=percentage_data)
+	#inst_data.save()
+	##Log action
+	##logger(inst_ticket, request.user, "Add", "Comment")
+	return "Microtask saved"
+
 def del_microtask(request, mk_id=None):
 	mk_to_del=Microtasks.objects.get(id=mk_id)
 	mk_to_del.delete()
 	return "Microtask deleted"
 
 
-
 #AJAX microtask
 def add_microtask_jx(request, ticket_id=None):
 	if request.is_ajax() and request.POST:
-		if request.POST.get('subject_text') and request.POST.get('body_text') and request.POST.get('state_id'):
-			user_obj = request.user
-			'''Check if we can add comment trought get_rights_for_ticket'''
-			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
-			if user_object_rights.can_edit == True or request.user.is_superuser == True:
-				subject_clean=request.POST.get('subject_text')
-				body_clean=request.POST.get('body_text')
-				state_clean=State.objects.get(id=int(request.POST.get('state_id')))
-				percentage_clean=request.POST.get('percentage_num')
-				status = save_microtask(request=request, subject_data=subject_clean, body_data=body_clean, state_data=state_clean, percentage_data=percentage_clean, ticket_data=ticket_id)
-				data = {'message': "%s added" % status}
-				return HttpResponse(json.dumps(data), content_type='application/json')
+		'''if mk_id exists'''
+		if request.POST.get('id_mk'):
+			if request.POST.get('subject_text') and request.POST.get('body_text') and request.POST.get('state_id'):
+				user_obj = request.user
+				'''Check if we can add comment trought get_rights_for_ticket'''
+				user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
+				if user_object_rights.can_edit == True or request.user.is_superuser == True:
+					mk_clean = request.POST.get('id_mk')
+					subject_clean=request.POST.get('subject_text')
+					body_clean=request.POST.get('body_text')
+					state_clean=State.objects.get(id=int(request.POST.get('state_id')))
+					percentage_clean=request.POST.get('percentage_num')
+					status = update_microtask(request=request, subject_data=subject_clean, body_data=body_clean, state_data=state_clean, percentage_data=percentage_clean, mk_data= mk_clean)
+					data = {'message': "%s added" % status}
+					return HttpResponse(json.dumps(data), content_type='application/json')
+				else:
+					data = {'message': 'Some fields missing' }
+					response = HttpResponse(json.dumps(data), content_type='application/json')
+					response.status_code = 400
+					return response
 			else:
-				data = {'message': 'Some fields missing' }
+				data = {'message': 'You don\'t have rights to comment' }
 				response = HttpResponse(json.dumps(data), content_type='application/json')
 				response.status_code = 400
 				return response
 		else:
-			data = {'message': 'You don\'t have rights to comment' }
-			response = HttpResponse(json.dumps(data), content_type='application/json')
-			response.status_code = 400
-			return response
+			if request.POST.get('subject_text') and request.POST.get('body_text') and request.POST.get('state_id'):
+				user_obj = request.user
+				'''Check if we can add comment trought get_rights_for_ticket'''
+				user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=None, ticket_id=ticket_id)
+				if user_object_rights.can_edit == True or request.user.is_superuser == True:
+					subject_clean=request.POST.get('subject_text')
+					body_clean=request.POST.get('body_text')
+					state_clean=State.objects.get(id=int(request.POST.get('state_id')))
+					percentage_clean=request.POST.get('percentage_num')
+					status = save_microtask(request=request, subject_data=subject_clean, body_data=body_clean, state_data=state_clean, percentage_data=percentage_clean, ticket_data=ticket_id)
+					data = {'message': "%s added" % status}
+					return HttpResponse(json.dumps(data), content_type='application/json')
+				else:
+					data = {'message': 'Some fields missing' }
+					response = HttpResponse(json.dumps(data), content_type='application/json')
+					response.status_code = 400
+					return response
+			else:
+				data = {'message': 'You don\'t have rights to comment' }
+				response = HttpResponse(json.dumps(data), content_type='application/json')
+				response.status_code = 400
+				return response
 	else:
 		raise Http404
 
@@ -281,3 +316,9 @@ def del_microtask_jx(request, ticket_id=None):
 		return HttpResponse(json.dumps(data), content_type='application/json')
 	else:
 		raise Http404
+
+
+def get_microtask_jx(request, mk_id=None):
+	qry =  Microtasks.objects.get(id=mk_id)
+	data = qry.as_json()
+	return JsonResponse(data, safe=False)

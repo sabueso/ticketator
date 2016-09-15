@@ -356,19 +356,16 @@
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h4 class="modal-title" id="myModalLabel">Add new microtask</h4>
                                       </div>
-                                      <div class="modal-body">
 
-                                      <label for="message">Task</label>
+                                    <div class="modal-body">
+                                    <label for="message">Task</label>
+                                    <input id="subject_mk" name="subject_mk" type="text" placeholder="Little task description" class="form-control" >
 
-                                      <input id="subject_mk" name="subject_mk" type="text" placeholder="Little task description" class="form-control" >
+                                    <label for="message">Description</label>
+                                    <textarea  id="body_mk" name="body_mk"  data-parsley-maxlength="100" data-parsley-trigger="keyup" class="form-control"  placeholder="Some more details..."></textarea>
 
-                                      <label for="message">Description</label>
-
-                                      <textarea  id="body_mk" name="body_mk"  data-parsley-maxlength="100" data-parsley-trigger="keyup" class="form-control"  placeholder="Some more details..."></textarea>
-
-                                      <label for="message">State</label>
-
-                                        <select class="form-control pointer" id="state_mk" name="state_mk">
+                                    <label for="message">State</label>
+                                    <select class="form-control pointer" id="state_mk" name="state_mk">
                                                     {% for status in common_data.status_info %}
                                                         {%if status.id  == form_ticket.instance.assigned_state.id %}
                                                             <option value="{{status.id}}" selected >{{status}}</option>
@@ -376,17 +373,17 @@
                                                             <option value="{{status.id}}">{{status}}</option>
                                                         {%endif%}
                                                 {%endfor%}
-                                        </select>
+                                    </select>
 
                                     <label for="message">Percentage</label>
-                                        <input type="text" name="percentage_mk" id="percentage_mk" class="range_new_mk" value=""/>
-                                        
+                                    <input type="text" name="percentage_mk" id="percentage_mk" class="range_new_mk" value=""/>
                                     </div>
 
-                                      <div class="modal-footer">
+                                    <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         <button type="button" class="btn btn-primary add-microtask">Save</button>
-                                      </div>
+                                    </div>
+
                                     </div>
                                   </div>
                                 </div>
@@ -429,8 +426,7 @@
                                       </td>
                                       <td id="buttons">
                                         <input type="hidden" id="idmk" name="idmk" value="{{i.id}}">
-                                        <a class="btn btn-primary btn-xs" href="#"><i class="fa fa-folder"></i> View </a>
-                                        <a class="btn btn-info btn-xs" href="#"><i class="fa fa-pencil"></i> Edit </a>
+                                        <a class="btn btn-info btn-xs edit-mk" href="#"><i class="fa fa-pencil"></i> Edit </a>
                                         <a class="btn btn-danger btn-xs del-mk" href="#"><i class="fa fa-trash-o"></i> Delete </a>
                                       </td>
                                     </tr>
