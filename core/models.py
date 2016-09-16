@@ -240,6 +240,18 @@ class Ticket(models.Model):
 	def __str__(self):
 		return '%s' % (self.id)
 
+	def as_json(self):
+		return dict(
+			id=str(self.id),
+			subject_data=str(self.subject.encode('utf8')),
+			body_data=str(self.body.encode('utf8')),
+			state_data=str(self.assigned_state),
+			state_data_id=str(self.assigned_state.id),
+			state_color_data=str(self.assigned_state.color), 
+			#date_data=str(self.date.strftime('%d-%m-%Y %H:%m'))
+			percentage_data=int(self.percentage)
+			)
+
 class TicketForm(ModelForm):
 	# Pass request to a form => http://stackoverflow.com/questions/6325681/passing-a-user-request-to-forms
 	def __init__(self, *args, **kwargs):	

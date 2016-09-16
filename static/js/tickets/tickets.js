@@ -6,7 +6,7 @@
     var idPercentage = document.getElementById("idPercentage").value;
 
     //Update the percentage via ajax call
-    function update_percentage(final_value)
+    function set_percentage(final_value)
     {
      $.ajax({
             type: "POST",
@@ -14,10 +14,27 @@
             dataType: "json",
             data: { "range_value": final_value },
             success: function(data) {
-                    //console.log("Post update_percentage: " + final_value);
+                    //console.log("Post set_percentage: " + final_value);
                     notif('info','Success','Percentage updated');
                     }
             });
+     }
+
+    function get_percentage(ticket_id)
+    {
+     $.ajax({
+            type: "GET",
+            async: false,
+            url: "/tickets/get_percentage/"+ticket_id+"",
+            dataType: "json",
+            success: function(data) {
+                    //console.log(data);
+                    dataparsed = (data.percentage_data);
+                    //console.log(dataparsed.percentage_data);
+                    }
+
+            });
+            return dataparsed
      }
 
     //Catch the value on the range slider
@@ -34,14 +51,12 @@
                     //Log final value for test purpouses
                     var raw_value = data.from;
                     //console.log("Value: " + raw_value);
-                    update_percentage(raw_value);
+                    set_percentage(raw_value);
                 }
 
         });
 
     var slider_for_existing = $(".range_base_ticket").data("ionRangeSlider");
-
-
 
     //Catch the value on the range slider and set it when no instance is definded (new tickets only)
     var $range = $(".range_base_ticket_for_submit");+
@@ -66,13 +81,12 @@
                         $('#ticketform').append('<input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="'+raw_value+'">');
                     }
                     
-                    //update_percentage(raw_value);
+                    //set_percentage(raw_value);
                 }
 
         });
 
     var slider_for_new = $(".range_base_ticket_for_submit").data("ionRangeSlider");
-
 
     //Create all divs with updated data
     function update_comments_new()
@@ -136,13 +150,13 @@
                             notif('info','Success','Message added');
                             update_comments_new();
 
-                    },
+                            },
             error: function(xhr, status, error) {
                             //$("#message_data").val("");
                             var json = JSON.parse(xhr.responseText);
                             var error_message = json.message;
                             notif('error','Oops!',error_message);
-                    }
+                            }
             });
     });
 
@@ -158,13 +172,13 @@
             data: { "message_id": idActualMessage, "ticket_id": idTicket},
             success: function(data) {
                             update_comments_new();
-                    },
+                            },
             error: function(xhr, status, error) {
                         //$("#message_data").val("");
                             var json = JSON.parse(xhr.responseText);
                             var error_message = json.message;
                             notif('error','Oops!',error_message);
-                    }
+                            }
             });
     });
 
@@ -269,8 +283,12 @@
                             notif('info','Success','Message added');
                             //Close the modal
                             $('#microtask_modal').modal('toggle');
-                            //Disable the slider if its the firs microtask
-                            slider_for_existing.update({disable: true});
+                            //Get the new global average
+                            //console.log(get_percentage(idTicket))
+                            var new_percentage = get_percentage(idTicket);
+                            //console.log(percentage)
+                            //Disable the slider if its the firs microtask and update the percentage
+                            slider_for_existing.update({disable: true, from: new_percentage});
                             //Update all microtask from table
                             update_microtasks();
                     },
@@ -290,7 +308,6 @@
 
     //Edit microtasks modal
 
-
     function edit_microtask(mk_id)
 
     {
@@ -301,7 +318,7 @@
             success: function(data)
                 {
                     
-                    var dataparsed = (data);
+                        var dataparsed = (data);
                         $('#microtask_modal').find('[name="subject_mk"]').val(data.subject_data);
                         $('#microtask_modal').find('[name="body_mk"]').val(data.body_data);
                         $('#microtask_modal').find('[name="state_mk"]').val(data.state_data_id);
@@ -336,6 +353,10 @@
             dataType: "json",
             data: { "mk_id": ActualMK, "ticket_id": idTicket},
             success: function(data) {
+                            var new_percentage = get_percentage(idTicket);
+                            //console.log(percentage)
+                            //Disable the slider if its the firs microtask and update the percentage
+                            slider_for_existing.update({disable: true, from: new_percentage});
                             update_microtasks();
                     },
             error: function(xhr, status, error) {

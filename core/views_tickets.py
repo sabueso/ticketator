@@ -203,7 +203,7 @@ def set_percentage_jx(request, ticket_id=None):
 
 def get_percentage_jx(request, ticket_id=None):
 	qry =  Ticket.objects.get(id=ticket_id)
-	data = [ob.as_json() for ob in qry]
+	data = qry.as_json()
 	return JsonResponse(data, safe=False)
 
 def save_microtask(request, subject_data=None, body_data=None, state_data=None, percentage_data=None, ticket_data=None):
@@ -216,13 +216,13 @@ def save_microtask(request, subject_data=None, body_data=None, state_data=None, 
 	return "Microtask saved"
 
 def update_microtask(request, subject_data=None, body_data=None, state_data=None, percentage_data=None, mk_data=None):
-#Save data
-	#inst_ticket = Ticket.objects.get(id=ticket_data)
-	#inst_data = Microtasks.objects.update(ticket_rel= inst_ticket, assigned_state=state_data, subject=subject_data, body=body_data, percentage=percentage_data)
-	inst_data = Microtasks.objects.filter(id=mk_data).update(assigned_state=state_data, subject=subject_data, body=body_data, percentage=percentage_data)
-	#inst_data.save()
-	##Log action
-	##logger(inst_ticket, request.user, "Add", "Comment")
+	#inst_data = Microtasks.objects.filter(id=mk_data).update(assigned_state=state_data, subject=subject_data, body=body_data, percentage=percentage_data)
+	inst_data = Microtasks.objects.get(id=mk_data)
+	inst_data.assigned_state=state_data
+	inst_data.subject=subject_data
+	inst_data.body=body_data 
+	inst_data.percentage=percentage_data
+	inst_data.save()
 	return "Microtask saved"
 
 def del_microtask(request, mk_id=None):
@@ -314,7 +314,6 @@ def del_microtask_jx(request, ticket_id=None):
 				response = HttpResponse(json.dumps(data), content_type='application/json')
 				response.status_code = 400
 				return response
-
 			
 		data = {'message': "%s deleted" % status}
 		return HttpResponse(json.dumps(data), content_type='application/json')
