@@ -4,6 +4,7 @@
     //we catch the values rendered by Django template
     var idTicket_data = document.getElementById("idTicket").value;
     var idPercentage_data = document.getElementById("idPercentage").value;
+    var count_microtask_data = document.getElementById("count_microtask").value;
 
     //Update the global percentage via ajax call
     function set_percentage(final_value)
@@ -59,25 +60,14 @@
         });
     var slider_for_existing = $(".range_base_ticket").data("ionRangeSlider");
 
+    //Define if existing ticket load needs to disable the range slider because the existence
+    //of microtasks
 
-    // var $range = $(".range_base_ticket_disabled");+
-    // $(".range_base_ticket_disabled").ionRangeSlider({
-    //       type: "single",
-    //       //keyboard: "true",
-    //       disable: "True",
-    //       min: 0,
-    //       max: 100,
-    //       step: 10,
-    //       from: idPercentage_data,
-    //       max_interval: 0,
-    //       //onFinish: function (data) {
-    //                 //Log final value for test purpouses
-    //                 //var raw_value = data.from;
-    //                 //console.log("Value: " + raw_value);
-    //       //          set_percentage(raw_value);
-    //       //}
-    //     });
-    // var slider_for_existing_disabled = $(".range_base_ticket_disabled").data("ionRangeSlider");
+    if (count_microtask_data != 0)
+    {
+        slider_for_existing.update({disable: true});
+    }
+    //console.log(count_microtask_data);  
 
 
     //Catch the value on the range slider and set it when no instance is definded (new tickets only)
@@ -364,6 +354,11 @@
                             //Disable the slider if its the firs microtask and update the percentage
                             slider_for_existing.update({disable: true, from: new_percentage});
                             update_microtasks();
+                            var rowCount = $('#tblmicrotasks tbody tr').length;
+                            if (rowCount == 0)
+                            {
+                                slider_for_existing.update({disable: false});
+                            }
                     },
             error: function(xhr, status, error) {
                         //$("#message_data").val("");

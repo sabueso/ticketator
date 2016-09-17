@@ -12,13 +12,6 @@
     <script src="{% static "vendors/ion.rangeSlider/js/ion.rangeSlider.min.js" %}"></script>
     <!--tickets JS-->
     <script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>
-    <script type="text/javascript">
-                                $(document).ready(function() {
-                                          console.log(idTicket_data);
-                                                                
-                                });
-    </script>
-    
 
 {% endblock%}
 
@@ -30,6 +23,7 @@
     <!--usefull for JS scripts-->
     <input type="hidden" id="idTicket" name="variable" value="{{ form_ticket.instance.id }}">
     <input type="hidden" id="idPercentage" name="variable" value="{{form_ticket.instance.percentage }}">
+    <input type="hidden" id="count_microtask" name="variable" value="{{actual_microtasks.count }}">
 
     <!--All the rest-->
     <div class="x_panel">
@@ -219,9 +213,6 @@
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                {% if form_ticket.instance.id%}
                                                     <input type="text" name="percentage" id="percentage" class="range_base_ticket" value=""/>
-                                                        caca
-                                                        {% if actual_microtasks %}
-                                                        {%endif%}
                                                {% else %}
                                                     <input type="text" name="percentage" id="percentage" class="range_base_ticket_for_submit" value=""/>
                                                {% endif %}
@@ -470,10 +461,8 @@
 
                         
                         </div>
-
                         </div>
-
-
+                </div>
                    
     </div>
 
