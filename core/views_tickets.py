@@ -34,7 +34,7 @@ def common_ticket_data():
 	comp_info =  Company.objects.all()
 	status_info = State.objects.all()
 	prio_info = Priority.objects.all()
-	now_str = datetime.now()
+	now_str = datetime.now()	
 	return {'status_info':status_info, 'prio_info':prio_info, \
 	'queue_info':queue_info, 'users_info':users_info, 'now_str':now_str, 'comp_info':comp_info}
 

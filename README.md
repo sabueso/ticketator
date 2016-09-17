@@ -53,7 +53,6 @@ Ticketator is under active developement and some areas could not be working as e
 ### Todos
 
  - Write Tests
- - Implement microtasks concept
  - Create more consisten logs for tickets
  - A lot of more things
 

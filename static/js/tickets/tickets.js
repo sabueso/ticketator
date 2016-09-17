@@ -1,16 +1,16 @@
-    $(document).ready(function() {
+    $().ready(function() {
 
     //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     //we catch the values rendered by Django template
-    var idTicket = document.getElementById("idTicket").value;
-    var idPercentage = document.getElementById("idPercentage").value;
+    var idTicket_data = document.getElementById("idTicket").value;
+    var idPercentage_data = document.getElementById("idPercentage").value;
 
-    //Update the percentage via ajax call
+    //Update the global percentage via ajax call
     function set_percentage(final_value)
     {
      $.ajax({
             type: "POST",
-            url: "/tickets/set_percentage/"+idTicket+"/range/",
+            url: "/tickets/set_percentage/"+idTicket_data+"/range/",
             dataType: "json",
             data: { "range_value": final_value },
             success: function(data) {
@@ -20,6 +20,7 @@
             });
      }
 
+    //Get the global percentage to use it as value for the slider
     function get_percentage(ticket_id)
     {
      $.ajax({
@@ -41,11 +42,12 @@
     var $range = $(".range_base_ticket");+
     $(".range_base_ticket").ionRangeSlider({
           type: "single",
-          keyboard: "true",
+          keyboard: true,
+          //disable: true,
           min: 0,
           max: 100,
           step: 10,
-          from: idPercentage,
+          from: idPercentage_data,
           max_interval: 0,
           onFinish: function (data) {
                     //Log final value for test purpouses
@@ -55,8 +57,28 @@
                 }
 
         });
-
     var slider_for_existing = $(".range_base_ticket").data("ionRangeSlider");
+
+
+    // var $range = $(".range_base_ticket_disabled");+
+    // $(".range_base_ticket_disabled").ionRangeSlider({
+    //       type: "single",
+    //       //keyboard: "true",
+    //       disable: "True",
+    //       min: 0,
+    //       max: 100,
+    //       step: 10,
+    //       from: idPercentage_data,
+    //       max_interval: 0,
+    //       //onFinish: function (data) {
+    //                 //Log final value for test purpouses
+    //                 //var raw_value = data.from;
+    //                 //console.log("Value: " + raw_value);
+    //       //          set_percentage(raw_value);
+    //       //}
+    //     });
+    // var slider_for_existing_disabled = $(".range_base_ticket_disabled").data("ionRangeSlider");
+
 
     //Catch the value on the range slider and set it when no instance is definded (new tickets only)
     var $range = $(".range_base_ticket_for_submit");+
@@ -66,7 +88,7 @@
           min: 0,
           max: 100,
           step: 10,
-          from: idPercentage,
+          from: idPercentage_data,
           max_interval: 0,
           onFinish: function (data) {
                     //Log final value for test purpouses
@@ -80,12 +102,8 @@
                     {
                         $('#ticketform').append('<input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="'+raw_value+'">');
                     }
-                    
-                    //set_percentage(raw_value);
                 }
-
         });
-
     var slider_for_new = $(".range_base_ticket_for_submit").data("ionRangeSlider");
 
     //Create all divs with updated data
@@ -94,7 +112,7 @@
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "/tickets/get_comments/"+idTicket+"",
+            url: "/tickets/get_comments/"+idTicket_data+"",
             success: function(data) {
                         var dataparsed = (data);
                         //console.log(data);
@@ -121,7 +139,6 @@
              });
     }
 
-
     function notif(type, title, text){
     new PNotify({
                     title: ''+title+'',
@@ -133,15 +150,13 @@
                     delay: 2000,
                 });
     }
-
-
-
+ 
     //Post new message
     $('.add-message').click(function(){
       //console.log('am i called');
         $.ajax({
             type: "POST",
-            url: "/tickets/add_comment/"+idTicket+"",
+            url: "/tickets/add_comment/"+idTicket_data+"",
             dataType: "json",
             data: { "message_text": $("#message_data").val() },
             success: function(data) {
@@ -169,7 +184,7 @@
             type: "POST",
             url: "/tickets/del_comment/",
             dataType: "json",
-            data: { "message_id": idActualMessage, "ticket_id": idTicket},
+            data: { "message_id": idActualMessage, "ticket_id": idTicket_data},
             success: function(data) {
                             update_comments_new();
                             },
@@ -189,7 +204,7 @@
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "/tickets/get_microtasks/"+idTicket+"",
+            url: "/tickets/get_microtasks/"+idTicket_data+"",
             success: function(data) {
                         var dataparsed = (data);
                         //console.log(data);
@@ -252,8 +267,6 @@
 
     var slider_new_microtask = $(".range_new_mk").data("ionRangeSlider");
 
-
-
     //Post new microtask
     $('.add-microtask').click(function(){
         //console.log('am i called');
@@ -262,7 +275,7 @@
         var ActualMK = $(this).closest(".modal-footer").find("input[name='idmk']").val();
         $.ajax({
             type: "POST",
-            url: "/tickets/add_microtask/"+idTicket+"",
+            url: "/tickets/add_microtask/"+idTicket_data+"",
             dataType: "json",
             data: { "id_mk": ActualMK,
                     "subject_text": $("#subject_mk").val(),
@@ -284,8 +297,8 @@
                             //Close the modal
                             $('#microtask_modal').modal('toggle');
                             //Get the new global average
-                            //console.log(get_percentage(idTicket))
-                            var new_percentage = get_percentage(idTicket);
+                            //console.log(get_percentage(idTicket_data))
+                            var new_percentage = get_percentage(idTicket_data);
                             //console.log(percentage)
                             //Disable the slider if its the firs microtask and update the percentage
                             slider_for_existing.update({disable: true, from: new_percentage});
@@ -301,15 +314,8 @@
             });
     });
 
-
-
-
-
-
     //Edit microtasks modal
-
     function edit_microtask(mk_id)
-
     {
         $.ajax({
             type: "GET",
@@ -351,9 +357,9 @@
             type: "POST",
             url: "/tickets/del_microtask/",
             dataType: "json",
-            data: { "mk_id": ActualMK, "ticket_id": idTicket},
+            data: { "mk_id": ActualMK, "ticket_id": idTicket_data},
             success: function(data) {
-                            var new_percentage = get_percentage(idTicket);
+                            var new_percentage = get_percentage(idTicket_data);
                             //console.log(percentage)
                             //Disable the slider if its the firs microtask and update the percentage
                             slider_for_existing.update({disable: true, from: new_percentage});

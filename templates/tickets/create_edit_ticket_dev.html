@@ -9,11 +9,19 @@
 
 {% block extend_js%}
     {% load staticfiles %}
+    <script src="{% static "vendors/ion.rangeSlider/js/ion.rangeSlider.min.js" %}"></script>
     <!--tickets JS-->
     <script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>
-    <script src="{% static "vendors/ion.rangeSlider/js/ion.rangeSlider.min.js" %}"></script>
+    <script type="text/javascript">
+                                $(document).ready(function() {
+                                          console.log(idTicket_data);
+                                                                
+                                });
+    </script>
+    
 
 {% endblock%}
+
 
 
 {% block content %}
@@ -210,14 +218,14 @@
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                {% if form_ticket.instance.id%}
-                                               <input type="text" name="percentage" id="percentage" class="range_base_ticket" value=""/>
+                                                    <input type="text" name="percentage" id="percentage" class="range_base_ticket" value=""/>
+                                                        caca
+                                                        {% if actual_microtasks %}
+                                                        {%endif%}
                                                {% else %}
-                                               <input type="text" name="percentage" id="percentage" class="range_base_ticket_for_submit" value=""/>
+                                                    <input type="text" name="percentage" id="percentage" class="range_base_ticket_for_submit" value=""/>
                                                {% endif %}
-                                            
-
-
-                                        </div>
+                                       </div>
 
 
 
@@ -444,9 +452,8 @@
                                 </table>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="log-tab">
-                                <div class="x_content">
-
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="log-tab">
+                                    <div class="x_content">
                                               <div class="">
                                                 <ul class="to_do">
                                                 {% for e in actual_logs%}
@@ -466,15 +473,11 @@
 
                         </div>
 
-                        </div>
 
-
-
-                    
-                    
-                    
+                   
     </div>
 
 
-{%endblock%}
 
+
+{%endblock%}
