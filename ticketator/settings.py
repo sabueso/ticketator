@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'ol84z9()#he4r#bx-%bo52^d5a!l*^84j%8))4r=_5-szall@$'
 DEBUG = True
 
 #ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -110,13 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'es-es'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Europe/Madrid'
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 MEDIA_ROOT = ""+os.path.join(BASE_DIR, "static/media")+""
