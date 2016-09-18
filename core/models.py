@@ -289,12 +289,17 @@ class TicketForm(ModelForm):
 
 	def clean_assigned_user(self):
 		if self.instance.pk is not None:  # new instance only
-			self.field_checker(self.instance.assigned_user, self.cleaned_data.get('assigned_user') )
+			self.field_checker(self.instance.assigned_user, self.cleaned_data.get('assigned_user'))
 		return self.cleaned_data.get('assigned_user')
+
+	def clean_subject(self):
+		if self.instance.pk is not None:  # new instance only
+			self.field_checker(self.instance.subject, self.cleaned_data.get('subject'))
+		return self.cleaned_data.get('subject')
 
 	def clean_body(self):
 		if self.instance.pk is not None:  # new instance only
-			self.field_checker(self.instance.body, self.cleaned_data.get('body').encode('utf8') )
+			self.field_checker(self.instance.body, self.cleaned_data.get('body'))
 		return self.cleaned_data.get('body')
 
 	'''
