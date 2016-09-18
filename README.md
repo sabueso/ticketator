@@ -14,6 +14,7 @@ Ticketator is about tickets, queues, users and groups.
 * Rights to organize access to queues (based on group access, can comment, can edit, can view...)
 * Comments on tickets
 * Ability to define percentage made on a particular task
+* Microtask related to a main taks (and percentage overall obtained from all microtask progress)
 * Multiple users and groups
 * HTML responsible design
 * Only a few AJAX calls, not a Javascript/Jquery monster
