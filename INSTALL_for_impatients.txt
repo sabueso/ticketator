@@ -12,7 +12,7 @@ Based on a Debian machine/VM
 
 -as postgres user, "cd /home/django/ticketator/utils/" & "./1_create_database.sh"
 
--as root, pip install -r requirements.txt (if no do that as root, hangs in some part, i have to review that)
+-as root, pip install -r requirements.txt (if you don't do as root, hangs in some part, i have to review that ASAP)
 
 -as django user, "./manage.py makemigrations; ./manage.py migrate"
 
@@ -23,6 +23,15 @@ Based on a Debian machine/VM
 	./manage.py loaddata fixtures/1_states.json 
 	./manage.py loaddata fixtures/2_usertypes.json 
 	./manage.py loaddata fixtures/3_priority.json 
+
+-Now, you can load the microwebserver that comes with Django from your normal user:
+
+	./manage.py runserver <you_desired_ip>:8080
+or
+	./manage.py runserver
+
+if you want to use it from localhost
+
 
 -Further steps:
 
