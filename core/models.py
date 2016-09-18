@@ -294,7 +294,7 @@ class TicketForm(ModelForm):
 
 	def clean_body(self):
 		if self.instance.pk is not None:  # new instance only
-			self.field_checker(self.instance.body, self.cleaned_data.get('body') )
+			self.field_checker(self.instance.body, self.cleaned_data.get('body').encode('utf8') )
 		return self.cleaned_data.get('body')
 
 	'''
@@ -319,17 +319,14 @@ class TicketForm(ModelForm):
 
 	'''
 	Functions:
-	Check source=>destiny object and if it's not the same, log it
+	Check source=>destiny object and if it's not the same, log clean_it
 	'''
 
 	def field_checker(self, source=None, destiny=None, destiny_name=None):
 		if source != destiny:
-			logger(self.instance, self.request.user, "Changed", ""+str(destiny)+"")
+			logger(self.instance, self.request.user, "Changed", destiny)
+			pass
 
-
-	'''Clean methods:
-	'''
-	'''Assign company to ticket (needed? can we improve it?)'''
 
 	def clean(self):
 		#Some essential vars
@@ -352,17 +349,15 @@ class TicketForm(ModelForm):
 		'''Force to assign company'''
 		cleaned_data['assigned_company'] = queue_obj.company_rel
 
-		'''Put percentage 100% when closed ticket is detected'''
-		if cleaned_data['assigned_state'].id ==  3:
-			self.instance.percentage = int(100)
-
+		# '''Put percentage 100% when closed ticket is detected'''
+		# if cleaned_data['assigned_state'].id ==  3:
+		# 	self.instance.percentage = int(100)
 
 #=> Attachments
 
 class Attachment(models.Model):
 	ticket_rel = models.ForeignKey(Ticket,null=True, blank=True)
 	file_name = models.FileField(upload_to='ticket_files/',null=True, blank=True)
-
 
 class AttachmentForm(ModelForm):
 	class Meta:

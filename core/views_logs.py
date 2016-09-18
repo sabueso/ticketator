@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import models
 
 def logger(ticket, user, action, destiny):
