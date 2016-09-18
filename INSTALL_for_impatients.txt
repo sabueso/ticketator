@@ -1,0 +1,41 @@
+Simple instructions for imptatients users:
+
+Based on a Debian machine/VM
+
+-apt-get install python-pip postgresql
+
+-create a user if you want (by ex. "django")
+
+-change to this user
+
+-git clone https://github.com/sabueso/ticketator.git
+
+-as postgres user, "cd /home/django/ticketator/utils/" & "./1_create_database.sh"
+
+-as root, pip install -r requirements.txt (if no do that as root, hangs in some part, i have to review that)
+
+-as django user, "./manage.py makemigrations; ./manage.py migrate"
+
+-as django user, "./manage.py createsuperuser"
+
+-Now, to populate some needed data from the base directory of the instalation:
+
+	./manage.py loaddata fixtures/1_states.json 
+	./manage.py loaddata fixtures/2_usertypes.json 
+	./manage.py loaddata fixtures/3_priority.json 
+
+-Further steps:
+
+	-Log as admin and create a Company under settings menu
+	-Create a Queue to assign tickets under the settings menu
+
+-Nexts steps:
+
+	-Create groups
+	-Create users
+	-Create rights
+
+Now enjoy and give constructive feedback! ;)
+
+Ramiro (ramiro@ticketator.org)
+
