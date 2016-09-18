@@ -272,7 +272,7 @@ class TicketForm(ModelForm):
 
 	def clean_assigned_state(self):
 		if self.instance.pk is not None:  # new instance only
-			self.field_checker(self.instance.assigned_state, self.cleaned_data.get('assigned_state') )
+			self.field_checker(self.instance.assigned_state, str(self.cleaned_data.get('assigned_state')) )
 		return self.cleaned_data.get('assigned_state')
 		
 	'''
