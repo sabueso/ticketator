@@ -7,8 +7,11 @@
                     type: ''+type+'',
                     styling: 'bootstrap3',
                     nonblock: true,
+                    buttons: {
+                            sticker: false,
+                            },
                     hide: true,
-                    delay: 2000,
+                    delay: 1000,
                 });
     }
 
