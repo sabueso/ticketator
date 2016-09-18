@@ -354,10 +354,15 @@
                             //Disable the slider if its the firs microtask and update the percentage
                             slider_for_existing.update({disable: true, from: new_percentage});
                             update_microtasks();
-                            var rowCount = $('#tblmicrotasks tbody tr').length;
+                            var rowCount = $('#tblmicrotasks  tr').length - 1;
+                            console.log(rowCount);
                             if (rowCount == 0)
                             {
                                 slider_for_existing.update({disable: false});
+                            }
+                            else
+                            {
+                                slider_for_existing.update({disable: true});
                             }
                     },
             error: function(xhr, status, error) {
