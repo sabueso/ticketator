@@ -1,10 +1,36 @@
     $().ready(function() {
 
+    function notif(type, title, text){
+    new PNotify({
+                    title: ''+title+'',
+                    text: ''+text+'',
+                    type: ''+type+'',
+                    styling: 'bootstrap3',
+                    nonblock: true,
+                    hide: true,
+                    delay: 2000,
+                });
+    }
+
     //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     //we catch the values rendered by Django template
     var idTicket_data = document.getElementById("idTicket").value;
-    var idPercentage_data = document.getElementById("idPercentage").value;
+    var idPercentage_data = document.getElementById("id_ticket-percentage").value;
     var count_microtask_data = document.getElementById("count_microtask").value;
+
+
+    function update_percentage_input(percentage_value)
+    {
+    var raw_value = percentage_value;
+    if($('#id_ticket-percentage').val())
+       {   
+        $('#id_ticket-percentage').val(raw_value)
+       }
+    else
+       {
+        $('#ticketform').append('<input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="'+raw_value+'">');
+       }
+    }
 
     //Update the global percentage via ajax call
     function set_percentage(final_value)
@@ -55,10 +81,12 @@
                     var raw_value = data.from;
                     //console.log("Value: " + raw_value);
                     set_percentage(raw_value);
+                    update_percentage_input(data.from)
                 }
 
         });
     var slider_for_existing = $(".range_base_ticket").data("ionRangeSlider");
+
 
     //Define if existing ticket load needs to disable the range slider because the existence
     //of microtasks
@@ -68,6 +96,7 @@
         slider_for_existing.update({disable: true});
     }
     //console.log(count_microtask_data);  
+
 
 
     //Catch the value on the range slider and set it when no instance is definded (new tickets only)
@@ -82,16 +111,17 @@
           max_interval: 0,
           onFinish: function (data) {
                     //Log final value for test purpouses
-                    var raw_value = data.from;
-                    //console.log("Value: " + raw_value);
-                    if($('#id_ticket-percentage').val())
-                    {   
-                        $('#id_ticket-percentage').val(raw_value)
-                    }
-                    else
-                    {
-                        $('#ticketform').append('<input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="'+raw_value+'">');
-                    }
+                    // var raw_value = data.from;
+                    update_percentage_input(data.from)
+                    // //console.log("Value: " + raw_value);
+                    // if($('#id_ticket-percentage').val())
+                    // {   
+                    //     $('#id_ticket-percentage').val(raw_value)
+                    // }
+                    // else
+                    // {
+                    //     $('#ticketform').append('<input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="'+raw_value+'">');
+                    // }
                 }
         });
     var slider_for_new = $(".range_base_ticket_for_submit").data("ionRangeSlider");
@@ -129,17 +159,6 @@
              });
     }
 
-    function notif(type, title, text){
-    new PNotify({
-                    title: ''+title+'',
-                    text: ''+text+'',
-                    type: ''+type+'',
-                    styling: 'bootstrap3',
-                    nonblock: true,
-                    hide: true,
-                    delay: 2000,
-                });
-    }
  
     //Post new message
     $('.add-message').click(function(){
@@ -292,6 +311,8 @@
                             //console.log(percentage)
                             //Disable the slider if its the firs microtask and update the percentage
                             slider_for_existing.update({disable: true, from: new_percentage});
+                            //Update the main input value for "percentage" to avoid 0% percentage
+                            update_percentage_input(new_percentage)
                             //Update all microtask from table
                             update_microtasks();
                     },

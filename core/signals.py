@@ -27,5 +27,10 @@ def update_percentage_average_post_delete(sender, instance, **kwargs):
 		ticket_to_update.save()
 	else:
 		pass
-
   
+@receiver(post_save, sender=Ticket)
+def cent_percent_on_close(sender, instance, **kwargs):
+	ticket = instance
+	if ticket.assigned_state.id == 3 and ticket.percentage != 100:
+		ticket.percentage = int(100)
+		ticket.save()

@@ -20,11 +20,7 @@
 {% block content %}
     {% load core_settings_data %}
     {% url_tickets as urlt %}
-    <!--usefull for JS scripts-->
-    <input type="hidden" id="idTicket" name="variable" value="{{ form_ticket.instance.id }}">
-    <input type="hidden" id="idPercentage" name="variable" value="{{form_ticket.instance.percentage }}">
-    <input type="hidden" id="count_microtask" name="variable" value="{{actual_microtasks.count }}">
-
+    
     <!--All the rest-->
     <div class="x_panel">
                     <div class="x_title">
@@ -75,6 +71,11 @@
                             <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="main-tab">
                                 <div class="row">
                                 <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit-dev/{{form_ticket.instance.id}}{%else%}create-new-devb{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
+
+                                    <!--usefull for JS scripts-->
+                                    <input type="hidden" id="idTicket" name="variable" value="{{ form_ticket.instance.id }}">
+                                    <input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="{{ form_ticket.instance.percentage }}">
+                                    <input type="hidden" id="count_microtask" name="variable" value="{{actual_microtasks.count }}">
 
 
                                     <!--Left side-->
