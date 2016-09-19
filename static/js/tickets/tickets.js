@@ -16,14 +16,27 @@
                 });
     }
 
+    //Now
+    var now = moment().format("DD/MM/YYYY HH:mm:ss a");
+
     //Date picker
     $('#id_ticket-date').daterangepicker({
-        "autoUpdateInput": true,
-        "format": 'DD/MM/YYYY hh:mm:ss',
         "singleDatePicker": true,
         "timePicker": true,
-        "opens": "left" 
+        "timePicker24Hour": true,
+        "showCustomRangeLabel": false,
+        "autoUpdateInput": true,
+        "format": 'DD/MM/YYYY H:mm:ss',
+        
     });
+
+
+    if($('#id_ticket-date').length != 0) {
+        $('#id_ticket-date').data('daterangepicker').setEndDate(now);    
+    }
+
+    
+    console.log(moment().format("DD/MM/YYYY HH:mm:ss a"));
 
     //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     //we catch the values rendered by Django template
