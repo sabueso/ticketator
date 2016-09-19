@@ -61,7 +61,7 @@
                                            <td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
                                            <td class="text-center" style="vertical-align:middle">{% if line.assigned_queue %}{{line.assigned_queue.shortcode}}{%else%}{%endif%}</td>
                                     	   <td class="text-center" style="vertical-align:middle">{{line.create_user}}</td>
-                                           <td class="text-center" style="vertical-align:middle">{{line.date|date:"d/m/y g:i:s"}}</td>
+                                           <td class="text-center" style="vertical-align:middle">{{line.date|date:"d/m/y G:i:s"}}</td>
                                            <td class="text-center" style="vertical-align:middle">{% if line.assigned_user %}{{line.assigned_user.first_name}} {{line.assigned_user.last_name}}{%endif%}</td>
 
 

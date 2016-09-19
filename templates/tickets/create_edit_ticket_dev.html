@@ -9,6 +9,8 @@
 
 {% block extend_js%}
     {% load staticfiles %}
+    <script src="{% static "js/moment/moment.min.js" %}"></script>
+    <script src="{% static "js/datepicker/daterangepicker.js" %}"></script>
     <script src="{% static "vendors/ion.rangeSlider/js/ion.rangeSlider.min.js" %}"></script>
     <!--tickets JS-->
     <script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>
@@ -169,7 +171,13 @@
                                         </div>
 
                                         <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                            <input id="id_ticket-date" name="ticket-date" class="form-control" {% if form_ticket.instance.date%} value="{{form_ticket.instance.date|date:"d/m/y m:h:s"}}" readonly{% endif %}>
+                                            {% if form_ticket.instance.id %}
+                                                <input id="id_ticket-date" name="ticket-date" class="form-control" value="{{form_ticket.instance.date|date:"d/m/y G:i"}}" readonly/>
+                                            {%else%}
+                                                <input id="id_ticket-date" name="ticket-date" class="form-control" value="">
+                                                <!--<input id="id_ticket-date" type="text" aria-describedby="inputSuccess2Status"  class="form-control has-feedback-left">-->
+                                            {%endif%}
+
                                             {{form_ticket.date.errors}}
                                         </div>
 
@@ -459,11 +467,9 @@
                             </div>
                             {%endif%}
                         </div>
-
-                        
                         </div>
                         </div>
-                </div>
+                        </div>
                    
     </div>
 

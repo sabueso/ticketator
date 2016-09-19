@@ -1,5 +1,6 @@
     $().ready(function() {
 
+    //PNotify for events (add messages, range change, etc)
     function notif(type, title, text){
     new PNotify({
                     title: ''+title+'',
@@ -14,6 +15,15 @@
                     delay: 1000,
                 });
     }
+
+    //Date picker
+    $('#id_ticket-date').daterangepicker({
+        "autoUpdateInput": true,
+        "format": 'DD/MM/YYYY hh:mm:ss',
+        "singleDatePicker": true,
+        "timePicker": true,
+        "opens": "left" 
+    });
 
     //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     //we catch the values rendered by Django template

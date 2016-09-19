@@ -261,7 +261,7 @@ class TicketForm(ModelForm):
 	class Meta:
 		model =  Ticket
 		fields = '__all__'
-		#exclude = ['percentage']
+		#exclude = ['date']
 		
 	'''
 	We log all importante changes in fields to be tracked	
