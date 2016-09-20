@@ -8,290 +8,83 @@
                 <!-- /.col-lg-22 -->                
         </div>
 
-<div class="panel-body">
-                            <div class="row clearfix">
-                                <div class="col-md-3 column">
+
+                            <div class="row ">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                     <div class="feature-box">
-                                        <span class="feature-icon"><i class="fa fa-code"></i></span>
-                                        <h4>One Code for All Device </h4>
-                                        <span>One code used for all device</span>
+                                        <a href="/settings/user">
+                                        <span class="feature-icon"><i class="fa fa-user"></i></span>
+                                        <h4>Users</h4>
+                                        <span>Manage users</span>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="col-md-3 column">
+                                {% if request.user.is_superuser == True %}
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                     <div class="feature-box">
+                                        <a href="/settings/groups">
                                         <span class="feature-icon"><i class="fa fa-mobile"></i></span>
-                                        <h4>Fully Responsive</h4>
-                                        <span>Desktops, Tablets and Mobile</span>
+                                        <h4>Groups</h4>
+                                        <span>Manage groups</span>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="col-md-3 column">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                     <div class="feature-box">
+                                        <a href="/settings/queue">
                                         <span class="feature-icon"><i class="fa fa-th-list"></i></span>
-                                        <h4>Minimized Menu </h4>
-                                        <span>Minimized Menu on Toggle</span>
+                                        <h4>Queues </h4>
+                                        <span>Manage queues for tickets</span>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="col-md-3 column">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                     <div class="feature-box">
+                                        <a href="/settings/companies">
                                         <span class="feature-icon"><i class="fa fa-list-alt"></i></span>
-                                        <h4>Responsive SubMenu</h4>
-                                        <span>4 level SubMenu added</span>
+                                        <h4>Companys</h4>
+                                        <span>Manage companys</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row clearfix">
-                                <div class="col-md-3 column">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                     <div class="feature-box">
+                                        <a href="/settings/rights">
                                         <span class="feature-icon"><i class="fa fa-file-code-o"></i></span>
-                                        <h4>Light weight</h4>
-                                        <span>Using Minified CSS File </span>
+                                        <h4>Rights</h4>
+                                        <span>Manage rights for queues</span>
                                     </div>
                                 </div>
-                                <div class="col-md-3 column">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                     <div class="feature-box">
+                                        <a href="/settings/state">
                                         <span class="feature-icon"><i class="fa fa-css3"></i></span>
-                                        <h4>Jquery/CSS3 animations</h4>
-                                        <span>Using Jquery,CSS3,Animation</span>
+                                        <h4>States</h4>
+                                        <span>Manage states for tickets</span>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="col-md-3 column">
+                                {%endif%}
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                     <div class="feature-box">
+                                        <a href="#">
                                         <span class="feature-icon"><i class="fa fa-flag"></i></span>
-                                        <h4>Vector icons</h4>
-                                        <span>Using Font Awesome Web font</span>
+                                        <h4>Config</h4>
+                                        <span>Ticketator settings</span>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="col-md-3 column">
-                                    <div class="feature-box">
-                                        <span class="feature-icon"><i class="fa fa-angellist"></i></span>
-                                        <h4>Collapsible menu</h4>
-                                        <span>Collapsible menu in Tablets </span>
-                                    </div>
-                                </div>
+                                
                             </div>
-                            <div class="row clearfix">
-                                <div class="col-md-3 column">
-                                    <div class="feature-box">
-                                        <span class="feature-icon"><i class="fa fa-file-text"></i></span>
-                                        <h4>Well documentation</h4>
-                                        <span>Step by step instructions to use menu</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 column">
-                                    <div class="feature-box">
-                                        <span class="feature-icon"><i class="fa fa-life-ring"></i></span>
-                                        <h4>Free Support</h4>
-                                        <span>you Can contact me in my profile</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 column">
-                                    <div class="feature-box">
-                                        <span class="feature-icon"><i class="fa fa-pencil-square-o"></i></span>
-                                        <h4>Easy to use/customizable</h4>
-                                        <span>Well coded Easy to use in website</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 column">
-                                    <div class="feature-box">
-                                        <span class="feature-icon"><i class="fa fa-eye"></i></span>
-                                        <h4>Coming Soon</h4>
-                                        <span>Theme Option Coming Soon</span>
-                                    </div>
-                                </div>
-                            </div>
-</div>
+                    </div>
 
 
-
-        <!--users-->
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-user fa-2x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">
-                                        <h3>Users</h3>
-                                        <p>Manage users</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/settings/user">   
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-  
-
-            {% if request.user.is_superuser == True %}
- 
-            <!--groups-->
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-th fa-2x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">
-                                        <h3>Groups</h3>
-                                        <p>Manage groups</p>
-                                        </div>
-                                </div>
-                                </div>
-                            </div>
-                            <a href="/settings/groups">
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-
-            <!--Queues-->
-
-
-
-
-  
-    <div class="row">
-            
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-th fa-2x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">
-                                        <h3>Queues</h3>
-                                        <p>Manage queues</p>
-                                        </div>
-                                </div>
-                                </div>
-                            </div>
-                            <a href="/settings/queue">
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-
-     
-            <!--Company-->
-            
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-building fa-2x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">
-                                        <h3>Company</h3>
-                                        <p>Add/Remove companys</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/settings/companies">
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                            </div>
-
-            <!--rights-->
-            
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-key fa-2x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">
-                                        <h3>Rights</h3>
-                                        <p>Manage rights/queues</p>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/settings/rights">
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-            
-            <!--States-->
-            
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa 1fa-key fa-2x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">
-                                        <h3>States</h3>
-                                        <p>Manage states for tickets</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/settings/state">
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    
-            
-
-            {%endif%}
-
-            <!--config-->
-                <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-gear  fa-2x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="medium">
-                                        <h3>Config</h3>
-                                        <p>App config</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/settings/users">
-                                <div class="panel-footer">
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <span class="pull-right">Go</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>            
         </div>
 
-    </div>
+    
     
 
 {%endblock%}
