@@ -117,7 +117,7 @@ def manage_ticket_dev(request, ticket_id=None):
 	#Non-POST mode, show only
 		form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
 		form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
-	return render(request,'tickets/create_edit_ticket_dev.html', locals())
+	return render(request,'tickets/create_edit_ticket.html', locals())
 
 def save_comment(request, comment_data=None, private_data=None, ticket_data=None):
 #Save data

@@ -249,7 +249,10 @@ class Ticket(models.Model):
 			state_data_id=str(self.assigned_state.id),
 			state_color_data=str(self.assigned_state.color), 
 			#date_data=str(self.date.strftime('%d-%m-%Y %H:%m'))
-			percentage_data=int(self.percentage)
+			percentage_data=str(self.percentage),
+			queue_shortcode=str(self.assigned_queue.shortcode),
+			create_user=""+str(self.create_user.first_name)+" "+str(self.create_user.last_name)+"",
+			#assigned_user_data=""+str(self.assigned_user.first_name)+" "+str(self.assigned_user.last_name)+"",
 			)
 
 class TicketForm(ModelForm):

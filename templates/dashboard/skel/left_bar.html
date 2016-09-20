@@ -1,10 +1,14 @@
+{% load staticfiles %}
 {% load core_settings_data %}
         <div class="col-md-3 left_col ">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="/" class="site_title"><span>{{vars.name}}</span></a>
+                <div class="profile">
+                <img src="{% static "media/logo/tk-tiny.png" %}" style="margin-left: 15px; margin-top: 8px;">
+                </div>
             </div>
 
+            <div class="clearfix"></div>
             <div class="clearfix"></div>
            
             <!-- sidebar menu -->
@@ -15,12 +19,6 @@
                 <li>
                     <a href="/"><i class="fa fa-home"></i> Dashoard <span class="fa"></span></a>
                 </li>
-                <!-- <li>
-                    <a href="/tickets/create"><i class="fa fa-support"></i> New ticket <span class="fa "></span></a>
-                </li> -->
-                <!--<li>
-                    <a href="/tickets/create-new"><i class="fa fa-support"></i>New ticket<span class="label label-success pull-right">NEW UI</span><span class="fa "></span></a>
-                </li>-->
                 <li>
                     <a href="/tickets/create-new-dev"><i class="fa fa-plus"></i>Add ticket</a>
                 </li>
@@ -50,6 +48,9 @@
                                     </li>
                                     {%endfor%}
                             </ul>
+                </li>
+                <li>
+                    <a href="/search"><i class="fa fa-search"></i>Search</a>
                 </li>
                 <li>
                     <a href="/inventory"><i class="fa fa-desktop"></i>Inventory</a>

@@ -54,41 +54,41 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	{%for line in tickets_info.data %}
-                                    	   <tr class="odd gradeX">
-                                    	   <td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/{{line.id}}">{{line.id}}</a></td>
-                                    	   <td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/{{line.id}}">{{line.subject}}</a></td>
-                                           <td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
-                                           <td class="text-center" style="vertical-align:middle">{% if line.assigned_queue %}{{line.assigned_queue.shortcode}}{%else%}{%endif%}</td>
-                                    	   <td class="text-center" style="vertical-align:middle">{{line.create_user}}</td>
-                                           <td class="text-center" style="vertical-align:middle">{{line.date|date:"d/m/y G:i:s"}}</td>
-                                           <td class="text-center" style="vertical-align:middle">{% if line.assigned_user %}{{line.assigned_user.first_name}} {{line.assigned_user.last_name}}{%endif%}</td>
+                              	{%for line in tickets_info.data %}
+                              	   <tr class="odd gradeX">
+                              	   <td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/{{line.id}}">{{line.id}}</a></td>
+                              	   <td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/{{line.id}}">{{line.subject}}</a></td>
+                                     <td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
+                                     <td class="text-center" style="vertical-align:middle">{% if line.assigned_queue %}{{line.assigned_queue.shortcode}}{%else%}{%endif%}</td>
+                              	   <td class="text-center" style="vertical-align:middle">{{line.create_user}}</td>
+                                     <td class="text-center" style="vertical-align:middle">{{line.date|date:"d/m/y G:i:s"}}</td>
+                                     <td class="text-center" style="vertical-align:middle">{% if line.assigned_user %}{{line.assigned_user.first_name}} {{line.assigned_user.last_name}}{%endif%}</td>
 
 
-                                            <td class="project_progress">
-                                                  <div class="progress progress_sm" >
-                                                      <div aria-valuenow="{{line.percentage}}" style="width: {{line.percentage}}%" class="progress-bar 
-                                                                              {%if line.percentage <= 30 and line.percentage >= 0 %}  bg-red {%endif%}
-                                                                              {%if line.percentage <= 60 and line.percentage >= 40 %} bg-orange {%endif%}
-                                                                              {%if line.percentage <= 100 and line.percentage >= 70 %} bg-green {%endif%}" 
-                                                                              role="progressbar" data-transitiongoal="{{line.percentage}}">
-                                                      </div>
-                                                  </div>
+                                      <td class="project_progress">
+                                            <div class="progress progress_sm" >
+                                                <div aria-valuenow="{{line.percentage}}" style="width: {{line.percentage}}%" class="progress-bar 
+                                                                        {%if line.percentage <= 30 and line.percentage >= 0 %}  bg-red {%endif%}
+                                                                        {%if line.percentage <= 60 and line.percentage >= 40 %} bg-orange {%endif%}
+                                                                        {%if line.percentage <= 100 and line.percentage >= 70 %} bg-green {%endif%}" 
+                                                                        role="progressbar" data-transitiongoal="{{line.percentage}}">
+                                                </div>
+                                            </div>
 
-                                                  <div class="percentage_range" >
-                                                    <small>{{line.percentage}}%</small>
-                                                  </div>
+                                            <div class="percentage_range" >
+                                              <small>{{line.percentage}}%</small>
+                                            </div>
 
-                                                
-                                                
-                                                
-                                            </td>
+                                          
+                                          
+                                          
+                                      </td>
 
-                                                
-                                                
-                                            </td>
-                                            <td class="text-center" style="vertical-align:middle">{{line.assigned_prio}}</td>
-                                    	{%endfor%}
+                                          
+                                          
+                                      </td>
+                                      <td class="text-center" style="vertical-align:middle">{{line.assigned_prio}}</td>
+                              	{%endfor%}
                                         
                                     </tbody>
 
