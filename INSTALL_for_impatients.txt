@@ -2,7 +2,7 @@ Simple instructions for imptatients users:
 
 Based on a Debian machine/VM
 
--apt-get install python-pip postgresql git
+-apt-get install python-pip postgresql git python-psycopg2
 
 -create a user if you want (by ex. "django")
 
