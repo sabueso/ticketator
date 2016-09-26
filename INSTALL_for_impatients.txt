@@ -2,7 +2,7 @@ Simple instructions for imptatients users:
 
 Based on a Debian machine/VM
 
--apt-get install python-pip postgresql
+-apt-get install python-pip postgresql git
 
 -create a user if you want (by ex. "django")
 
