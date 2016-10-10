@@ -287,7 +287,7 @@ class TicketForm(ModelForm):
 			if user_object_rights.can_create != True:
 				raise forms.ValidationError(self.clean_error_cantcreate())
 			else:
-				self.field_checker(self.instance.assigned_queue, self.cleaned_data.get('assigned_queue'))
+				self.field_checker(self.instance.assigned_queue, str(self.cleaned_data.get('assigned_queue')))
 		return self.cleaned_data.get('assigned_queue')
 
 	def clean_assigned_user(self):
