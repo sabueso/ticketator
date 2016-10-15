@@ -14,7 +14,6 @@ django-colorfield==0.1.10
 django-extensions==1.7.3
 docutils==0.12
 html5lib==0.999
-ipython==2.3.0
 ndg-httpsclient==0.3.2
 pexpect==3.2
 ply==3.4
@@ -22,10 +21,6 @@ psycopg2==2.5.4
 pyOpenSSL==0.14
 pyasn1==0.1.7
 pycparser==2.10
-python-apt==0.9.3.12
-python-debian==0.1.27
-python-debianbts==1.11
-reportbug==6.6.3
 requests==2.4.3
 roman==2.0.0
 simplegeneric==0.8.1
