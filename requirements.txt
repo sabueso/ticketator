@@ -7,7 +7,6 @@ argparse==1.2.1
 cffi==0.8.6
 chardet==2.3.0
 colorama==0.3.2
-cryptography==0.6.1
 decorator==3.4.0
 defusedxml==0.4.1
 django-colorfield==0.1.10
@@ -27,5 +26,3 @@ simplegeneric==0.8.1
 six==1.8.0
 urllib3==1.9.1
 wheel==0.24.0
-wsgiref==0.1.2
-wstools==0.4.3
