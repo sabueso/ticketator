@@ -275,7 +275,7 @@ class TicketForm(ModelForm):
 
 	def clean_assigned_state(self):
 		if self.instance.pk is not None:  # new instance only
-			self.field_checker(self.instance.assigned_state, str(self.cleaned_data.get('assigned_state')) )
+			self.field_checker(str(self.instance.assigned_state), str(self.cleaned_data.get('assigned_state')) )
 		return self.cleaned_data.get('assigned_state')
 		
 	'''
@@ -287,7 +287,7 @@ class TicketForm(ModelForm):
 			if user_object_rights.can_create != True:
 				raise forms.ValidationError(self.clean_error_cantcreate())
 			else:
-				self.field_checker(self.instance.assigned_queue, str(self.cleaned_data.get('assigned_queue')))
+				self.field_checker(str(self.instance.assigned_queue), str(self.cleaned_data.get('assigned_queue')))
 		return self.cleaned_data.get('assigned_queue')
 
 	def clean_assigned_user(self):
