@@ -54,7 +54,11 @@ $().ready(function() {
             type: "POST",
             url: "/search/",
             dataType: "json",
-            data: { "subject_text": $("#subject").val() },
+            data: { 
+                    "subject_text": $("#subject").val(),
+                    "body_text": $("#body").val(),
+                    "assigned_id": $("#id_assigned_user").val(),
+                   },
             success: function(data) {
 		                    //$("#message_data").val("");
                             console.log(data);

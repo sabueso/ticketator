@@ -206,8 +206,8 @@ class StateForm(ModelForm):
 
 #=> Prioritys
 class Priority(models.Model):
-	name = models.CharField(max_length=30)
-	#color = ColorField()
+	name = models.CharField(max_length=30
+)	#color = ColorField()
 	def __unicode__(self):
 		return self.name
 
@@ -252,6 +252,7 @@ class Ticket(models.Model):
 			percentage_data=str(self.percentage),
 			queue_shortcode=str(self.assigned_queue.shortcode),
 			create_user=""+str(self.create_user.first_name)+" "+str(self.create_user.last_name)+"",
+			assigned_user_data=self.assigned_user
 			#assigned_user_data=""+str(self.assigned_user.first_name)+" "+str(self.assigned_user.last_name)+"",
 			)
 

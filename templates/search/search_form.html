@@ -112,7 +112,7 @@
                               <label class="control-label col-md-3 col-sm-3 col-xs-12">Subject </label>
                               </div>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" id="subject" placeholder="Subject or body"  class="form-control">
+                              <input type="text" id="subject" placeholder="Subject data"  class="form-control">
                             </div>
                         </div>
 
@@ -121,7 +121,7 @@
                               <label class="control-label col-md-3 col-sm-3 col-xs-12">Body </label>
                               </div>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" id="body" placeholder="Subject or body"  class="form-control">
+                              <input type="text" id="body" placeholder="Body data"  class="form-control">
                             </div>
                         </div>
 
@@ -130,7 +130,8 @@
                               <label class="control-label col-md-3 col-sm-3 col-xs-12">Creator </label>
                               </div>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" placeholder="Subject or body"  class="form-control">
+
+                              <input type="text" id="id_create_user" class="form-control">
                             </div>
                         </div>
 
@@ -139,7 +140,17 @@
                               <label class="control-label col-md-3 col-sm-3 col-xs-12">Responsible </label>
                               </div>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" placeholder="Subject or body"  class="form-control">
+                                  <select class="form-control pointer" id="id_assigned_user" name="ticket-assigned_user" >
+                                  <!--<option disabled selected value> -- select an option -- </option>-->
+                                  <option value="" selected >--</option>
+                                    {% for user_resp in common_data.users_info %}
+                                      {%if user_resp.id  == form_ticket.instance.assigned_user.id %}
+                                      <option value="{{user_resp.id}}" selected >{{user_resp.first_name}} {{user_resp.last_name}}</option>
+                                      {%else%}
+                                      <option value="{{user_resp.id}}">{{user_resp.first_name}} {{user_resp.last_name}}</option>
+                                      {%endif%}
+                                    {%endfor%}
+                                  </select>
                             </div>
                         </div>
 
