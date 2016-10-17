@@ -240,6 +240,14 @@ class Ticket(models.Model):
 	def __str__(self):
 		return '%s' % (self.id)
 
+	'''Return a empty string to avoid problems in JSON serialization'''
+	def str_assigned_user_name(self):
+		try:
+			assigned_user_data=""+str(self.assigned_user.first_name)+" "+str(self.assigned_user.last_name)+""
+		except:
+			assigned_user_data=""
+		return assigned_user_data
+
 	def as_json(self):
 		return dict(
 			id=str(self.id),
@@ -251,8 +259,7 @@ class Ticket(models.Model):
 			percentage_data=str(self.percentage),
 			queue_shortcode=str(self.assigned_queue.shortcode),
 			create_user=""+str(self.create_user.first_name)+" "+str(self.create_user.last_name)+"",
-			assigned_user_data=self.assigned_user
-			#assigned_user_data=""+str(self.assigned_user.first_name)+" "+str(self.assigned_user.last_name)+"",
+			assigned_user_data=self.str_assigned_user_name(),
 			)
 
 class TicketForm(ModelForm):

@@ -5,6 +5,10 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from views_tickets import common_ticket_data
 import operator
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 #List tickets
 def main_search(request, state_id=None):
@@ -17,16 +21,19 @@ def main_search(request, state_id=None):
 		'''
 		subject_data=request.POST.get('subject_text')
 		body_data=request.POST.get('body_text')
-		if request.POST.get('assigned_id'):
-			assigned_user_data=request.POST.get('assigned_id')
-		else:
-			assigned_user_data=None
-		search_list=[Q(subject__contains = subject_data),\
-					Q(body__contains = body_data),
-					Q(assigned_user = assigned_user_data)]
-		'''Admin results scope'''
+		assigned_user_data=request.POST.get('assigned_id')
+
+		'''Q config'''
+		q_objects = Q()
+		q_objects &= Q(subject__contains = subject_data) # 'or' the Q objects together
+		q_objects &= Q(body__contains = body_data)
+		if assigned_user_data is not '':
+			q_objects &= Q(assigned_user__in=assigned_user_data)
+
+		#Admin results scope'''
 		if request.user.is_superuser == True :
-			qry_results = Ticket.objects.filter(reduce(operator.and_, search_list))
+			#qry_results = Ticket.objects.filter(reduce(operator.and_, q_objects))
+			qry_results = Ticket.objects.filter(q_objects)
 		else:
 			pass
 		data = [obj.as_json() for obj in qry_results]
