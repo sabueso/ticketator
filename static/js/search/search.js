@@ -58,6 +58,7 @@ $().ready(function() {
                     "subject_text": $("#subject").val(),
                     "body_text": $("#body").val(),
                     "assigned_id": $("#id_assigned_user").val(),
+                    "creator_id": $("#id_create_user").val(),
                    },
             success: function(data) {
 		                    //$("#message_data").val("");

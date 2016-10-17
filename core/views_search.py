@@ -22,6 +22,7 @@ def main_search(request, state_id=None):
 		subject_data=request.POST.get('subject_text')
 		body_data=request.POST.get('body_text')
 		assigned_user_data=request.POST.get('assigned_id')
+		creator_user_data=request.POST.get('creator_id')
 
 		'''Q config'''
 		q_objects = Q()
@@ -29,6 +30,8 @@ def main_search(request, state_id=None):
 		q_objects &= Q(body__contains = body_data)
 		if assigned_user_data != '':
 			q_objects &= Q(assigned_user__in=assigned_user_data)
+		if creator_user_data != '':
+			q_objects &= Q(create_user__in = creator_user_data)
 
 		#Admin results scope'''
 		if request.user.is_superuser == True :
