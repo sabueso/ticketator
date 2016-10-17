@@ -207,10 +207,14 @@ class StateForm(ModelForm):
 
 #=> Prioritys
 class Priority(models.Model):
-	name = models.CharField(max_length=30
-)	#color = ColorField()
+	name = models.CharField(max_length=30)	
 	def __unicode__(self):
 		return self.name
+
+class PriorityForm(ModelForm):
+	class Meta:
+		model =  Priority
+		fields = '__all__'
 
 #=> Inventory Servers/PC 
 

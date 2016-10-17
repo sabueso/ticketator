@@ -12,7 +12,8 @@ from core import views_users as vusers, views_company as vcompanies,\
                  views_queues as vqueues,views_tickets as vtickets, \
                  views_group as vgroup, views_right as vright,\
                  views_auth as vauth, views_states as vstates, \
-                 views_inventory as vinvent, views_search as vsearch 
+                 views_inventory as vinvent, views_search as vsearch,\
+                 views_priority as vpriorities
 
 urlpatterns = [
 
@@ -55,6 +56,11 @@ urlpatterns = [
     url(r'^settings/companies/$', vcompanies.list_companies, name='company-list'),
     url(r'^settings/companies/create', vcompanies.manage_company, name='company-create'),
     url(r'^settings/companies/(?P<company_id>\d+)?$', vcompanies.manage_company, name='company-edit'),
+
+    #Priorities
+    url(r'^settings/priorities/$', vpriorities.list_priorities, name='priority-list'),
+    url(r'^settings/priorities/create', vpriorities.manage_priority, name='priority-create'),
+    url(r'^settings/priorities/(?P<priority_id>\d+)?$', vpriorities.manage_priority, name='priority-edit'),
 
     #queues
     url(r'^settings/queue/$', vqueues.list_queues, name='queues-list'),
