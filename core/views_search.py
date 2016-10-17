@@ -27,7 +27,7 @@ def main_search(request, state_id=None):
 		q_objects = Q()
 		q_objects &= Q(subject__contains = subject_data) # 'or' the Q objects together
 		q_objects &= Q(body__contains = body_data)
-		if assigned_user_data is not '':
+		if assigned_user_data != '':
 			q_objects &= Q(assigned_user__in=assigned_user_data)
 
 		#Admin results scope'''
