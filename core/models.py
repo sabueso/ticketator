@@ -267,7 +267,7 @@ class Ticket(models.Model):
 			date=str(self.date.strftime('%d-%m-%Y %H:%M')),
 			subject_data=str(self.subject.encode('utf8')),
 			body_data=str(self.body.encode('utf8')),
-			state_data=str(self.assigned_state),
+			state_data=str(self.assigned_state.name),
 			state_data_id=str(self.assigned_state.id),
 			state_color_data=str(self.assigned_state.color), 
 			percentage_data=str(self.percentage),

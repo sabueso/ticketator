@@ -29,7 +29,10 @@ $().ready(function() {
 									'<tr class="odd gradeX">'+
                               	   	'<td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/'+item.id+'">'+item.id+'</a></td>'+
                               	 	'<td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/'+item.id+'">'+item.subject_data+'</a></td>'+
-                                    '<td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#'+item.state_color_data+'><font color="black">'+item.state_data+'</font></span></td>'+
+                                    '<td class="text-center" style="vertical-align:middle">'+
+                                    '<span class="label" style="background-color:#ff6f6">'+
+                                    '<font color="black">'+item.state_data+'</font></span>'+
+                                    '</td>'+
                                     '<td class="text-center" style="vertical-align:middle">'+item.queue_shortcode+'</td>'+
                               	   	'<td class="text-center" style="vertical-align:middle">'+item.create_user+'</td>'+
                                     '<td class="text-center" style="vertical-align:middle">'+item.date+'</td>'+
@@ -59,6 +62,7 @@ $().ready(function() {
                     "body_text": $("#body").val(),
                     "assigned_id": $("#id_assigned_user").val(),
                     "creator_id": $("#id_create_user").val(),
+                    "status_id": $("#id_status").val(),
                    },
             success: function(data) {
 		                    //$("#message_data").val("");
