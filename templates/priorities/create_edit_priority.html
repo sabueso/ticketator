@@ -1,0 +1,123 @@
+{% extends "dashboard/index.html" %}
+
+{%block content %}
+	<div class="row">
+                <div class="col-lg-12">
+                    {% if user_id %}
+                    <h1 class="page-header"><i class="glyphicon glyphicon-user"></i> Edit priority</h1>
+                    {% else %}
+                    <h1 class="page-header"><i class="glyphicon glyphicon-user"></i> New priority</h1>
+                    {% endif%}
+                </div>
+                <!-- /.col-lg-12 -->
+    </div>
+
+
+{% load core_settings_data %}
+{%site_vars as vars %}
+<!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
+<form method='post' action="/settings/priorities/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form">
+{% csrf_token %}
+    <div class="row">
+                <div class="col-lg-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        
+                        <div class="panel-heading">
+                            {% if vars.debug == True%}
+                            <div class="pull-left">
+                                Debug: {{vars.debug}}
+                            </div>
+                            {%endif%}
+                            <div class="text-right">
+                            Create new priority
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                                {% if vars.debug == True%}
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {{form.errors}}
+                                
+                                    </div>
+                                    {% endif %}
+                                {%endif%}
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                        <div class="form-group">
+                                                    <label>name</label>
+                                                    {% if form.instance.name %}
+                                                    <input id="name" name="name" value="{{form.instance.name}}" class="form-control">
+                                                    {% else %}
+                                                    <input id="name" name="name" class="form-control">
+                                                    {%endif%}
+                                                    <p class="help-block"></p>
+                                                    {{form.name.errors}}
+                                        </div>
+                                        
+<!--                                         <div class="form-group">
+                                                    <label>First name</label>
+                                                    {% if form.instance.first_name%}
+                                                    <input id="first_name" name="first_name" value="{{form.instance.first_name}}" class="form-control">
+                                                    {% else%}
+                                                    <input id="first_name" name="first_name" class="form-control">
+                                                    {% endif%}
+                                                    <p class="help-block"></p>
+                                                    {{form.first_name.errors}}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                                   <label>Last name</label>
+                                                    {% if form.instance.last_name%}
+                                                    <input id="last_name" name="last_name" value="{{form.instance.last_name}}" class="form-control">
+                                                    {% else%}
+                                                    <input id="last_name" name="last_name" class="form-control">
+                                                    {% endif%}
+                                                    <p class="help-block"></p>
+                                                    {{form.last_name.errors}}
+                                        </div>
+
+                                        <div class="form-group">
+                                                   <label>Email</label>
+                                                    {% if form.instance.email%}
+                                                    <input id="email" name="email" value="{{form.instance.email}}" class="form-control">
+                                                    {% else%}
+                                                    <input id="email" name="email" class="form-control">
+                                                    {% endif%}
+                                                    <p class="help-block"></p>
+                                                    {{form.email.errors}}
+                                        </div> -->
+                                        
+                                </div>
+                                
+                                       
+                                
+                            </div>
+
+
+                            <!--line separator -->
+
+                            	<div class="row">
+                         			<div class="colg-lg-9">
+                         				<div class="form-group">
+                         					<hr></hr>
+                            <!--submit-->
+                         				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save</button>
+                                      	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                      	</div>
+                         			</div>
+                         		</div>
+
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.main row -->
+</form>
+
+{%endblock%}
