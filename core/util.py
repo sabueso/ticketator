@@ -46,3 +46,4 @@ def query_view(model, params, order_by='-id', granted_queues=None, limit=setting
         'query': '&'.join(['%s=%s' % (key, value)
                            for key, value in params.iteritems()])
 }
+

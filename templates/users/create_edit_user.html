@@ -1,4 +1,4 @@
-{% extends "dashboard/index.html" %}
+    {% extends "dashboard/index.html" %}
 
 {%block content %}
 	<div class="row">
@@ -140,6 +140,17 @@
                                                     {% endif%}
                                                     <p class="help-block"></p>
                                                     {{form.date_joined.errors}}
+                                        </div>
+
+                                        <div class="form-group">
+                                                   <label>Rss feed</label>
+                                                    {% if form.instance.rssfeed%}
+                                                    <input id="rssfeed" name="rssfeed" value="{{form.instance.rssfeed}}" class="form-control">
+                                                    {% else%}
+                                                    <input id="rssfeed" name="rssfeed" class="form-control">
+                                                    {% endif%}
+                                                    <p class="help-block"></p>
+                                                    {{form.rssfeed.errors}}
                                         </div>
 
                                         <div class="form-group">
