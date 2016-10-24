@@ -242,13 +242,6 @@ class Ticket(models.Model):
 	assigned_inventory = models.ForeignKey(Inventory, null=True,blank=True)
 	percentage=models.IntegerField(default=0,blank=True,null=True)
 
-	def astimezone(self, tz):
-		if self.tzinfo is tz:
-			return self
-		# Convert self to UTC, and attach the new time zone object.
-		utc = (self - self.utcoffset()).replace(tzinfo=tz)
-		# Convert from UTC to tz's local time.
-		return tz.fromutc(utc)
 
 	def __str__(self):
 		return '%s' % (self.id)
