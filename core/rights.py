@@ -89,7 +89,7 @@ def get_queues(user, perm_level=None):
 		[granted_queues.append(queue.id) for queue in models.Queue.objects.all()]
 	else:
 		#Obtain the user group => #Obtain the rights for that group
-		u_rights=models.Rights.objects.filter(grp_src=Group.objects.filter(user=user))
+		u_rights=models.Rights.objects.filter(grp_src=Group.objects.filter(user=user),enabled=True)
 		#Now iterate over the groups, obtain the  "can_view" groups
 		#[granted_queues.append(queue.queue_dst_id) for queue in u_rights if queue.can_view == True ]
 		if perm_level == 'can_view':
