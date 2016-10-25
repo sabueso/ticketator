@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'ticketator.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tickets_db',
-        'USER': 'ticket_user_db',
-        'PASSWORD': 'ticket4everyone',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'tickets_db'),
+        'USER': os.getenv('DB_USER', 'ticket_user_db'),
+        'PASSWORD': os.getenv('DB_PASS', 'ticket4everyone'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
@@ -124,7 +124,7 @@ STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, "static/media/ticket_files")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-#    '/var/www/static/',
+    #'/var/www/static/',
 ]
 
 SITE_NAME = 'Ticketator DEV'
