@@ -20,6 +20,7 @@ psycopg2==2.5.4
 pyOpenSSL==0.14
 pyasn1==0.1.7
 pycparser==2.10
+pytz==2016.7
 requests==2.4.3
 roman==2.0.0
 simplegeneric==0.8.1
