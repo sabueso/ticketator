@@ -20,7 +20,6 @@ from django.http import HttpResponse
 from time import strftime, gmtime
 #Logger class
 from core.views_logs import logger
-#from pytz import timezone
 
 #=> UserType (OP or simple user)
 class UserType(models.Model):
