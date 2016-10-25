@@ -31,8 +31,8 @@ Give a try to Ticketator, and give us your feedback!
 
 * [Django] 1.9 or greater
 * Postgres or similar (as supported by Django ORM)
-* [django-colorfield] 
-* [django-extensions] 
+* [django-colorfield]
+* [django-extensions]
 
 ### Installation
 ```sh
@@ -46,10 +46,28 @@ pip install django-extensions
 TODO: first steps to put Ticketator on road.
 
 ### Docker demo
-Docker image to test Ticketator without effort
+Docker image to **test** Ticketator without effort:
+
+#### Requirements
+
+* (Docker)[https://docs.docker.com/engine/installation/]
+* (Docker-compose)[https://docs.docker.com/compose/install/]
+
+#### Run it
+
 ```sh
-Coming soon...
+# Build images
+docker-compose build
+
+# Run containers (in background)
+docker-compose up -d
+
+# Create admin user
+docker exec -it ticketator_backend_1 ./manage.py createsuperuser
+
+# Login on http://localhost:8000
 ```
+
 ### Disclaimer
 
 Ticketator is under active developement and some areas could not be working as expected. Please, let you free to comment it constructively under the "Issue" area on Github.
