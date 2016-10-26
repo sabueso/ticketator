@@ -1,23 +1,30 @@
 # Ticketator screenshots
 
 
--Main dashboard
+##Main dashboard
 
 ![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/dashbaord.png)
 
 
--Listing ticktes
+##Listing ticktes
 
 ![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/tickets.png)
 
 
--Ticket based on microtasks (globally ratio calculated)
+##Ticket based on microtasks (globally ratio calculated)
 
 
 ![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/microtask_task.png)
 
 
--Microtasks section
+##Microtasks section
 
 ![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/microtasks.png)
 
+##Queues to organize tickets
+
+![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/queues.png)
+
+##Rights for queues
+
+![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/rights_for_queues.png)
