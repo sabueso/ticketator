@@ -7,6 +7,8 @@ It's inspired in some Jira features and others ticketing systems commonly used b
 
 Ticketator is about tickets, queues, users and groups.
 
+You can find more screenshots [screenshot here]
+
 ###Some cool features
 
 * Simple ticket creation
@@ -17,6 +19,7 @@ Ticketator is about tickets, queues, users and groups.
 * Microtask related to a main taks (and percentage overall obtained from all microtask progress)
 * Multiple users and groups
 * HTML responsible design
+* Dashboard with important info as open & pending tickets & RSS feed
 * Only a few AJAX calls, not a Javascript/Jquery monster
 
 Start to use Ticketator is as simple as install it, load initial data, create a superuser, a queue, and you're ready to create tickets!
@@ -45,7 +48,7 @@ TODO: first steps to put Ticketator on road.
 ### Docker demo
 Docker image to test Ticketator without effort
 ```sh
-TODO:
+Coming soon...
 ```
 ### Disclaimer
 
@@ -54,8 +57,8 @@ Ticketator is under active developement and some areas could not be working as e
 ### Todos
 
  - Write Tests
- - Create more consisten logs for tickets
- - A lot of more things
+ - Inventory module
+ - See "Issues" in Github to see next enhacements
 
 License
 ----
@@ -68,3 +71,4 @@ TODO
 
 
    [Django]: <https://www.djangoproject.com/download/>
+   [screenshot here]: <https://github.com/sabueso/ticketator/blob/master/Screenshot.md>
