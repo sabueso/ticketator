@@ -3,7 +3,7 @@
 Ticketator is a simple ticketing system developed in Python 2, based on Django Framework.
 It's inspired in some Jira features and others ticketing systems commonly used by IT Departments.
 
-![alt tag](https://dl.dropboxusercontent.com/u/13983419/index.png)
+![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/ticktets.png)
 
 Ticketator is about tickets, queues, users and groups.
 
