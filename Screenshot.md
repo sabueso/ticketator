@@ -8,7 +8,7 @@
 
 -Listing ticktes
 
-![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/ticktets.png)
+![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/tickets.png)
 
 
 -Ticket based on microtasks (globally ratio calculated)
