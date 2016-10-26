@@ -11,7 +11,7 @@
 ![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/tickets.png)
 
 
-##Ticket based on microtasks (globally ratio calculated)
+##Ticket based on microtasks (globally calculated ratio based on microtasks)
 
 
 ![alt tag](https://dl.dropboxusercontent.com/u/13983419/ticketator/microtask_task.png)
