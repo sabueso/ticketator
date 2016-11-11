@@ -33,3 +33,9 @@ def index(request):
 @login_required
 def settings(request):
 	return render(request, 'settings/settings.html')
+
+
+def default_404(request):
+	response = render_to_response('404/404.html', {},context_instance=RequestContext(request))
+	response.status_code = 404
+	return response

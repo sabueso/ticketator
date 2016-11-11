@@ -15,6 +15,10 @@ from core import views_users as vusers, views_company as vcompanies,\
                  views_inventory as vinvent, views_search as vsearch,\
                  views_priority as vpriorities
 
+#404 definition
+handler404 = 'views.default_404'
+
+
 urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
