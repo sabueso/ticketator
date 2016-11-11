@@ -28,9 +28,11 @@ pip install -r requirements.txt
 
 (if you don't do as root, hangs in some part, i have to review that ASAP)
 
--as django user, "./manage.py makemigrations; ./manage.py migrate"
-
--as django user, "./manage.py createsuperuser"
+-as django user:
+``` 
+./manage.py makemigrations; ./manage.py migrate
+./manage.py createsuperuser"
+``` 
 
 -Now, to populate some needed data from the base directory of the instalation:
 
@@ -99,8 +101,8 @@ In order to avoid problems with uploaded files & perms, we recommend to situate 
 Once did that, remember to change the ownership of the code repository to "www-data" user&group.
 
 ### Warning
-If you won't do that, you can situate the code in other path, and adjust the virtualhost fiel to point to that path, but maybe, thats not the better choice to run code under a webserver and some missconfiguration could carry security problems.
-You're warned.
+If you won't do that, you can situate the code in other path, and adjust the virtualhost file to point to that path, but maybe, thats not the better choice to run code under a webserver and some missconfiguration could carry security problems. 
+**You are warned**
 
 
 # Further common steps to all installation methods:
