@@ -327,11 +327,10 @@
                                         <div class="comment_box">
                                         {% for comm in actual_comments %}
                                             <div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                                    
                                                     {% if comm.user_rel.avatar %}
-                                                    <img alt="Avatar" class="avatar" src="/static/media/{{comm.user_rel.avatar}}">
+                                                        <img alt="Avatar" class="avatar" src="/static/media/{{comm.user_rel.avatar}}">
                                                     {% else %}
-                                                    <img class="img-circle profile_img" alt="..." src="/static/images/user.png">
+                                                        <img alta="Avatar" class="avatar" src="/static/media/user.png">
                                                     {%endif%}
                                                     <span class="pull-right" style="margin-top: 10px;">{{comm.date|date:'d-m-Y H:i'}}</span>
                                                     <h5>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}}</h5>
