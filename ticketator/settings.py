@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'ticketator.urls'
 
-ACTUAL_TEMPLATES = os.path.join(BASE_DIR, 'templates/')
+ACTUAL_TEMPLATES = os.path.join(BASE_DIR, 'templates')
 
 TEMPLATES = [
     {
