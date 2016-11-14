@@ -104,6 +104,16 @@ Once did that, remember to change the ownership of the code repository to "www-d
 If you won't do that, you can situate the code in other path, and adjust the virtualhost file to point to that path, but maybe, thats not the better choice to run code under a webserver and some missconfiguration could carry security problems. 
 **You are warned**
 
+At least, remember to put your Ticketator in "no-debug-mode", open the file $path/ticketator/ticketator/settings.py and change the line
+```sh
+DEBUG = True
+```sh
+to:
+```sh
+DEBUG = False
+```sh
+
+And that's all! Ticketator is ready to use.
 
 # Further common steps to all installation methods:
 
@@ -116,6 +126,6 @@ Logged as and admin
 * Create rights for those groups <=> queues
 * Make your first ticket ;)
 
-Now enjoy and give constructive feedback! ;)
+Now enjoy and give us constructive feedback! ;)
 
 Ramiro (ramiro@ticketator.org)
