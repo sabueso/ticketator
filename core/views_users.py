@@ -62,5 +62,14 @@ def manage_user(request, user_id=None):
 			form = UserForm(instance=actual_user,request=request)
 		return render(request,'users/create_edit_user.html', locals())
 
-def delete_user(request):
-	return 
+def delete_user(request, user_id= None):
+	if request.user.is_superuser == True :
+		if user_id:
+			actual_user =  get_object_or_404(User, pk = user_id)
+			actual_user.delete()
+			return redirect("/settings/user")
+		else:
+			return HttpResponse("User is not found")
+
+
+	
