@@ -3,6 +3,15 @@
 
 {% load staticfiles %}
 
+{% block extend_css%}
+    <link href="{% static "vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" %}" rel="stylesheet">
+{% endblock %}
+
+
 {% block extend_js%}
     <!-- Datatables -->
     <script src="{% static "vendors/datatables.net/js/jquery.dataTables.min.js" %}"></script>
@@ -26,7 +35,6 @@
         $('#dataTables-example').DataTable();
      });
     </script>
-
 {% endblock %}
 
 {%block content %}
@@ -45,11 +53,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 col-sm-offset-0">
     <div class="x_panel">
 
-                    <div class="x_title">
-
-                                Actual users
-                    </div>
-                    
+                 
                         
                         <!-- /.panel-heading -->
                         <div class="panel-body">
