@@ -1,31 +1,32 @@
-    {% extends "dashboard/index.html" %}
+{% extends "dashboard/index.html" %}
 
 {%block content %}
-<!-- 	<div class="row">
-                <div class="col-lg-5">
-                    {% if user_id %}
-                    <h1 class="page-header"><i class="glyphicon glyphicon-user"></i> Edit user</h1>
-                    {% else %}
-                    <h1 class="page-header"><i class="glyphicon glyphicon-user"></i> New user</h1>
-                    {% endif%}
-                </div>
-                </div>
- -->
 {% load core_settings_data %}
 {%site_vars as vars %}
 <!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
 
 <div class="col-md-10 col-sm-12 col-xs-12 col-md-offset-1 col-sm-offset-0">
     <div class="x_panel">
+
                     <div class="x_title">
-                            {% if vars.debug == True%}
-                            <div class="pull-left">
-                                Debug: {{vars.debug}}
-                            </div>
+                        <h2 >New ticket</h2>
+                                    
+                            {% if form.instance.id %}
+                                <div class="btn-group pull-right" style="margin-right: 5px;">
+                                          <button class="btn btn-default btn-sm" type="button">More</button>
+                                          <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                          </button>
+                                          <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#" data-target=".bs-example-modal-lg" data-toggle="modal">Delete</a>
+                                            </li>
+                                            </li>
+                                          </ul>
+                                </div>
+                                {% include "users/delete_modal_user.html" %}
                             {%endif%}
-                            <div class="text-right">
-                            Create new user
-                            </div>
+                        <div class="clearfix"></div>
                     </div>
                         <div class="panel-body">
                                 {% if vars.debug == True%}
