@@ -30,10 +30,12 @@
     <script src="{% static "vendors/pdfmake/build/pdfmake.min.js" %}"></script>
     <script src="{% static "vendors/pdfmake/build/vfs_fonts.js" %}"></script>
 
+
     <script type="text/javascript" charset="utf-8">
-     $(document).ready(function() {
-        $('#dataTables-example').DataTable();
-     });
+        //Initial table definition
+        $(document).ready(function() {
+            $('#dataTables-example').DataTable();
+        });
     </script>
 {% endblock %}
 

@@ -9,9 +9,11 @@
     <div class="x_panel">
 
                     <div class="x_title">
-                        <h2 >New ticket</h2>
+                        {% if not form.instance.id %}
+                            <h2>New User</h2>
                                     
-                            {% if form.instance.id %}
+                        {%else%}    
+                            <h2>Edit User</h2>
                                 <div class="btn-group pull-right" style="margin-right: 5px;">
                                           <button class="btn btn-default btn-sm" type="button">More</button>
                                           <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">
@@ -25,7 +27,7 @@
                                           </ul>
                                 </div>
                                 {% include "users/delete_modal_user.html" %}
-                            {%endif%}
+                        {%endif%}
                         <div class="clearfix"></div>
                     </div>
                         <div class="panel-body">
