@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^settings/user/$', vusers.list_users, name='user-list'),
     url(r'^settings/user/create', vusers.manage_user, name='user-create'),
     url(r'^settings/user/(?P<user_id>\d+)?$', vusers.manage_user, name='user-edit'),
+    url(r'^settings/user/delete/(?P<user_id>\d+)?$', vusers.delete_user, name='user-delete'),
 
     #Groups
     url(r'^settings/groups/$', vgroup.list_groups, name='group-list'),
