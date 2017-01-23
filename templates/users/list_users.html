@@ -45,9 +45,11 @@
                 <div class="title_left">
                     <h3><i class="fa fa-user "></i>Manage users</h3>
                 </div>
+                {% if request.user.is_superuser == True %}
                 <div class="title_right">
                     <a href="/settings/user/create" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 16px;"></i>Add user</a>
                 </div>
+                {%endif%}
             </div>
     </div>
     
