@@ -68,9 +68,11 @@ docker exec -it ticketator_backend_1 ./manage.py createsuperuser
 # Login on http://localhost:8000
 ```
 
-### Disclaimer
+### Disclaimer & Feedback
 
-Ticketator is under active developement and some areas could not be working as expected. Please, let you free to comment it constructively under the "Issue" area on Github.
+Ticketator is under active developement and some areas could not be working as expected.
+Please, let you free to give us your feedback constructively under the "Issue" area on Github.
+Forks & Pull Requests, will be apreciatted.
 
 ### Todos
 
