@@ -415,6 +415,7 @@ class Comments(models.Model):
 			)
 
 class Microtasks(models.Model):
+	date = models.DateTimeField(default=datetime.now)
 	ticket_rel=models.ForeignKey(Ticket, related_name ='ticket_rel_mtask')
 	subject =  models.CharField(max_length=40)
 	body = models.TextField(null=True,blank=True)
@@ -430,7 +431,7 @@ class Microtasks(models.Model):
 			state_data=str(self.assigned_state),
 			state_data_id=str(self.assigned_state.id),
 			state_color_data=str(self.assigned_state.color), 
-			#date_data=str(self.date.strftime('%d-%m-%Y %H:%m'))
+			date_data=str(self.date.strftime('%d/%m/%y %H:%M:%S')),
 			percentage_data=int(self.percentage)
 			)
 

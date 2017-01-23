@@ -256,7 +256,7 @@
                                       '<td>'+
                                         '<a>'+item.subject_data+'</a>'+
                                         '<br>'+
-                                        '<small>Created 01.01.2015</small>'+
+                                        '<small>'+item.date_data+'</small>'+
                                       '</td>'+
                                       '<td>'+item.body_data+'</td>'+
                                       '<td class="project_progress">'+
