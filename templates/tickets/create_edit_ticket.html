@@ -209,9 +209,9 @@
                                                         {% for user_resp in common_data.users_info %}
 
                                                             {%if user_resp.id  == form_ticket.instance.assigned_user.id %}
-                                                                <option value="{{user_resp.id}}" selected >{{user_resp.first_name}} {{user_resp.last_name}}</option>
+                                                                <option value="{{user_resp.id}}" selected >{%if user_resp.first_name and user_resp.last_name%}{{user_resp.first_name}} {{user_resp.last_name}} {%else%}{{user_resp.email}}{%endif%}</option>
                                                             {%else%}
-                                                                <option value="{{user_resp.id}}">{{user_resp.first_name}} {{user_resp.last_name}}</option>
+                                                                <option value="{{user_resp.id}}">{%if user_resp.first_name and user_resp.last_name%}{{user_resp.first_name}} {{user_resp.last_name}} {%else%}{{user_resp.email}}{%endif%}</option>
                                                             {%endif%}
                                                         {%endfor%}
                                             </select>
