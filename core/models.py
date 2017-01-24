@@ -103,7 +103,8 @@ class GroupForm(ModelForm):
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 	#More fields will be needed...
-	#logo = pending
+	logo = models.FileField(upload_to='logo/', default='/logo/tk-tiny.png')
+
 	#phone = pending
 	#address = pending
 	def __unicode__(self):
