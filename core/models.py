@@ -49,7 +49,7 @@ class UserForm(ModelForm):
 	is_active = forms.BooleanField(required=False, initial=True)
 	#is_superuser = forms.BooleanField(initial=False)
 	#Pass request to query wich user is trying ot modify the object User
-	def __init__(self, *args, **kwargs):	
+	def __init__(self, *args, **kwargs):
 		self.request = kwargs.pop("request")
 		super(UserForm, self).__init__(*args, **kwargs)
 
@@ -103,7 +103,8 @@ class GroupForm(ModelForm):
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 	#More fields will be needed...
-	#logo = pending
+	logo = models.FileField(upload_to='logo/', default='/logo/tk-tiny.png')
+
 	#phone = pending
 	#address = pending
 	def __unicode__(self):
@@ -146,7 +147,7 @@ class Rights(models.Model):
 
 	''''
 	Check at database state if registry is created or we can create it:
-	If you use the admin, to mantain the non-duplicity of the rules, we make a secondary 
+	If you use the admin, to mantain the non-duplicity of the rules, we make a secondary
 	check at time to save the object to the DB.
 	Yes, you have 2 querys but this is the unique way to avoid errors if you use the admin
 	panel to insert some righths
@@ -162,12 +163,12 @@ class Rights(models.Model):
 		else:
 			return_query['status'] = False
 			return return_query
-	
-	#Only for new records (self.pk check)		
+
+	#Only for new records (self.pk check)
 	def save(self, *args, **kwargs):
 		detect_function = self.detect_rights_exists(self.grp_src, self.queue_dst)
 		if not self.pk and detect_function['status'] == True:
-			raise ValidationError("Rule already created: model output "+str(detect_function['numbers'])+"") 
+			raise ValidationError("Rule already created: model output "+str(detect_function['numbers'])+"")
 		else:
 			super( Rights, self ).save( *args, **kwargs )
 
@@ -177,18 +178,18 @@ class RightForm(ModelForm):
 		model =  Rights
 		fields = '__all__'
 
-	#Check at form stage if registry is created or if we can create it 
+	#Check at form stage if registry is created or if we can create it
 	def clean_queue_dst(self):
 		detect_function = Rights.detect_rights_exists(Rights(), self.cleaned_data.get('grp_src'), self.cleaned_data.get('queue_dst'))
 		#Check if no pk assigned and if detect_function['status'] is True
 	 	if not self.instance.pk and detect_function['status']:
 	 		raise forms.ValidationError("Rule already created ("+str(detect_function['numbers'][0])+") src=>"+str(self.cleaned_data.get('grp_src'))+" dst=>"+str(self.cleaned_data.get('queue_dst'))+"")
-	 	return self.cleaned_data.get('queue_dst')	
+	 	return self.cleaned_data.get('queue_dst')
 
-#=> States  
+#=> States
 class State(models.Model):
 	name = models.CharField(max_length=30)
-	description = models.CharField(max_length=150, null=True, blank=True)	
+	description = models.CharField(max_length=150, null=True, blank=True)
 	active = models.BooleanField(default=True)
 	color = models.CharField(default='008ac6',max_length=10, null=True,blank=True)
 
@@ -203,11 +204,11 @@ class State(models.Model):
 class StateForm(ModelForm):
 	class Meta:
 		model =  State
-		fields = '__all__'		
+		fields = '__all__'
 
 #=> Prioritys
 class Priority(models.Model):
-	name = models.CharField(max_length=30)	
+	name = models.CharField(max_length=30)
 	def __unicode__(self):
 		return self.name
 
@@ -216,7 +217,7 @@ class PriorityForm(ModelForm):
 		model =  Priority
 		fields = '__all__'
 
-#=> Inventory Servers/PC 
+#=> Inventory Servers/PC
 
 class InventoryGroup(models.Model):
 	name=models.CharField(max_length=100)
@@ -269,7 +270,7 @@ class Ticket(models.Model):
 			body_data=str(self.body.encode('utf8')),
 			state_data=str(self.assigned_state.name),
 			state_data_id=str(self.assigned_state.id),
-			state_color_data=str(self.assigned_state.color), 
+			state_color_data=str(self.assigned_state.color),
 			percentage_data=str(self.percentage),
 			queue_shortcode=str(self.assigned_queue.shortcode),
 			create_user=self.str_creator_user_name(),
@@ -278,7 +279,7 @@ class Ticket(models.Model):
 
 class TicketForm(ModelForm):
 	# Pass request to a form => http://stackoverflow.com/questions/6325681/passing-a-user-request-to-forms
-	def __init__(self, *args, **kwargs):	
+	def __init__(self, *args, **kwargs):
 		self.request = kwargs.pop("request")
 		super(TicketForm, self).__init__(*args, **kwargs)
 
@@ -286,11 +287,11 @@ class TicketForm(ModelForm):
 		model =  Ticket
 		fields = '__all__'
 		#exclude = ['date']
-		
+
 	'''
-	We log all importante changes in fields to be tracked	
+	We log all importante changes in fields to be tracked
 	The field_checker test if both are the same and if it found changes, call "logger" passing data
-	TODO: Maybe, "if self.instance.pk is not None:" can be improved to not call 
+	TODO: Maybe, "if self.instance.pk is not None:" can be improved to not call
 	all  times to make the check (and save N checks at save time)
 	'''
 
@@ -298,7 +299,7 @@ class TicketForm(ModelForm):
 		if self.instance.pk is not None:  # new instance only
 			self.field_checker(str(self.instance.assigned_state), str(self.cleaned_data.get('assigned_state')) )
 		return self.cleaned_data.get('assigned_state')
-		
+
 	'''
 	Check if the new queue assigned is permited...
 	'''
@@ -373,7 +374,7 @@ class TicketForm(ModelForm):
 		if self.instance.pk:
 			user_object_rights=rights.get_rights_for_ticket(user=user_obj, queue=queue_obj, ticket_id=self.instance.id)
 			if user_object_rights.can_edit != True:
-				raise forms.ValidationError(self.clean_error_cantedit())	
+				raise forms.ValidationError(self.clean_error_cantedit())
 
 		'''Force to assign company'''
 		cleaned_data['assigned_company'] = queue_obj.company_rel
@@ -430,7 +431,7 @@ class Microtasks(models.Model):
 			body_data=str(self.body.encode('utf8')),
 			state_data=str(self.assigned_state),
 			state_data_id=str(self.assigned_state.id),
-			state_color_data=str(self.assigned_state.color), 
+			state_color_data=str(self.assigned_state.color),
 			date_data=str(self.date.strftime('%d/%m/%y %H:%M:%S')),
 			percentage_data=int(self.percentage)
 			)
@@ -441,3 +442,4 @@ class Logs(models.Model):
 	log_user=models.ForeignKey(User, related_name = 'user_log')
 	log_action=models.CharField(max_length=200)
 	log_destiny=models.CharField(max_length=200)
+	log_date = models.DateTimeField(default=datetime.now)

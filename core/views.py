@@ -9,7 +9,7 @@ from util import query_view
 
 from rssfetcher import DashboardFeed
 
-#User model alias due 
+#User model alias due
 User = get_user_model()
 
 # Create your views here.
@@ -23,6 +23,7 @@ def index(request):
 	#We pass always granted_queues as a roundup to query_view requirements
 	open_tickets = query_view(Ticket, request.GET, granted_queues = queues, assigned_state=1, limit=5)
 	pending_tickets = query_view(Ticket, request.GET, granted_queues = queues, assigned_state=2, limit=5)
+	my_tickets = Ticket.objects.filter(assigned_user_id=request.user.id)
 	'''
 	'''
 	rssdata=User.objects.get(id=request.user.id).rssfeed

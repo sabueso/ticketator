@@ -24,7 +24,7 @@ def manage_company(request, company_id=None):
 			actual_company=Company()
 		#POST mode
 		if request.method == 'POST':
-			form = CompanyForm(request.POST, instance=actual_company)
+			form = CompanyForm(request.POST, request.FILES, instance=actual_company)
 			if form.is_valid():
 				form.save()
 				return redirect("/settings/companies")
@@ -34,6 +34,3 @@ def manage_company(request, company_id=None):
 		return render(request,'companies/create_edit_company.html', locals())
 	else:
 		raise Http404
-
-
-

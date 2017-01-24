@@ -23,12 +23,12 @@
 {% block content %}
     {% load core_settings_data %}
     {% url_tickets as urlt %}
-    
+
     <!--All the rest-->
     <div class="x_panel">
                     <div class="x_title">
                         <h2 >New ticket</h2>
-                                    
+
                             {% if form_ticket.instance.id %}
                                 <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 3px;" type="submit" name="save-signal">Save</button>
                                 <button form="ticketform" class="btn btn-default btn-sm pull-right"  style="margin-right: 5px;" type="submit" name="update-signal">Update</button>
@@ -84,9 +84,9 @@
                                     <!--Left side-->
                                     {% if vars.debug == True%}
 
-                                         
+
                                                 {% if form_ticket.errors %}
-                                                <div class="alert alert-danger"> 
+                                                <div class="alert alert-danger">
                                                 Main form: </p>
                                                     {% for fticket_error in form_ticket %}
                                                         {% if fticket_error.errors %}
@@ -94,26 +94,26 @@
                                                         {% endif%}
                                                     {% endfor%}
 
-                                                    {% if form_ticket.non_field_errors %}             
+                                                    {% if form_ticket.non_field_errors %}
                                                         {{ form_ticket.non_field_errors }}
                                                     {%endif%}
                                                 </div>
                                                 {%endif%}
-                                                
+
 
 
                                                 {% if form_attach.errors %}
-                                                <div class="alert alert-warning"> 
+                                                <div class="alert alert-warning">
                                                 Attach form: </p>
-                                                    {% for fattach_error in form_attach %}  
+                                                    {% for fattach_error in form_attach %}
                                                         {% if fattach_error.errrors %}
                                                             [ {{fattach_error.label|striptags }} => <b>{{fattach_error.errors|striptags}}</b> ]
                                                         {%endif%}
                                                     {% endfor%}
                                                 </div>
-                                                {%endif%}                                        
-                                                
-                                            
+                                                {%endif%}
+
+
                                     {%endif%}
 
                                     <!--Status-->
@@ -131,7 +131,7 @@
                                                         {% if queue.id == form_ticket.instance.assigned_queue.id %}
                                                             <option value="{{queue.id}}" selected >{{queue}}</option>
                                                         {% else %}
-                                                            <option value="{{queue.id}}" >{{queue}}</option>    
+                                                            <option value="{{queue.id}}" >{{queue}}</option>
                                                         {% endif %}
                                                     {%endfor%}
 
@@ -143,11 +143,11 @@
                                                         {% if queue.id == form_ticket.instance.assigned_queue.id %}
                                                             <option value="{{queue.id}}" selected >{{queue}}</option>
                                                         {% else %}
-                                                            <option value="{{queue.id}}" >{{queue}}</option>    
+                                                            <option value="{{queue.id}}" >{{queue}}</option>
                                                         {% endif %}
                                                     {%endfor%}
                                                 {%endif%}
-                                            </select>   
+                                            </select>
                                                     {{form_ticket.assigned_queue.errors}}
                                         </div>
 
@@ -209,9 +209,9 @@
                                                         {% for user_resp in common_data.users_info %}
 
                                                             {%if user_resp.id  == form_ticket.instance.assigned_user.id %}
-                                                                <option value="{{user_resp.id}}" selected >{{user_resp.first_name}} {{user_resp.last_name}}</option>
+                                                                <option value="{{user_resp.id}}" selected >{%if user_resp.first_name and user_resp.last_name%}{{user_resp.first_name}} {{user_resp.last_name}} {%else%}{{user_resp.email}}{%endif%}</option>
                                                             {%else%}
-                                                                <option value="{{user_resp.id}}">{{user_resp.first_name}} {{user_resp.last_name}}</option>
+                                                                <option value="{{user_resp.id}}">{%if user_resp.first_name and user_resp.last_name%}{{user_resp.first_name}} {{user_resp.last_name}} {%else%}{{user_resp.email}}{%endif%}</option>
                                                             {%endif%}
                                                         {%endfor%}
                                             </select>
@@ -234,7 +234,7 @@
                                     <!--Ticket body-->
                                     <div class="col-md-10 col-sm-12 col-xs-12 form-group">
                                         <!--only in mobile/ipad setup-->
-                                        
+
                                         <!--end-->
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                             <div id="MobileSep" class="visible-sm visible-xsm">
@@ -243,16 +243,16 @@
                                                 <label>Subject:</label>
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                            <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" autofocus="autofocus" 
+                                            <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" autofocus="autofocus"
                                             {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %} >
-                                                    {{form_ticket.subject.errors}}                                
+                                                    {{form_ticket.subject.errors}}
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                 <label>Description:</label>
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                             <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
-                                                    {{form_ticket.body.errors}}                    
+                                                    {{form_ticket.body.errors}}
                                         </div>
                                         <hr></hr>
 
@@ -260,7 +260,7 @@
                                             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                     <label for="id_file_name">Uploaded files:</label>
                                             </div>
-                                                                        
+
                                             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                 <ul class="list-unstyled timeline">
                                                 {% for i in actual_files %}
@@ -300,10 +300,10 @@
                                         </div>
                                         <!--><!-->
                                         <!--only in mobile/ipad setup-->
-                                        
-                                        
+
+
                                         <!--end-->
-                                        <!--comments part --> 
+                                        <!--comments part -->
                                         {% if form_ticket.instance.id %}
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                             <hr>
@@ -347,20 +347,20 @@
                                         </div>
                                         <!--new messages-->
 
-                                       </div>  
+                                       </div>
                                         {%endif%}
 
 
 
                                     </div>
-                                   
+
 
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <div class="ln_solid"></div>
                                     </div>
                                         </form>
                                 </div>
-                                
+
                             {% if form_ticket.instance.id %}
                             <!--button add microtask-->
                             <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="microtask-tab">
@@ -393,7 +393,7 @@
                                                             <option value="{{status.id}}">{{status}}</option>
                                                         {%endif%}
                                                     {%endfor%}
-                                    </select>   
+                                    </select>
 
 
                                     <label for="message">Percentage</label>
@@ -434,7 +434,7 @@
                                       <td>
                                         {{i.body}}
                                       </td>
-                                      
+
                                       <td class="project_progress">
                                         <div class="progress progress_sm">
                                           <div data-transitiongoal="{{i.percentage}}" role="progressbar" class="progress-bar bg-green" style="width: 45%;" aria-valuenow="{{i.percentage}}"></div>
@@ -456,25 +456,28 @@
                                 </table>
                             </div>
 
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="log-tab">
-                                    <div class="x_content">
-                                              <div class="">
-                                                <ul class="to_do">
-                                                {% for e in actual_logs%}
-                                                  <li>
-                                                    <p>{{e.log_user}} => {{e.log_action}} =>  {{e.log_destiny}}</p>
-                                                  </li>
-                                                  {%endfor%}
-                                                </ul>
-                                              </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="log-tab">
+                                <div class="x_content">
+                                  <div class="col-sm-12">
+
+                                    {% for e in actual_logs%}
+                                      <div class="mail_list">
+                                        <div class="right">
+                                          <h3>{{e.log_user}} <small>{{e.log_date}}</small></h3>
+                                          <p>{{e.log_action}}  =>  {{e.log_destiny}}</p>
+                                        </div>
+                                      </div>
+                                    {%endfor%}
+
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
                             {%endif%}
                         </div>
                         </div>
                         </div>
                         </div>
-                   
+
     </div>
 
 
