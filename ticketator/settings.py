@@ -129,7 +129,7 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = "/var/www/media/"
 if DEBUG:
-    MEDIA_ROOT = "/media/"  # folder to store media elements
+    MEDIA_ROOT = "media/"  # folder to store media elements
 MEDIA_URL = "/media/"  # url to serve media
 
 
