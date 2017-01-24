@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
+import os
+
 from django.db import models
 from django import forms
 from django.forms import ModelForm
@@ -386,8 +388,15 @@ class TicketForm(ModelForm):
 #=> Attachments
 
 class Attachment(models.Model):
-	ticket_rel = models.ForeignKey(Ticket,null=True, blank=True)
-	file_name = models.FileField(upload_to='ticket_files/',null=True, blank=True)
+
+	# Method to store tickets attachments inside folders with related ticket id
+	def _get_attachment_upload_path(instance, filename):
+		return os.path.join("ticket_files/%s" % instance.ticket_rel.id, filename)
+
+	ticket_rel = models.ForeignKey(Ticket, null=True, blank=True)
+	file_name = models.FileField(
+		upload_to=_get_attachment_upload_path, null=True, blank=True)
+
 
 class AttachmentForm(ModelForm):
 	class Meta:
