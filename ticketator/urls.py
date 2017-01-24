@@ -1,5 +1,8 @@
-from django.conf.urls import include,url
+from django.conf import settings
+from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.contrib import admin
+
 
 #Auth
 from django.contrib.auth import views as auth_views
@@ -32,7 +35,7 @@ urlpatterns = [
 
     url(r'^logoff', vauth.logout_v, name='logout'),
 
-    #Users   
+    #Users
     url(r'^settings/user/$', vusers.list_users, name='user-list'),
     url(r'^settings/user/create', vusers.manage_user, name='user-create'),
     url(r'^settings/user/(?P<user_id>\d+)?$', vusers.manage_user, name='user-edit'),
@@ -100,7 +103,11 @@ urlpatterns = [
     url(r'^tickets/del_microtask/$', vtickets.del_microtask_jx, name='tickets-del-microtasks'),
 
     #Search
-    url(r'^search/$', vsearch.main_search, name='search'),    
+    url(r'^search/$', vsearch.main_search, name='search'),
 
 ]
 
+# Add url to serve media elements on development
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

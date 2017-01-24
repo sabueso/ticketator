@@ -44,7 +44,7 @@
 							<div class="form-group">
 								<label>Name</label>
 								{% if form.instance.name %}
-								<input id="name" name="name" value="{{form.instance.name}}" class="form-control">
+								<input id="name" name="name" value="{{ form.instance.name }}" class="form-control">
 								{% else %}
 								<input id="name" name="name" class="form-control">
 								{%endif%}
@@ -56,7 +56,7 @@
 								<div class="flex">
 									<ul class="list-inline widget_profile_box">
 										<li>
-											<img class="img-circle profile_img" src="/static/media/{{form.instance.logo}}">
+											<img class="img-circle profile_img" src="{{ form.instance.logo.url }}">
 										</li>
 									</ul>
 								</div>
