@@ -387,15 +387,15 @@ class TicketForm(ModelForm):
 
 #=> Attachments
 
-class Attachment(models.Model):
+# Method to store tickets attachments inside folders with related ticket id
+def get_attachment_upload_path(instance, filename):
+	return os.path.join("ticket_files/%s" % instance.ticket_rel.id, filename)
 
-	# Method to store tickets attachments inside folders with related ticket id
-	def _get_attachment_upload_path(instance, filename):
-		return os.path.join("ticket_files/%s" % instance.ticket_rel.id, filename)
+class Attachment(models.Model):
 
 	ticket_rel = models.ForeignKey(Ticket, null=True, blank=True)
 	file_name = models.FileField(
-		upload_to=_get_attachment_upload_path, null=True, blank=True)
+		upload_to=get_attachment_upload_path, null=True, blank=True)
 
 
 class AttachmentForm(ModelForm):
