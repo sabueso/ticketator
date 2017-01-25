@@ -1,4 +1,4 @@
-    $().ready(function() {
+$().ready(function() {
 
     //PNotify for events (add messages, range change, etc)
     function notif(type, title, text){
@@ -27,16 +27,13 @@
         "showCustomRangeLabel": false,
         "autoUpdateInput": true,
         "format": 'DD/MM/YYYY H:mm:ss',
-        
+
     });
 
 
     if($('#id_ticket-date').length != 0) {
-        $('#id_ticket-date').data('daterangepicker').setEndDate(now);    
+        $('#id_ticket-date').data('daterangepicker').setEndDate(now);
     }
-
-    
-    console.log(moment().format("DD/MM/YYYY HH:mm:ss a"));
 
     //some docs: http://stackoverflow.com/questions/28576002/ajax-jquery-django (about: jdjangp +jquery + models +json)
     //we catch the values rendered by Django template
@@ -49,7 +46,7 @@
     {
     var raw_value = percentage_value;
     if($('#id_ticket-percentage').val())
-       {   
+       {
         $('#id_ticket-percentage').val(raw_value)
        }
     else
@@ -121,7 +118,7 @@
     {
         slider_for_existing.update({disable: true});
     }
-    //console.log(count_microtask_data);  
+    //console.log(count_microtask_data);
 
 
 
@@ -141,7 +138,7 @@
                     update_percentage_input(data.from)
                     // //console.log("Value: " + raw_value);
                     // if($('#id_ticket-percentage').val())
-                    // {   
+                    // {
                     //     $('#id_ticket-percentage').val(raw_value)
                     // }
                     // else
@@ -171,11 +168,11 @@
                                 {var img_parsed = "user.png"}
                             $(".comment_box").append(
                             '<div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">'+
-                            '<img alt="Avatar" class="avatar" src="/static/media/'+img_parsed+'">'+                            
-                            '<span class="pull-right" style="margin-top: 10px;">'+item.date_data+'</span>'+
+                            '<img alt="Avatar" class="avatar" src="/static/media/'+img_parsed+'">'+
+                            '<span class="pull-right" style="padding-right: 20px; padding-top: 40px;">'+item.date_data+'</span>'+
                             '<h5>'+item.human_name+'</h5>'+
                             '<div class="well">'+
-                            '<p class="message">'+item.comment_data+'</p>'+
+                            '<p class="message content-markdown">'+item.comment_data+'</p>'+
                             '<div class="comment-toolbar pull-right">'+
                             '<input type="hidden" id="idPMessage" name="idPMessage" value="'+item.id+'">'+
                             '<a href="#" class="del-message" onClick="return false;">Delete comment</a>'+
@@ -184,12 +181,12 @@
                             '</div>'
                              );
                         });
-                        
+                        markdownfunction()
                     }
-             });
+             })
     }
 
- 
+
     //Post new message
     $('.add-message').click(function(){
       //console.log('am i called');
@@ -276,7 +273,7 @@
                                     '</tr>'
                              );
                         });
-                        
+
                     }
              });
     }
@@ -364,7 +361,7 @@
             url: "/tickets/get_microtask/"+mk_id+"",
             success: function(data)
                 {
-                    
+
                         var dataparsed = (data);
                         $('#microtask_modal').find('[name="subject_mk"]').val(data.subject_data);
                         $('#microtask_modal').find('[name="body_mk"]').val(data.body_data);
@@ -372,7 +369,7 @@
                         slider_new_microtask.update({ from: data.percentage_data });
                         $('.modal-footer').append('<input type="hidden" id="idmk" name="idmk" value="'+mk_id+'">');
                         $('#microtask_modal').modal('show');
-                        
+
 
 
                 }
@@ -456,7 +453,13 @@
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         }
-    }); 
+    });
+
+    function markdownfunction(){
+      $(".content-markdown").each(function(){
+        $(this).html(marked($(this).text()))
+      })
+    }
 
 
 });

@@ -4,6 +4,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 
 def logo_company(request):
 
+    try:
         company = Company.objects.latest('id')
         if company.logo:
             logo = company.logo.url

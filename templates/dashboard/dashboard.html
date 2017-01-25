@@ -30,13 +30,11 @@
 
 			                        {% for t in open_tickets.data %}
 			                        <a class="title" href="tickets/edit-dev/{{ t.id }}">#{{ t.id }} - {{ t.date|date:"d/m/y G:i:s" }} - {{ t.subject }}</a>
-			                        <p> {{t.body}}</p>
+			                        <p class="content-markdown"> {{t.body | truncatechars:90}}</p>
 			                        <hr>
 			                        {%endfor%}
-
 			                      </div>
 			                    </article>
-
 			                  </div>
 			                </div>
 			            </div>
