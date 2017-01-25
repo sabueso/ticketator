@@ -24,7 +24,7 @@ class DashboardFeed(object):
     def __init__(self, url):
         self.url = url
 
-    #feeds =  feedparser.parse(url)
+    # feeds =  feedparser.parse(url)
 
     def fetcher(self):
         feeds = feedparser.parse(self.url)

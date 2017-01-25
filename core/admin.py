@@ -10,7 +10,7 @@ admin.site.register(Queue)
 admin.site.register(State)
 admin.site.register(Priority)
 
-#Custom user render outside the "Auth" module
+# Custom user render outside the "Auth" module
 from django.contrib.auth.admin import UserAdmin
 admin.site.register(User, UserAdmin)
 
@@ -21,7 +21,7 @@ class RightsAdmin(admin.ModelAdmin):
         'can_edit', 'can_comment', 'enabled',
     )
 
-    #search_fields = ('subject','body')
+    # search_fields = ('subject','body')
 
 admin.site.register(Rights, RightsAdmin)
 

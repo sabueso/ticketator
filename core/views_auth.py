@@ -1,4 +1,4 @@
-#Login file
+# Login file
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect

@@ -28,7 +28,7 @@ def site_vars():
 def url_tickets():
     url_const = {}
     url_const['ticket_list'] = '/tickets'
-    url_const['ticket_delete'] = url_const['ticket_list']+'/delete'
+    url_const['ticket_delete'] = url_const['ticket_list'] + '/delete'
     return url_const
 
 
