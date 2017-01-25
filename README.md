@@ -74,6 +74,11 @@ Ticketator is under active developement and some areas could not be working as e
 Please, let you free to give us your feedback constructively under the "Issue" area on Github.
 Forks & Pull Requests, will be apreciatted.
 
+### Before pushing
+```bash
+flake8 --max-line-length=100 --ignore=F841 --exclude=migrations,__init__.py,settings .
+```
+
 ### Todos
 
  - Write Tests

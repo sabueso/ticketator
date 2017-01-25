@@ -1,9 +1,9 @@
-#Login file
+# Login file
 
 from django.contrib.auth import logout
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect
+
 
 def logout_v(request):
-	logout(request)
-	return redirect("/")
-
+    logout(request)
+    return redirect("/")
