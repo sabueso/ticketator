@@ -1,9 +1,8 @@
 from django import template
 from django.conf import settings
 from django.core.exceptions import FieldError
-import rights 
-
 register = template.Library()
+
 
 @register.filter
 def abssub(value, arg):
@@ -11,6 +10,7 @@ def abssub(value, arg):
         return abs(value - arg)
     except:
         return 'error'
+
 
 def paginate(queryset, page, limit=settings.PAGINATE_BY):
     start = (page - 1) * limit
@@ -21,11 +21,13 @@ def paginate(queryset, page, limit=settings.PAGINATE_BY):
         'page': page,
         'page_count': page_count,
         'last_page': page_count + 1,
-        'pages': xrange(1, page_count + 2),
+        'pages': range(1, page_count + 2),
     }
 
 
-def query_view(model, params, order_by='-id', granted_queues=None, limit=settings.PAGINATE_BY,**kwargs):
+def query_view(
+        model, params, order_by='-id', granted_queues=None,
+        limit=settings.PAGINATE_BY, **kwargs):
     params = {key: value for key, value in params.iteritems() if value}
     params.update({key: value for key, value in kwargs.iteritems() if value})
     try:
@@ -34,7 +36,8 @@ def query_view(model, params, order_by='-id', granted_queues=None, limit=setting
         page = 1
 
     try:
-        queryset = model.objects.filter(**params).filter(granted_queues).order_by(order_by)
+        queryset = model.objects.filter(**params).filter(
+            granted_queues).order_by(order_by)
     except FieldError:
         return {}
 
@@ -45,5 +48,4 @@ def query_view(model, params, order_by='-id', granted_queues=None, limit=setting
         'pagination': pagination,
         'query': '&'.join(['%s=%s' % (key, value)
                            for key, value in params.iteritems()])
-}
-
+    }
