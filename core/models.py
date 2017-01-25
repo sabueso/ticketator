@@ -105,7 +105,7 @@ class GroupForm(ModelForm):
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 	#More fields will be needed...
-	logo = models.FileField(upload_to='logo/', default='/logo/tk-tiny.png')
+	logo = models.FileField(upload_to='logo/')
 
 	#phone = pending
 	#address = pending
@@ -387,7 +387,7 @@ class TicketForm(ModelForm):
 
 #=> Attachments
 
-# Method to store tickets attachments inside folders with related ticket id
+# Method to store tickets attachments inside folders called with related ticket id
 def get_attachment_upload_path(instance, filename):
 	return os.path.join("ticket_files/%s" % instance.ticket_rel.id, filename)
 
