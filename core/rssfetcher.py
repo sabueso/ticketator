@@ -18,13 +18,15 @@ import feedparser
 #     def item_link(self, item):
 #         return reverse('news-item', args=[item.pk])
 
+
 class DashboardFeed(object):
+
     def __init__(self, url):
         self.url = url
-    
+
     #feeds =  feedparser.parse(url)
 
     def fetcher(self):
-        feeds =  feedparser.parse(self.url)        
+        feeds = feedparser.parse(self.url)
         self = feeds
         return self
