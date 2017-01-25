@@ -116,7 +116,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 
-MEDIA_ROOT = ""+os.path.join(BASE_DIR, "/static/media/")+""
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
@@ -128,6 +127,12 @@ STATICFILES_DIRS = [
     #'/var/www/static/',
 ]
 
+MEDIA_ROOT = "/var/www/media/"
+if DEBUG:
+    MEDIA_ROOT = "media/"  # folder to store media elements
+MEDIA_URL = "/media/"  # url to serve media
+
+
 SITE_NAME = 'Ticketator DEV'
 SITE_VERSION = '0.1'
 DATE_INPUT_FORMATS = ['%d/%m/%y']
@@ -137,8 +142,8 @@ DATE_FORMAT = ['%d/%m/%y']
 PAGINATE_BY = 15
 
 #Auth settings
-LOGIN_REDIRECT_URL="/"
-LOGIN_URL="/login"
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/login"
 
 #Auth custom settings
 AUTH_USER_MODEL = 'core.User'

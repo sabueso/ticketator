@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
+import os
+
 from django.db import models
 from django import forms
 from django.forms import ModelForm
@@ -103,7 +105,7 @@ class GroupForm(ModelForm):
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 	#More fields will be needed...
-	logo = models.FileField(upload_to='logo/', default='/logo/tk-tiny.png')
+	logo = models.FileField(upload_to='logo/')
 
 	#phone = pending
 	#address = pending
@@ -385,9 +387,16 @@ class TicketForm(ModelForm):
 
 #=> Attachments
 
+# Method to store tickets attachments inside folders called with related ticket id
+def get_attachment_upload_path(instance, filename):
+	return os.path.join("ticket_files/%s" % instance.ticket_rel.id, filename)
+
 class Attachment(models.Model):
-	ticket_rel = models.ForeignKey(Ticket,null=True, blank=True)
-	file_name = models.FileField(upload_to='ticket_files/',null=True, blank=True)
+
+	ticket_rel = models.ForeignKey(Ticket, null=True, blank=True)
+	file_name = models.FileField(
+		upload_to=get_attachment_upload_path, null=True, blank=True)
+
 
 class AttachmentForm(ModelForm):
 	class Meta:

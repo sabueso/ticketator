@@ -13,13 +13,13 @@
                     <div class="x_title">
                         <h2>New ticket</h2><span class="label">DEV</span>
                         <ul class="nav navbar-right panel_toolbox">
-                        
+
                         <!--chevron-->
                         <li>
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
 
-                        
+
                         <li class="dropdown">
                                 <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-wrench"></i></a>
                                 {% if form_ticket.instance.id %}
@@ -29,10 +29,10 @@
                                     <!--<li><a href="#">Settings 2</a>
                                     </li>-->
                                     </ul>
-                                {% endif %}        
+                                {% endif %}
                         </li>
-                        
-                        <!--close-->    
+
+                        <!--close-->
                             <li>
                                 <a href="{{urlt.ticket_list}}"><i class="fa fa-close"></i></a>
                             </li>
@@ -46,9 +46,9 @@
                                 <!--Left side-->
                                 {% if vars.debug == True%}
 
-                                     
+
                                             {% if form_ticket.errors %}
-                                            <div class="alert alert-danger"> 
+                                            <div class="alert alert-danger">
                                             Main form: </p>
                                                 {% for fticket_error in form_ticket %}
                                                     {% if fticket_error.errors %}
@@ -56,26 +56,26 @@
                                                     {% endif%}
                                                 {% endfor%}
 
-                                                {% if form_ticket.non_field_errors %}             
+                                                {% if form_ticket.non_field_errors %}
                                                     {{ form_ticket.non_field_errors }}
                                                 {%endif%}
                                             </div>
                                             {%endif%}
-                                            
+
 
 
                                             {% if form_attach.errors %}
-                                            <div class="alert alert-warning"> 
+                                            <div class="alert alert-warning">
                                             Attach form: </p>
-                                                {% for fattach_error in form_attach %}  
+                                                {% for fattach_error in form_attach %}
                                                     {% if fattach_error.errrors %}
                                                         [ {{fattach_error.label|striptags }} => <b>{{fattach_error.errors|striptags}}</b> ]
                                                     {%endif%}
                                                 {% endfor%}
                                             </div>
-                                            {%endif%}                                        
-                                            
-                                        
+                                            {%endif%}
+
+
                                 {%endif%}
 
                                 <!--Status-->
@@ -90,10 +90,10 @@
                                                 {% if queue.id == form_ticket.instance.assigned_queue.id %}
                                                 <option value="{{queue.id}}" selected >{{queue}}</option>
                                                 {% else %}
-                                                <option value="{{queue.id}}" >{{queue}}</option>    
+                                                <option value="{{queue.id}}" >{{queue}}</option>
                                                 {% endif %}
                                             {%endfor%}
-                                        </select>   
+                                        </select>
                                                 {{form_ticket.assigned_queue.errors}}
                                     </div>
 
@@ -161,7 +161,7 @@
                                 <!--Ticket body-->
                                 <div class="col-md-10 col-sm-12 col-xs-12 form-group">
                                     <!--only in mobile/ipad setup-->
-                                    
+
                                     <!--end-->
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <div id="MobileSep" class="visible-sm visible-xsm">
@@ -171,14 +171,14 @@
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %}>
-                                                {{form_ticket.subject.errors}}                                
+                                                {{form_ticket.subject.errors}}
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                             <label>Description:</label>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
-                                                {{form_ticket.body.errors}}                    
+                                                {{form_ticket.body.errors}}
                                     </div>
                                     <hr></hr>
 
@@ -186,19 +186,19 @@
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                 <label for="id_file_name">Uploaded files:</label>
                                         </div>
-                                                                    
+
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                             <ul class="list-unstyled timeline">
                                             {% for i in actual_files %}
                                             <li>
                                                     <div class="block">
                                                     <div class="tags">
-                                                      <a class="tag" href="/static/media/{{i.file_name}}" download>
+                                                      <a class="tag" href="{{ i.file_name.url }}" download>
                                                         <span>{{i.file_name|filename_text}}</span>
                                                       </a>
                                                     </div>
                                                     <div class="block_content">
-                                                      <p class="excerpt"><a href="#" data-toggle="modal" data-target="#img{{i.id}}"><img width=50% height=50% src="/static/media/{{i.file_name}}"></a></p>
+                                                      <p class="excerpt"><a href="#" data-toggle="modal" data-target="#img{{i.id}}"><img width=50% height=50% src="{{ i.file_name.url }}"></a></p>
                                                     </div>
                                                   </div>
                                                     <!--modal part-->
@@ -206,7 +206,7 @@
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
-                                                                    <img src="/static/media/{{i.file_name}}" class="img-responsive">
+                                                                    <img src="{{ i.file_name.url }}" class="img-responsive">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -226,10 +226,10 @@
                                     </div>
                                     <!--><!-->
                                     <!--only in mobile/ipad setup-->
-                                    
-                                    
+
+
                                     <!--end-->
-                                    <!--comments part --> 
+                                    <!--comments part -->
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                         <hr>
 
@@ -241,13 +241,13 @@
                                                 </div>
                                     </div>
                                 </div>
-                                
+
 
 
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                     <div class="ln_solid"></div>
                                 </div>
-                                <!--End of the box-->   
+                                <!--End of the box-->
                                     <!--If ticket doenst exist-->
                                     {% if form_ticket.instance.id %}
                                         <button class="btn btn-default pull-right" style="margin-right: 20px" type="submit" name="save-signal" >Save</button>

@@ -1,6 +1,7 @@
 {% extends "dashboard/index.html" %}
+{% load staticfiles %}
 
-{%block content %}
+{% block content %}
 {% load core_settings_data %}
 {%site_vars as vars %}
 <!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
@@ -11,8 +12,8 @@
                     <div class="x_title">
                         {% if not form.instance.id %}
                             <h2>New User</h2>
-                                    
-                        {%else%}    
+
+                        {%else%}
                             <h2>Edit User</h2>
                                 <div class="btn-group pull-right" style="margin-right: 5px;">
                                           <button class="btn btn-default btn-sm" type="button">More</button>
@@ -39,7 +40,7 @@
                                     {% endif %}
                                 {%endif%}
                                 <form method='post' action="/settings/user/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">
-                                {% csrf_token %}    
+                                {% csrf_token %}
                             <!--One main row + two div cols -->
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12 col-xs-12">
@@ -53,7 +54,7 @@
                                                         <p class="help-block"></p>
                                                         {{form.username.errors}}
                                             </div>
-                                            
+
                                             <div class="form-group">
                                                         <label>First name</label>
                                                         {% if form.instance.first_name%}
@@ -64,7 +65,7 @@
                                                         <p class="help-block"></p>
                                                         {{form.first_name.errors}}
                                             </div>
-                                            
+
                                             <div class="form-group">
                                                        <label>Last name</label>
                                                         {% if form.instance.last_name%}
@@ -94,21 +95,21 @@
                                                       <ul class="list-inline widget_profile_box">
                                                         <li>
                                                             {%if form.instance.avatar%}
-                                                            <img class="img-circle profile_img" alt="..." src="/static/media/{{form.instance.avatar}}">
+                                                                <img class="img-circle profile_img" alt="..." src="{{ form.instance.avatar.url }}">
                                                             {%else%}
-                                                            <img class="img-circle profile_img" alt="..." src="/static/media/user.png">
+                                                                <img class="img-circle profile_img" alt="..." src="{% static 'images/user.png' %}">
                                                             {%endif%}
                                                         </li>
                                                         <li>
-                                                            
+
                                                         </li>
 
                                                       </ul>
                                                     </div>
-                                                    {{form.avatar}}                                    
+                                                    {{form.avatar}}
                                             </div>
                                     </div>
-                                    
+
                                     <div class="col-md-6 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                         <label>Password</label>
@@ -124,7 +125,7 @@
                                                          <p class="help-block"></p>
                                                          {{form.password_check.errors}}
                                             </div>
-                                                
+
                                             <div class="form-group">
                                                        <label>Date Joined</label>
                                                         {% if form.instance.date_joined%}
@@ -172,7 +173,7 @@
 
                                                         {% else %}
                                                             <input id="is_superuser" name="is_superuser" type="checkbox"> Superuser
-                                                        {% endif %}        
+                                                        {% endif %}
                                                     </label>
                                                 {%endif%}
 
@@ -188,7 +189,7 @@
                                                         {% else %}
                                                             <input id="is_staff" name="is_staff" type="checkbox"> Staff
                                                         {% endif %}
-                                                        
+
                                                     </label>
                                                     {{form.is_staff.errors}}
 
@@ -202,7 +203,7 @@
                                                         {% else %}
                                                             <input id="is_active" name="is_active" type="checkbox"> Staff
                                                         {% endif %}
-                                                        
+
                                                     </label>
                                                     {{form.is_staff.errors}}
                                                 </div>
@@ -214,7 +215,7 @@
                                                 <div class="checkbox pull-right">
                                                     <label>
                                                         {{form.groups}}
-                                                        
+
                                                     </label>
                                                     {{form.is_staff.errors}}
                                                 </div>
@@ -228,16 +229,16 @@
                              			<div class="">
                              				<div class="form-group">
                                                 <!--submit-->
-                                                
+
                                                     <div class="ln_solid">
                                                     </div>
-                                                
+
                                  				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save user</button>
                                               	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
                                           	</div>
                              			</div>
-                             
-                            
+
+
                             </div></div></div></div></div>
                             <!-- /.row (nested) -->
                         <!-- /.panel-body -->
