@@ -169,7 +169,7 @@ $().ready(function() {
                             $(".comment_box").append(
                             '<div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">'+
                             '<img alt="Avatar" class="avatar" src="/static/media/'+img_parsed+'">'+
-                            '<span class="pull-right" style="margin-top: 10px;">'+item.date_data+'</span>'+
+                            '<span class="pull-right" style="padding-right: 20px; padding-top: 40px;">'+item.date_data+'</span>'+
                             '<h5>'+item.human_name+'</h5>'+
                             '<div class="well">'+
                             '<p class="message content-markdown">'+item.comment_data+'</p>'+
