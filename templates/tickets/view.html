@@ -1,0 +1,486 @@
+{% extends "dashboard/index.html" %}
+
+{% block extend_css%}
+{% load staticfiles %}
+    <link href="{% static "vendors/normalize-css/normalize.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" %}" rel="stylesheet">
+{%endblock%}
+
+{% block extend_js%}
+    {% load staticfiles %}
+    <script src="{% static "vendors/moment/moment.js" %}"></script>
+    <script src="{% static "js/datepicker/daterangepicker.js" %}"></script>
+    <!--<script src="{% static "vendors/bootstrap-daterangepicker/daterangepicker.js" %}"></script>-->
+    <script src="{% static "vendors/ion.rangeSlider/js/ion.rangeSlider.min.js" %}"></script>
+    <!--tickets JS-->
+    <script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>
+
+{% endblock%}
+
+
+
+{% block content %}
+    {% load core_settings_data %}
+    {% url_tickets as urlt %}
+
+    <!--All the rest-->
+    <div class="x_panel">
+                    <div class="x_title">
+                        <h2 >New ticket</h2>
+
+                            {% if form_ticket.instance.id %}
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 3px;" type="submit" name="save-signal">Save</button>
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right"  style="margin-right: 5px;" type="submit" name="update-signal">Update</button>
+                                <div class="btn-group pull-right" style="margin-right: 5px;">
+                                          <button class="btn btn-default btn-sm" type="button">More</button>
+                                          <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                          </button>
+                                          <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#" data-target=".bs-example-modal-lg" data-toggle="modal">Delete</a>
+                                            </li>
+                                            </li>
+                                          </ul>
+                                </div>
+                                {% include "tickets/delete_modal_ticket.html" %}
+
+                            {% else %}
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Save</button>
+                                <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="reset" name="save-signal">Clear</button>
+                            {%endif%}
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                    <div class="x_content">
+
+
+                    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                      <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#tab_content1" id="main-tab" role="tabpanel" data-toggle="tab" aria-expanded="false">Main</a>
+                        </li>
+                        {% if form_ticket.instance.id %}
+                        <li role="presentation" class=""><a href="#tab_content2" role="tabpanel" id="microtask-tab" data-toggle="tab" aria-expanded="false">Microtasks</a>
+                        </li>
+                        <li role="presentation" class=""><a href="#tab_content3" role="tabpanel" id="log-tab" data-toggle="tab" aria-expanded="false">Log</a>
+                        </li>
+
+                        {%endif%}
+                      </ul>
+
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="main-tab">
+                                <div class="row">
+                                <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit-dev/{{form_ticket.instance.id}}{%else%}create-new-devb{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
+
+                                    <!--usefull for JS scripts-->
+                                    <input type="hidden" id="idTicket" name="variable" value="{{ form_ticket.instance.id }}">
+                                    <input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="{{ form_ticket.instance.percentage }}">
+                                    <input type="hidden" id="count_microtask" name="variable" value="{{actual_microtasks.count }}">
+
+
+                                    <!--Left side-->
+                                    {% if vars.debug == True%}
+
+
+                                                {% if form_ticket.errors %}
+                                                <div class="alert alert-danger">
+                                                Main form: </p>
+                                                    {% for fticket_error in form_ticket %}
+                                                        {% if fticket_error.errors %}
+                                                            <ul ><li>{{fticket_error.label|striptags }} => <b>{{fticket_error.errors|striptags}}</b> </li></ul>
+                                                        {% endif%}
+                                                    {% endfor%}
+
+                                                    {% if form_ticket.non_field_errors %}
+                                                        {{ form_ticket.non_field_errors }}
+                                                    {%endif%}
+                                                </div>
+                                                {%endif%}
+
+
+
+                                                {% if form_attach.errors %}
+                                                <div class="alert alert-warning">
+                                                Attach form: </p>
+                                                    {% for fattach_error in form_attach %}
+                                                        {% if fattach_error.errrors %}
+                                                            [ {{fattach_error.label|striptags }} => <b>{{fattach_error.errors|striptags}}</b> ]
+                                                        {%endif%}
+                                                    {% endfor%}
+                                                </div>
+                                                {%endif%}
+
+
+                                    {%endif%}
+
+                                    <!--Status-->
+                                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <label class="pull-center">Queue</label>
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <select class="form-control pointer" id="id_ticket-assigned_queue" name="ticket-assigned_queue">
+                                                {% if form_ticket.instance.id %}
+
+                                                {% all_queues_for_user "cv_cc" as queues %}
+                                                    {% for queue in queues %}
+                                                        {% if queue.id == form_ticket.instance.assigned_queue.id %}
+                                                            <option value="{{queue.id}}" selected >{{queue}}</option>
+                                                        {% else %}
+                                                            <option value="{{queue.id}}" >{{queue}}</option>
+                                                        {% endif %}
+                                                    {%endfor%}
+
+
+                                                {%else%}
+
+                                                {% all_queues_for_user "can_create" as queues %}
+                                                    {% for queue in queues %}
+                                                        {% if queue.id == form_ticket.instance.assigned_queue.id %}
+                                                            <option value="{{queue.id}}" selected >{{queue}}</option>
+                                                        {% else %}
+                                                            <option value="{{queue.id}}" >{{queue}}</option>
+                                                        {% endif %}
+                                                    {%endfor%}
+                                                {%endif%}
+                                            </select>
+                                                    {{form_ticket.assigned_queue.errors}}
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <label class="pull-center">State</label>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                            <select class="form-control pointer" id="id_tciket-assigned_state" name="ticket-assigned_state">
+                                                    {% for status in common_data.status_info %}
+                                                        {%if status.id  == form_ticket.instance.assigned_state.id %}
+                                                            <option value="{{status.id}}" selected >{{status}}</option>
+                                                        {%else%}
+                                                            <option value="{{status.id}}">{{status}}</option>
+                                                        {%endif%}
+                                                {%endfor%}
+                                            </select>
+                                            {{form_ticket.assigned_state.errors}}
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                            <label class="pull-center">Date</label>
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                            {% if form_ticket.instance.id %}
+                                                <input id="id_ticket-date_disabled" name="ticket-date" class="form-control" value="{{form_ticket.instance.date|date:"d/m/y G:i"}}" readonly/>
+                                            {%else%}
+                                                <input id="id_ticket-date" name="ticket-date" class="form-control" value="">
+                                                <!--<input id="id_ticket-date" type="text" aria-describedby="inputSuccess2Status"  class="form-control has-feedback-left">-->
+                                            {%endif%}
+
+                                            {{form_ticket.date.errors}}
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                            <label class="pull-center">Priority</label>
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <select class="form-control pointer" id="id_assigned_prio" name="ticket-assigned_prio" >
+                                                        {% for prio in common_data.prio_info %}
+                                                            {%if prio.id  == form_ticket.instance.assigned_prio.id %}
+                                                                <option value="{{prio.id}}" selected >{{prio}}</option>
+                                                            {%else%}
+                                                                <option value="{{prio.id}}">{{prio}}</option>
+                                                            {%endif%}
+                                                        {%endfor%}
+                                            </select>
+                                            {{form_ticket.assigned_prio.errors}}
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                            <label class="pull-center">Responsible</label>
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <select class="form-control pointer" id="id_assigned_user" name="ticket-assigned_user" >
+                                                        <option value="" selected >--</option>
+                                                        {% for user_resp in common_data.users_info %}
+
+                                                            {%if user_resp.id  == form_ticket.instance.assigned_user.id %}
+                                                                <option value="{{user_resp.id}}" selected >{%if user_resp.first_name and user_resp.last_name%}{{user_resp.first_name}} {{user_resp.last_name}} {%else%}{{user_resp.email}}{%endif%}</option>
+                                                            {%else%}
+                                                                <option value="{{user_resp.id}}">{%if user_resp.first_name and user_resp.last_name%}{{user_resp.first_name}} {{user_resp.last_name}} {%else%}{{user_resp.email}}{%endif%}</option>
+                                                            {%endif%}
+                                                        {%endfor%}
+                                            </select>
+                                            {{form_ticket.assigned_user.errors}}
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                            <label class="pull-center">Percentage</label>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                               {% if form_ticket.instance.id%}
+                                                    <input type="text" name="percentage" id="percentage" class="range_base_ticket" value=""/>
+                                               {% else %}
+                                                    <input type="text" name="percentage" id="percentage" class="range_base_ticket_for_submit" value=""/>
+                                               {% endif %}
+                                       </div>
+
+
+
+                                    </div>
+                                    <!--Ticket body-->
+                                    <div class="col-md-10 col-sm-12 col-xs-12 form-group">
+                                        <!--only in mobile/ipad setup-->
+
+                                        <!--end-->
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <div id="MobileSep" class="visible-sm visible-xsm">
+                                                <hr>
+                                            </div>
+                                                <label>Subject:</label>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" autofocus="autofocus"
+                                            {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %} >
+                                                    {{form_ticket.subject.errors}}
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <label>Description:</label>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
+                                                    {{form_ticket.body.errors}}
+                                        </div>
+                                        <hr></hr>
+
+                                        {% if actual_files %}
+                                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                    <label for="id_file_name">Uploaded files:</label>
+                                            </div>
+
+                                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <ul class="list-unstyled timeline">
+                                                {% for i in actual_files %}
+                                                <li>
+                                                        <div class="block">
+                                                        <div class="tags">
+                                                          <a class="tag" href="{{ i.file_name.url }}" download>
+                                                            <span>{{i.file_name|filename_text}}</span>
+                                                          </a>
+                                                        </div>
+                                                        <div class="block_content">
+                                                          <p class="excerpt"><a href="#" data-toggle="modal" data-target="#img{{i.id}}"><img width=50% height=50% src="{{ i.file_name.url }}"></a></p>
+                                                        </div>
+                                                      </div>
+                                                        <!--modal part-->
+                                                        <div id="img{{i.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-body">
+                                                                        <img src="{{ i.file_name.url }}" class="img-responsive">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--modal final-->
+                                                </li>
+                                                {%endfor%}
+                                                </ul>
+                                            </div>
+                                        {%endif%}
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <label>Attach files:</label>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <input id="id_attach-file_name" type="file" name="attach-file_name">
+                                                {{form_attach.file_name.errors}}
+                                        </div>
+                                        <!--><!-->
+                                        <!--only in mobile/ipad setup-->
+
+
+                                        <!--end-->
+                                        <!--comments part -->
+                                        {% if form_ticket.instance.id %}
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <hr>
+
+                                                <label>Add comment:</label>
+                                        </div>
+                                        <!--<div class"cold-md-12">
+                                            <label> TEST </label>
+                                            <button class="btn btn-info botonazo" type="button">Info</button>
+                                            <ul></ul>
+    					               </div>-->
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <label for="message">Message (20 chars min, 100 max) :</label>
+                                            <textarea  data-parsley-maxlength="100" data-parsley-trigger="keyup" name="message_data" class="form-control" id="message_data"></textarea>
+                                            <br>
+                                            <button class="btn btn-info btn-xs pull-right add-message" type="button">Add mesasge</button>
+                                        </div>
+                                        <!--new messages-->
+
+                                        <div class="col-sm-12">
+                                        <div class="comment_box">
+                                        {% for comm in actual_comments %}
+                                            <div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                                    {% if comm.user_rel.avatar %}
+                                                        <img alt="Avatar" class="avatar" src="{{ comm.user_rel.avatar.url }}">
+                                                    {% else %}
+                                                        <img alta="Avatar" class="avatar" src="{% static 'images/user.png' %}">
+                                                    {%endif%}
+                                                    <span class="pull-right" style="padding-right: 20px; padding-top: 40px;">{{comm.date|date:'d-m-Y H:i'}}</span>
+                                                    <h5>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}}</h5>
+                                                    <div class="well" style="padding-bottom: 50px;">
+                                                    <p class="message content-markdown">{{comm.comment}}</p>
+                                                    <div class="comment-toolbar pull-right">
+                                                         <input type="hidden" id="idPMessage" name="idPMessage" value="{{comm.id}}">
+                                                          <button href="#" class="del-message btn btn-danger" onClick="return false;">Delete comment</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {%endfor%}
+                                        </div>
+                                        </div>
+                                        <!--new messages-->
+
+                                       </div>
+                                        {%endif%}
+
+
+
+                                    </div>
+
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                        <div class="ln_solid"></div>
+                                    </div>
+                                        </form>
+                                </div>
+
+                            {% if form_ticket.instance.id %}
+                            <!--button add microtask-->
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="microtask-tab">
+                            <button type="button" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#microtask_modal">
+                              Add new microtask
+                            </button>
+
+                            <!--modal microtask-->
+                                <div class="modal fade" id="microtask_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">Add new microtask</h4>
+                                      </div>
+
+                                    <div class="modal-body">
+                                    <label for="message">Task</label>
+                                    <input id="subject_mk" name="subject_mk" type="text" placeholder="Little task description" class="form-control" >
+
+                                    <label for="message">Description</label>
+                                    <textarea  id="body_mk" name="body_mk"  data-parsley-maxlength="100" data-parsley-trigger="keyup" class="form-control"  placeholder="Some more details..."></textarea>
+
+                                    <label for="message">State</label>
+                                    <select class="form-control pointer" id="state_mk" name="state_mk">
+                                                    {% for status in common_data.status_info %}
+                                                        {%if status.id  == form_ticket.instance.assigned_state.id %}
+                                                            <option value="{{status.id}}" selected >{{status}}</option>
+                                                        {%else%}
+                                                            <option value="{{status.id}}">{{status}}</option>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                    </select>
+
+
+                                    <label for="message">Percentage</label>
+                                    <input type="text" name="percentage_mk" id="percentage_mk" class="range_new_mk" value=""/>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary add-microtask">Save</button>
+                                    </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <!--table with microtasks-->
+                                <table class="table table-striped projects">
+                                  <thead>
+                                    <tr>
+                                      <th style="width: 1%">#</th>
+                                      <th style="width: 20%">Microtask name</th>
+                                      <th>Description</th>
+                                      <th style="width: 20%">Project Progress</th>
+                                      <th>Status</th>
+                                      <th style="width: 20%">#Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="tblmicrotasks">
+                                    {% for i in actual_microtasks%}
+                                    <tr>
+                                      <td>{{i.id}}</td>
+                                      <td>
+                                        <a>{{i.subject}}</a>
+                                        <br>
+                                        <small>{{i.date|date:"d/m/y H:i:s"}}</small>
+                                      </td>
+                                      <td>
+                                        {{i.body}}
+                                      </td>
+
+                                      <td class="project_progress">
+                                        <div class="progress progress_sm">
+                                          <div data-transitiongoal="{{i.percentage}}" role="progressbar" class="progress-bar bg-green" style="width: 45%;" aria-valuenow="{{i.percentage}}"></div>
+                                        </div>
+                                        <small>{{i.percentage}}% Complete</small>
+                                      </td>
+                                      <td>
+                                        <!--<button class="btn btn-success btn-xs" type="button">Success</button>-->
+                                        <span class="label" style="background-color:#{{i.assigned_state.color}}"><font color="black">{{i.assigned_state}}</font></span>
+                                      </td>
+                                      <td id="buttons">
+                                        <input type="hidden" id="idmk" name="idmk" value="{{i.id}}">
+                                        <a class="btn btn-info btn-xs edit-mk" href="#"><i class="fa fa-pencil"></i> Edit </a>
+                                        <a class="btn btn-danger btn-xs del-mk" href="#"><i class="fa fa-trash-o"></i> Delete </a>
+                                      </td>
+                                    </tr>
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="log-tab">
+                                <div class="x_content">
+                                  <div class="col-sm-12">
+
+                                    {% for e in actual_logs%}
+                                      <div class="mail_list">
+                                        <div class="right">
+                                          <h3>{{e.log_user}} <small>{{e.log_date}}</small></h3>
+                                          <p>{{e.log_action}}  =>  {{e.log_destiny}}</p>
+                                        </div>
+                                      </div>
+                                    {%endfor%}
+
+                                  </div>
+                                </div>
+                              </div>
+                            {%endif%}
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+
+    </div>
+
+
+
+
+{%endblock%}
