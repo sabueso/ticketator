@@ -127,6 +127,32 @@ def manage_ticket_dev(request, ticket_id=None):
     return render(request, 'tickets/create_edit_ticket.html', locals())
 
 
+@login_required
+def view_ticket(request, ticket_id=None):
+    # Common data
+    common_data = common_ticket_data()
+    if ticket_id:
+        # Check if existis or raise 404
+        ticket_rights = rights.get_rights_for_ticket(
+            user=request.user, queue=None, ticket_id=ticket_id)
+        if ticket_rights.can_view:
+            actual_ticket = get_object_or_404(Ticket, pk=ticket_id)
+            actual_files = Attachment.objects.filter(ticket_rel=ticket_id)
+            actual_comments = Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
+            actual_logs = Logs.objects.filter(log_ticket=ticket_id).order_by('-id')
+            actual_microtasks = Microtasks.objects.filter(ticket_rel=ticket_id).order_by('-id')
+        else:
+            raise Http404("You dont have enough permissions to see this ticket")
+    else:
+        # If not, assign a new ticket instance to be use as instance of form
+        raise Http404("No ticket selected")
+    # POST mode
+
+    form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
+    form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
+    return render(request, 'tickets/view.html', locals())
+
+
 def save_comment(request, comment_data=None, private_data=None, ticket_data=None):
     # Save data
     inst_ticket = Ticket.objects.get(id=ticket_data)
