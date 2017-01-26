@@ -50,8 +50,8 @@
             <tbody>
               {%for line in tickets_info.data %}
               <tr class="odd gradeX">
-                <td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/{{line.id}}">{{line.id}}</a></td>
-                <td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/{{line.id}}">{{line.subject}}</a></td>
+                <td class="text-center" style="vertical-align:middle"><a href="/tickets/view/{{line.id}}">{{line.id}}</a></td>
+                <td class="text-center" style="vertical-align:middle"><a href="/tickets/view/{{line.id}}">{{line.subject}}</a></td>
                 <td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
                 <td class="text-center" style="vertical-align:middle">{% if line.assigned_queue %}{{line.assigned_queue.shortcode}}{%else%}{%endif%}</td>
                 <td class="text-center" style="vertical-align:middle">{{line.create_user}}</td>
