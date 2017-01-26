@@ -85,6 +85,8 @@ urlpatterns = [
     # url(r'^tickets/create-new', vtickets.manage_ticket, name='tickets-create'),
     url(r'^tickets/edit-dev/(?P<ticket_id>\d+)?$',
         vtickets.manage_ticket_dev, name='tickets-edit-dev'),
+    url(r'^tickets/view/(?P<ticket_id>\d+)?$',
+        vtickets.manage_ticket_dev, name='tickets-edit-dev'),
     # url(r'^tickets/edit/(?P<ticket_id>\d+)?$', vtickets.manage_ticket, name='tickets-edit'),
     # url(r'^tickets/view/(?P<ticket_id>\d+)?$', vtickets.view_ticket, name='tickets-view'),
     url(r'^tickets/delete/(?P<ticket_id>\d+)?$', vtickets.delete_ticket, name='tickets-delete'),
