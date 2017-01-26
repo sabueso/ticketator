@@ -55,7 +55,7 @@
 			                      <div class="media-body">
 									{% for m in pending_tickets.data %}
 			                        <a class="title" href="tickets/edit-dev/{{ t.id }}">#{{ m.id }} - {{ m.date|date:"d/m/y G:i:s" }} - {{ m.subject }}</a>
-			                        <p> {{m.body}}</p>
+			                        <p class="content-markdown"> {{m.body}}</p>
 			                        <hr>
 			                        {%endfor%}
 			                      </div>
@@ -81,7 +81,7 @@
 
                               {% for t in my_tickets %}
                               <a class="title" href="tickets/edit-dev/{{ t.id }}">#{{ t.id }} - {{ t.date|date:"d/m/y G:i:s" }} - {{ t.subject }}</a>
-                              <p> {{t.body}}</p>
+                              <p class="content-markdown"> {{t.body}}</p>
                               <hr>
                               {%endfor%}
 
