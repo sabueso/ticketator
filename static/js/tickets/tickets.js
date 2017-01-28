@@ -40,7 +40,7 @@ $().ready(function() {
     var idTicket_data = document.getElementById("idTicket").value;
     var idPercentage_data = document.getElementById("id_ticket-percentage").value;
     var count_microtask_data = document.getElementById("count_microtask").value;
-
+    var path = window.location.pathname.split("/")[2];
 
     function update_percentage_input(percentage_value)
     {
@@ -114,7 +114,7 @@ $().ready(function() {
     //Define if existing ticket load needs to disable the range slider because the existence
     //of microtasks
 
-    if (count_microtask_data != 0)
+    if (count_microtask_data != 0 || path == "view")
     {
         slider_for_existing.update({disable: true});
     }
