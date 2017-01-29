@@ -25,8 +25,9 @@
 <div class="x_panel">
   <div class="x_title">
     <h2 >{{form_ticket.instance.subject}}</h2>
-
+    {%if can_edit %}
     <button class="btn btn-default btn-sm pull-right" style="margin-right: 5px" >Edit</button>
+    {%endif%}
 
     <div class="clearfix"></div>
   </div>

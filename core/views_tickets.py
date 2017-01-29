@@ -84,14 +84,14 @@ def manage_ticket_dev(request, ticket_id=None):
         # Check if existis or raise 404
         ticket_rights = rights.get_rights_for_ticket(
             user=request.user, queue=None, ticket_id=ticket_id)
-        if ticket_rights.can_view:
+        if ticket_rights.can_edit or request.user.is_superuser:
             actual_ticket = get_object_or_404(Ticket, pk=ticket_id)
             actual_files = Attachment.objects.filter(ticket_rel=ticket_id)
             actual_comments = Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
             actual_logs = Logs.objects.filter(log_ticket=ticket_id).order_by('-id')
             actual_microtasks = Microtasks.objects.filter(ticket_rel=ticket_id).order_by('-id')
         else:
-            raise Http404("You dont have enough permissions to see this ticket")
+            raise Http404("You dont have enough permissions to edit this ticket")
     else:
         # If not, assign a new ticket instance to be use as instance of form
         actual_ticket = Ticket()
@@ -141,6 +141,10 @@ def view_ticket(request, ticket_id=None):
             actual_comments = Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
             actual_logs = Logs.objects.filter(log_ticket=ticket_id).order_by('-id')
             actual_microtasks = Microtasks.objects.filter(ticket_rel=ticket_id).order_by('-id')
+            if ticket_rights.can_edit or request.user.is_superuser:
+                can_edit = True
+            else:
+                can_edit = False
         else:
             raise Http404("You dont have enough permissions to see this ticket")
     else:
