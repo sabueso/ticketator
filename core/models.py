@@ -302,6 +302,7 @@ class Ticket(models.Model):
             state_color_data=str(self.assigned_state.color),
             percentage_data=str(self.percentage),
             queue_shortcode=str(self.assigned_queue.shortcode),
+            priority=str(self.assigned_prio),
             create_user=self.str_creator_user_name(),
             assigned_user_data=self.str_assigned_user_name(),)
 
