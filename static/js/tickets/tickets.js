@@ -163,12 +163,12 @@ $().ready(function() {
                         $( ".comment_box" ).empty();
                         $.each(dataparsed, function(i, item){
                             if (item.avatar_data)
-                                {var img_parsed = item.avatar_data }
+                                {var img_parsed = '/media/'+item.avatar_data }
                             else
-                                {var img_parsed = "user.png"}
+                                {var img_parsed = '/static/media/user.png'}
                             $(".comment_box").append(
                             '<div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">'+
-                            '<img alt="Avatar" class="avatar" src="/media/'+img_parsed+'">'+
+                            '<img alt="Avatar" class="avatar" src="'+img_parsed+'">'+
                             '<span class="pull-right" style="padding-right: 20px; padding-top: 10px;">'+item.date_data+'</span>'+
                             '<h5>'+item.human_name+'</h5>'+
                             '<div class="well" style="padding-bottom: 50px;>'+
