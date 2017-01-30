@@ -168,14 +168,14 @@ $().ready(function() {
                                 {var img_parsed = "user.png"}
                             $(".comment_box").append(
                             '<div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">'+
-                            '<img alt="Avatar" class="avatar" src="/static/media/'+img_parsed+'">'+
-                            '<span class="pull-right" style="padding-right: 20px; padding-top: 40px;">'+item.date_data+'</span>'+
+                            '<img alt="Avatar" class="avatar" src="/media/'+img_parsed+'">'+
+                            '<span class="pull-right" style="padding-right: 20px; padding-top: 10px;">'+item.date_data+'</span>'+
                             '<h5>'+item.human_name+'</h5>'+
-                            '<div class="well">'+
+                            '<div class="well" style="padding-bottom: 50px;>'+
                             '<p class="message content-markdown">'+item.comment_data+'</p>'+
                             '<div class="comment-toolbar pull-right">'+
                             '<input type="hidden" id="idPMessage" name="idPMessage" value="'+item.id+'">'+
-                            '<a href="#" class="del-message" onClick="return false;">Delete comment</a>'+
+                            '<a href="#" class="del-message btn btn-danger btn-sm" onClick="return false;">Delete comment</a>'+
                             '</div>'+
                             '</div>'+
                             '</div>'
