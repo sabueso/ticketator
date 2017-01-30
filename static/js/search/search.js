@@ -38,7 +38,7 @@ $().ready(function() {
 									          '<tr class="odd gradeX">'+
                               	   	'<td class="text-center" style="vertical-align:middle"><a href="/tickets/view/'+item.id+'">'+item.id+'</a></td>'+
                               	 	  '<td class="text-center" style="vertical-align:middle"><a href="/tickets/view/'+item.id+'">'+item.subject_data+'</a></td>'+
-                                    '<td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#'+item.state_color_data+'"><font color="black">'+item.assigned_state+'</font></span></td>'+
+                                    '<td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#'+item.state_color_data+'"><font color="black">'+item.state_data+'</font></span></td>'+
                                     '<td class="text-center" style="vertical-align:middle">'+item.queue_shortcode+'</td>'+
                               	   	'<td class="text-center" style="vertical-align:middle">'+item.create_user+'</td>'+
                                     '<td class="text-center" style="vertical-align:middle">'+item.date+'</td>'+
@@ -72,6 +72,7 @@ $().ready(function() {
                    },
             success: function(data) {
 		                    //$("#message_data").val("");
+                            console.log(data)
                             notif('info','Success','Message added');
                             render_search_results(data);
                             //update_comments_new();
