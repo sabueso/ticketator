@@ -24,28 +24,34 @@ $().ready(function() {
                         //alert(data.length);
                         $( "#tbodysearch" ).empty();
                         $.each(dataparsed, function(i, item){
+                          if (item.percentage_data <= 30 && item.percentage_data >= 0){
+                            var colorback = 'bg-red'
+                          }
+                          if (item.percentage_data <= 60 && item.percentage_data >= 40){
+                            var colorback = 'bg-orange'
+                          }
+                          if (item.percentage_data <= 100 && item.percentage_data >= 70){
+                            var colorback = 'bg-green'
+                          }
                             $("#tbodysearch").append(
 
-									'<tr class="odd gradeX">'+
-                              	   	'<td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/'+item.id+'">'+item.id+'</a></td>'+
-                              	 	'<td class="text-center" style="vertical-align:middle"><a href="/tickets/edit-dev/'+item.id+'">'+item.subject_data+'</a></td>'+
-                                    '<td class="text-center" style="vertical-align:middle">'+
-                                    '<span class="label" style="background-color:#ff6f6">'+
-                                    '<font color="black">'+item.state_data+'</font></span>'+
-                                    '</td>'+
+									          '<tr class="odd gradeX">'+
+                              	   	'<td class="text-center" style="vertical-align:middle"><a href="/tickets/view/'+item.id+'">'+item.id+'</a></td>'+
+                              	 	  '<td class="text-center" style="vertical-align:middle"><a href="/tickets/view/'+item.id+'">'+item.subject_data+'</a></td>'+
+                                    '<td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:#'+item.state_color_data+'"><font color="black">'+item.assigned_state+'</font></span></td>'+
                                     '<td class="text-center" style="vertical-align:middle">'+item.queue_shortcode+'</td>'+
                               	   	'<td class="text-center" style="vertical-align:middle">'+item.create_user+'</td>'+
                                     '<td class="text-center" style="vertical-align:middle">'+item.date+'</td>'+
                                     '<td class="text-center" style="vertical-align:middle">'+item.assigned_user_data+'</td>'+
-                                  	'<td class="project_progress">'+item.percentage_data+'</td>'+
-                                  	'<td class="text-center" style="vertical-align:middle">'+item.assigned_prio+'</td>'
+                                    '<td class="project_progress"><div class="progress progress_sm"><div aria-valuenow="'+item.percentage_data+'" style="width: '+item.percentage_data+'%" class="progress-bar '+colorback+'"role="progressbar" data-transitiongoal="'+item.percentage_data+'"></div></div><div class="percentage_range" <small>'+item.percentage_data+'%</small></div></td>'+
+                                    '<td class="text-center" style="vertical-align:middle">'+item.priority+'</td>'
 
                               	 	)
                         		});
 
-                             
+
 					}
-                        
+
 
 
 
@@ -57,7 +63,7 @@ $().ready(function() {
             type: "POST",
             url: "/search/",
             dataType: "json",
-            data: { 
+            data: {
                     "subject_text": $("#subject").val(),
                     "body_text": $("#body").val(),
                     "assigned_id": $("#id_assigned_user").val(),
@@ -66,7 +72,6 @@ $().ready(function() {
                    },
             success: function(data) {
 		                    //$("#message_data").val("");
-                            console.log(data);
                             notif('info','Success','Message added');
                             render_search_results(data);
                             //update_comments_new();
@@ -112,10 +117,8 @@ $().ready(function() {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         }
-    }); 
+    });
 
 
 
 });
-
-

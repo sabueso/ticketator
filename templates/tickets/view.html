@@ -26,7 +26,7 @@
   <div class="x_title">
     <h2 >{{form_ticket.instance.subject}}</h2>
     {%if can_edit %}
-    <button class="btn btn-default btn-sm pull-right" style="margin-right: 5px" >Edit</button>
+    <a class="btn btn-default btn-sm pull-right" style="margin-right: 5px" href="/tickets/edit-dev/{{form_ticket.instance.id}}" >Edit</a>
     {%endif%}
 
     <div class="clearfix"></div>

@@ -133,8 +133,8 @@ if DEBUG:
 MEDIA_URL = "/media/"  # url to serve media
 
 
-SITE_NAME = 'Ticketator DEV'
-SITE_VERSION = '0.1'
+SITE_NAME = 'Ticketator '
+SITE_VERSION = '0.2'
 DATE_INPUT_FORMATS = ['%d/%m/%y']
 DATE_FORMAT = ['%d/%m/%y']
 
