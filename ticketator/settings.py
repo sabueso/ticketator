@@ -124,7 +124,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    #'/var/www/static/',
+    # '/var/www/static/',
 ]
 
 MEDIA_ROOT = "/var/www/media/"
@@ -138,12 +138,12 @@ SITE_VERSION = '0.2'
 DATE_INPUT_FORMATS = ['%d/%m/%y']
 DATE_FORMAT = ['%d/%m/%y']
 
-#Pagination seq
+# Pagination seq
 PAGINATE_BY = 15
 
-#Auth settings
+# Auth settings
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/login"
 
-#Auth custom settings
+# Auth custom settings
 AUTH_USER_MODEL = 'core.User'

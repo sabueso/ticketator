@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
@@ -11,7 +12,6 @@ admin.site.register(State)
 admin.site.register(Priority)
 
 # Custom user render outside the "Auth" module
-from django.contrib.auth.admin import UserAdmin
 admin.site.register(User, UserAdmin)
 
 

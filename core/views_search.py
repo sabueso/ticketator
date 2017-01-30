@@ -44,5 +44,5 @@ def main_search(request, state_id=None):
             pass
         data = [obj.as_json() for obj in qry_results]
         return JsonResponse(data, safe=False)
-        
+
     return render(request, 'search/search_form.html', locals())
