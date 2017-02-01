@@ -56,7 +56,7 @@
 								<div class="flex">
 									<ul class="list-inline widget_profile_box">
 										<li>
-											<img class="img-circle profile_img" src="{{ form.instance.logo.url }}">
+											<img class="img-circle profile_img" src="{%if form.instance.logo%}{{ form.instance.logo.url }}{%endif%}">
 										</li>
 									</ul>
 								</div>
