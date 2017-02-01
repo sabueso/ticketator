@@ -31,7 +31,7 @@ pip install -r requirements.txt
 -as django user:
 ``` 
 ./manage.py makemigrations; ./manage.py migrate
-./manage.py createsuperuser"
+./manage.py createsuperuser
 ``` 
 
 -Now, to populate some needed data from the base directory of the instalation:
