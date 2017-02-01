@@ -330,7 +330,7 @@
                                                     {% if comm.user_rel.avatar %}
                                                         <img alt="Avatar" class="avatar" src="/media/{{ comm.user_rel.avatar }}">
                                                     {% else %}
-                                                        <img alt="Avatar" class="avatar" src="/static/media/user.png">
+                                                        <img alt="Avatar" class="avatar" src="{% static 'media/user.png' %}">
                                                     {%endif%}
                                                     <span class="pull-right" style="padding-right: 20px; padding-top: 10px;"">{{comm.date|date:'d-m-Y H:i'}}</span>
                                                     <h5>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}}</h5>
