@@ -328,17 +328,17 @@
                                         {% for comm in actual_comments %}
                                             <div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                     {% if comm.user_rel.avatar %}
-                                                        <img alt="Avatar" class="avatar" src="/media/{{ comm.user_rel.avatar }}">
+                                                        <img alt="Avatar" class="avatar" src="{{ comm.user_rel.avatar.url }}">
                                                     {% else %}
-                                                        <img alt="Avatar" class="avatar" src="{% static 'media/user.png' %}">
+                                                        <img alta="Avatar" class="avatar" src="{% static 'images/user.png' %}">
                                                     {%endif%}
-                                                    <span class="pull-right" style="padding-right: 20px; padding-top: 10px;"">{{comm.date|date:'d-m-Y H:i'}}</span>
+                                                    <span class="pull-right" style="padding-right: 20px; padding-top: 40px;">{{comm.date|date:'d-m-Y H:i'}}</span>
                                                     <h5>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}}</h5>
                                                     <div class="well" style="padding-bottom: 50px;">
                                                     <p class="message content-markdown">{{comm.comment}}</p>
                                                     <div class="comment-toolbar pull-right">
                                                          <input type="hidden" id="idPMessage" name="idPMessage" value="{{comm.id}}">
-                                                          <a href="#" class="del-message btn btn-danger btn-sm" onClick="return false;">Delete comment</a>
+                                                          <button href="#" class="del-message btn btn-danger" onClick="return false;">Delete comment</button>
                                                     </div>
                                                 </div>
                                             </div>
