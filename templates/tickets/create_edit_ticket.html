@@ -23,8 +23,7 @@
 {% block content %}
 {% load core_settings_data %}
 {% url_tickets as urlt %}
-
-<!--All the rest-->
+<pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre><!--All the rest-->
 <div class="x_panel">
   <div class="x_title">
     <h2 >New ticket</h2>
@@ -128,7 +127,6 @@
 
 
                   {%else%}
-
                   {% all_queues_for_user "can_create" as queues %}
                   {% for queue in queues %}
                   {% if queue.id == form_ticket.instance.assigned_queue.id %}

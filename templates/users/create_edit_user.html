@@ -165,7 +165,7 @@
                                                     <label>
                                                         {% if form.instance.is_superuser %}
 
-                                                            {% if form.instance.is_superuser = True %}
+                                                            {% if form.instance.is_superuser == True %}
                                                             <input id="is_superuser" name="is_superuser" type="checkbox" checked> Superuser
                                                                 {% else %}
                                                             <input id="is_superuser" name="is_superuser" type="checkbox"> Superuser
@@ -181,7 +181,7 @@
 
                                                     <label>
                                                         {% if form.instance.is_staff %}
-                                                            {% if form.instance.is_staff = True %}
+                                                            {% if form.instance.is_staff == True %}
                                                             <input id="is_staff" name="is_staff" type="checkbox" checked> Staff
                                                             {% else %}
                                                             <input id="is_staff" name="is_staff" type="checkbox"> Staff
@@ -195,7 +195,7 @@
 
                                                     <label>
                                                         {% if form.instance.is_active %}
-                                                            {% if form.instance.is_active = True %}
+                                                            {% if form.instance.is_active == True %}
                                                             <input id="is_active" name="is_active" type="checkbox" checked> Active
                                                             {% else %}
                                                             <input id="is_active" name="is_active" type="checkbox"> Staff
