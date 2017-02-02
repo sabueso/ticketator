@@ -7,6 +7,7 @@
 # Custom
 tmp/
 media/
+.DS_store
 
 
 # Byte-compiled / optimized / DLL files
@@ -20,7 +21,6 @@ __pycache__/
 .Python
 env/
 bin/
-build/
 develop-eggs/
 dist/
 eggs/
@@ -72,5 +72,3 @@ docs/_build/
 
 # Vim swap
 *.swp
-
-media/

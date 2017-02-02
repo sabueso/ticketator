@@ -28,7 +28,7 @@ admin.site.register(Rights, RightsAdmin)
 
 class TicketAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'date', 'create_user', 'subject', 'assigned_state',
+        'id', 'created', 'create_user', 'subject', 'assigned_state',
         'assigned_queue', 'assigned_user', 'assigned_prio')
     search_fields = ('subject', 'body')
 
