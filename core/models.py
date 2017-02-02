@@ -18,9 +18,20 @@ from django.contrib.auth.models import AbstractUser
 # Logger class
 from core.views_logs import logger
 
+class TimeStampedModelMixin(models.Model):
+    """
+    Abstract Mixin model to add timestamp
+    """
+    # Timestamp
+    created = models.DateTimeField(u"Date created", auto_now_add=True)
+    updated = models.DateTimeField(
+        u"Date updated", auto_now=True, db_index=True)
+
+    class Meta:
+        abstract = True
 
 # => UserType (OP or simple user)
-class UserType(models.Model):
+class UserType(TimeStampedModelMixin):
     status = models.CharField(max_length=20)
 
     def __unicode__(self):
@@ -106,7 +117,7 @@ class GroupForm(ModelForm):
 
 
 # => Companys
-class Company(models.Model):
+class Company(TimeStampedModelMixin):
     name = models.CharField(max_length=100)
     # More fields will be needed...
     logo = models.FileField(upload_to='logo/')
@@ -124,7 +135,7 @@ class CompanyForm(ModelForm):
 
 
 # => Queues (ex Departments)
-class Queue(models.Model):
+class Queue(TimeStampedModelMixin):
     name = models.CharField(max_length=100)
     shortcode = models.CharField(max_length=10)
     description = models.CharField(max_length=30, null=True, blank=True)
@@ -144,7 +155,7 @@ class QueueForm(ModelForm):
 
 # => Groups
 # Group's rights
-class Rights(models.Model):
+class Rights(TimeStampedModelMixin):
     enabled = models.BooleanField(default=True)
     grp_src = models.ForeignKey(
         Group, related_name="src_grp", blank=True, null=True)
@@ -208,7 +219,7 @@ class RightForm(ModelForm):
 
 
 # => States
-class State(models.Model):
+class State(TimeStampedModelMixin):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=150, null=True, blank=True)
     active = models.BooleanField(default=True)
@@ -230,7 +241,7 @@ class StateForm(ModelForm):
 
 
 # => Prioritys
-class Priority(models.Model):
+class Priority(TimeStampedModelMixin):
     name = models.CharField(max_length=30)
 
     def __unicode__(self):
@@ -244,20 +255,19 @@ class PriorityForm(ModelForm):
 
 
 # => Inventory Servers/PC
-class InventoryGroup(models.Model):
+class InventoryGroup(TimeStampedModelMixin):
     name = models.CharField(max_length=100)
     company_rel = models.ForeignKey(Company, null=True)
 
 
-class Inventory(models.Model):
+class Inventory(TimeStampedModelMixin):
     name = models.CharField(max_length=100)
     ip = models.GenericIPAddressField(protocol='ipv4')
     group_rel = models.ForeignKey(InventoryGroup, null=True)
 
 
 # => Tickets
-class Ticket(models.Model):
-    date = models.DateTimeField(default=datetime.now)
+class Ticket(TimeStampedModelMixin):
     create_user = models.ForeignKey(
         User, related_name="c_user", blank=True, null=True,)
     subject = models.CharField(max_length=40)
@@ -427,7 +437,7 @@ def get_attachment_upload_path(instance, filename):
     return os.path.join("ticket_files/%s" % instance.ticket_rel.id, filename)
 
 
-class Attachment(models.Model):
+class Attachment(TimeStampedModelMixin):
 
     ticket_rel = models.ForeignKey(Ticket, null=True, blank=True)
     file_name = models.FileField(
@@ -441,10 +451,9 @@ class AttachmentForm(ModelForm):
 
 
 # => Comments
-class Comments(models.Model):
+class Comments(TimeStampedModelMixin):
     ticket_rel = models.ForeignKey(Ticket, related_name='ticket_rel_comm')
     user_rel = models.ForeignKey(User, related_name='user_rel_comm')
-    date = models.DateTimeField(default=datetime.now)
     comment = models.TextField(null=True, blank=True)
     private = models.BooleanField(default=False)
 
@@ -460,8 +469,7 @@ class Comments(models.Model):
             date_data=str(self.date.strftime('%d-%m-%Y %H:%M')))
 
 
-class Microtasks(models.Model):
-    date = models.DateTimeField(default=datetime.now)
+class Microtasks(TimeStampedModelMixin):
     ticket_rel = models.ForeignKey(Ticket, related_name='ticket_rel_mtask')
     subject = models.CharField(max_length=40)
     body = models.TextField(null=True, blank=True)
@@ -481,9 +489,8 @@ class Microtasks(models.Model):
             percentage_data=int(self.percentage))
 
 
-class Logs(models.Model):
+class Logs(TimeStampedModelMixin):
     log_ticket = models.ForeignKey(Ticket, related_name='ticket_log')
     log_user = models.ForeignKey(User, related_name='user_log')
     log_action = models.CharField(max_length=200)
     log_destiny = models.CharField(max_length=200)
-    log_date = models.DateTimeField(default=datetime.now)
