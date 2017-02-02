@@ -21,7 +21,7 @@
     <div class="row">
                 <div class="col-lg-8 col-md-offset-2">
                     <div class="panel panel-default">
-                        
+
                         <div class="panel-heading">
                             {% if vars.debug == True%}
                             <div class="pull-left">
@@ -38,7 +38,7 @@
                                     {% if form.errors %}
                                     <div class="alert alert-danger">
                                         {{form.errors}}
-                                
+
                                     </div>
                                     {% endif %}
                                 {%endif%}
@@ -73,9 +73,9 @@
                                         <div class="form-group">
                                                     <label>Description</label>
                                                     {% if form.instance.description %}
-                                                    <input id="description" description="description" value="{{form.instance.description}}" class="form-control">
+                                                    <input id="description" name="description" value="{{form.instance.description}}" class="form-control">
                                                     {% else %}
-                                                    <input id="description" description="description" class="form-control">
+                                                    <input id="description" name="description" class="form-control">
                                                     {%endif%}
                                                     <p class="help-block"></p>
                                                     {{form.description.errors}}
@@ -87,7 +87,7 @@
                                                     {{form.company_rel|addcss:"form-control"}}
                                                     <p class="help-block"></p>
                                                     {{form.company_rel.errors}}
-                                        </div>                                        
+                                        </div>
 <!--                                         <div class="form-group">
                                                     <label>First name</label>
                                                     {% if form.instance.first_name%}
@@ -98,7 +98,7 @@
                                                     <p class="help-block"></p>
                                                     {{form.first_name.errors}}
                                         </div>
-                                        
+
                                         <div class="form-group">
                                                    <label>Last name</label>
                                                     {% if form.instance.last_name%}
@@ -120,11 +120,11 @@
                                                     <p class="help-block"></p>
                                                     {{form.email.errors}}
                                         </div> -->
-                                        
+
                                 </div>
-                                
-                                       
-                                
+
+
+
                             </div>
 
 
