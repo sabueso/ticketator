@@ -13,15 +13,15 @@
     {% load staticfiles %}
 
     <link href="{% static "vendors/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
-    
-    <!--Custom --> 
+
+    <!--Custom -->
     <link href="{% static "build/css/custom.css" %}" rel="stylesheet" type="text/css">
-    
+
 
 </head>
 
   <body class="login">
-    <div> 
+    <div>
       <a class="hiddenanchor" id="signup"></a>
       <a class="hiddenanchor" id="signin"></a>
 
@@ -36,9 +36,13 @@
               </div>
               <div>
               <input class="form-control" id="password" placeholder="password" name="password" type="password" >              </div>
+              {% if form.errors %}
+                    <p class="error">Sorry, that's not a valid username or password</p>
+                {% endif %}
               <div>
                 <button type="submit" value="login" class="btn btn-lg btn-success btn-block">Login</button>
-                <a class="reset_pass" href="#">Lost your password?</a>
+                <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
               </div>
 
               <div class="clearfix"></div>
@@ -50,9 +54,8 @@
                 <br />
 
                 <div>
-                  <p>©2016 All Rights Reserved </p>
+                  <p>©2017 All Rights Reserved </p>
                   <p>Varita-Magica property. </p>
-                  <p>Privacy and Terms</p>
                 </div>
               </div>
             </form>
