@@ -238,11 +238,29 @@
               <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                 <label>Description:</label>
               </div>
-              <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
-                {{form_ticket.body.errors}}
+              <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active"><a href="#tab_content4" id="main-tab" role="tabpanel" data-toggle="tab" aria-expanded="false">Write</a>
+                  </li>
+                  <li role="presentation" class="" onclick="previewMarkdown();"><a href="#tab_content5" role="tabpanel" id="microtask-tab" data-toggle="tab" aria-expanded="false">Preview</a>
+                  </li>
+                </ul>
+
+                <div id="myTabContent" class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade active in" id="tab_content4" aria-labelledby="main-tab">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
+                    </div>
+                    <hr></hr>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="tab_content5" aria-labelledby="main-tab">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                      <div id="id_ticket-body_preview" style="background-color: #f5f5f5; border: 1px solid #e3e3e3; border-radius: 4px; padding: 15px; width:auto;"></div>
+                    </div>
+                    <hr></hr>
+                  </div>
+                </div>
               </div>
-              <hr></hr>
 
               {% if actual_files %}
               <div class="col-md-12 col-sm-12 col-xs-12 form-group">

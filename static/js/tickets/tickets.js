@@ -460,6 +460,8 @@ $().ready(function() {
         $(this).html(marked($(this).text()))
       })
     }
-
-
 });
+
+function previewMarkdown(){
+  $("#id_ticket-body_preview").html(marked($("#id_ticket-body").val()))
+}
