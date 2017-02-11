@@ -147,3 +147,6 @@ LOGIN_URL = "/login"
 
 # Auth custom settings
 AUTH_USER_MODEL = 'core.User'
+
+# Logo ticketator
+LOGO_COMPANY = STATIC_URL + 'images/logo/tk-tiny.png'

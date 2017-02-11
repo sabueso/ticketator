@@ -80,7 +80,7 @@ urlpatterns = [
     url(r'^settings/queue/(?P<queue_id>\d+)?$', vqueues.manage_queue, name='queues-edit'),
 
     # Tickets
-    url(r'^tickets/?/?$', vtickets.list_tickets, name='tickets-list'),
+    url(r'^tickets/(?P<assigned_state>\d+)?$$', vtickets.list_tickets, name='tickets-list'),
     url(r'^tickets/create-new-dev', vtickets.manage_ticket_dev, name='tickets-create-dev'),
     # url(r'^tickets/create-new', vtickets.manage_ticket, name='tickets-create'),
     url(r'^tickets/edit-dev/(?P<ticket_id>\d+)?$',

@@ -4,7 +4,9 @@ from __future__ import unicode_literals
 # Tickets views: list, create, delete
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
+from django.db.models import Q
+
 # from core import views_utils as utils
 from core.models import Ticket, TicketForm, Attachment, AttachmentForm
 from core.models import State, Queue, Priority, Company, Comments
@@ -17,10 +19,7 @@ from core import rights
 from django.contrib.auth import get_user_model
 # JSON for comments
 import json
-# serialize is really working?#
-from django.http import JsonResponse
 # Filtering data with multiple params
-from util import query_view
 
 User = get_user_model()
 
@@ -47,11 +46,17 @@ list_tickets: list functions called in urls.py used to list tickets under /ticke
 
 
 @login_required
-def list_tickets(request, **kwargs):
+def list_tickets(request, assigned_state=None):
     common_data = common_ticket_data()
     queues = rights.get_queues_as_q_for_ticket_model(request.user)
+    states = State.objects.all()
     # We pass always granted_queues as a roundup to query_view requirements
-    tickets_info = query_view(Ticket, request.GET, granted_queues=queues, **kwargs)
+    if not assigned_state:
+        tickets = Ticket.objects.filter(queues, Q(assigned_state=2) | Q(assigned_state=1))
+
+    else:
+        tickets = Ticket.objects.filter(queues, assigned_state=assigned_state)
+
     return render(request, 'tickets/list_tickets.html', locals())
 
 

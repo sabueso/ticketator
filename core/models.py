@@ -18,6 +18,7 @@ from django.contrib.auth.models import AbstractUser
 # Logger class
 from core.views_logs import logger
 
+
 class TimeStampedModelMixin(models.Model):
     """
     Abstract Mixin model to add timestamp
@@ -29,6 +30,7 @@ class TimeStampedModelMixin(models.Model):
 
     class Meta:
         abstract = True
+
 
 # => UserType (OP or simple user)
 class UserType(TimeStampedModelMixin):
