@@ -5,10 +5,10 @@ set -u
 false
 while [ ! $? -eq 0 ]
 do
-    sleep 1
+    sleep 2
     nc -z "${DB_HOST}" "${DB_PORT}"
 done
-sleep 1
+sleep 2
 
 set -e
 

@@ -36,8 +36,6 @@ urlpatterns = [
 
     # Auth
     url(r'^login$', auth_views.login, {'template_name': 'auth/login.html'}, name='login'),
-    url(r'^password_reset/$', auth_views.password_reset, {'template_name': 'auth/reset.html'}, name='password_reset'),
-
 
     url(r'^logoff', vauth.logout_v, name='logout'),
 
