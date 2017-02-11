@@ -306,7 +306,7 @@ class Ticket(TimeStampedModelMixin):
     def as_json(self):
         return dict(
             id=str(self.id),
-            date=str(self.date.strftime('%d-%m-%Y %H:%M')),
+            date=str(self.created.strftime('%d-%m-%Y %H:%M')),
             subject_data=str(self.subject.encode('utf8')),
             body_data=str(self.body.encode('utf8')),
             state_data=str(self.assigned_state.name),

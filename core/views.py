@@ -24,7 +24,8 @@ def index(request):
         Ticket, request.GET, granted_queues=queues, assigned_state=1, limit=5)
     pending_tickets = query_view(
         Ticket, request.GET, granted_queues=queues, assigned_state=2, limit=5)
-    my_tickets = Ticket.objects.filter(assigned_user_id=request.user.id)
+    my_tickets = query_view(
+        Ticket, request.GET, granted_queues=queues, assigned_user_id=request.user.id, limit=5)
 
     rssdata = User.objects.get(id=request.user.id).rssfeed
     if rssdata:
