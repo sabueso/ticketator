@@ -61,7 +61,7 @@ class UserForm(ModelForm):
     date_joined = forms.DateField(
         widget=forms.SelectDateWidget(), initial=util.now)
     password_first = forms.CharField(
-        label='Initial Password', widget=forms.PasswordInput, 
+        label='Initial Password', widget=forms.PasswordInput,
         required=False,initial='')
     password_check = forms.CharField(
         label='Password confirmation', widget=forms.PasswordInput,
@@ -473,7 +473,7 @@ class Comments(TimeStampedModelMixin):
             # UTF8 in order to avoid encoding problems
             comment_data=str(self.comment.encode('utf8')),
             id=str(self.id),
-            date_data=str(self.date.strftime('%d-%m-%Y %H:%M')))
+            date_data=str(self.created.strftime('%d-%m-%Y %H:%M')))
 
 
 class Microtasks(TimeStampedModelMixin):
@@ -492,7 +492,7 @@ class Microtasks(TimeStampedModelMixin):
             state_data=str(self.assigned_state),
             state_data_id=str(self.assigned_state.id),
             state_color_data=str(self.assigned_state.color),
-            date_data=str(self.date.strftime('%d/%m/%y %H:%M:%S')),
+            date_data=str(self.created.strftime('%d/%m/%y %H:%M:%S')),
             percentage_data=int(self.percentage))
 
 
