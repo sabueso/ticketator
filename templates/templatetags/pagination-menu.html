@@ -1,7 +1,5 @@
 {% load core_settings_data %}
 
-
-
 		<div class="dataTables_paginate paging_simple_numbers" id="datatable-responsive_paginate">
 			<ul class="pagination">
 			{% for pg in pagination.pages %}
@@ -17,7 +15,6 @@
 						        <a href="?page={{ pg }} {% if context.tickets_info.query %}&amp;{{ context.tickets_info.query }}{% endif %}" aria-controls="datatable-responsive" data-dt-idx="1" tabindex="0">{{ pg }}</a>
 						    {% endif %}
 						</li>
-					
 							{% if forloop.first and pagination.page_count > 20 %}
 								<li class="paginate_button "><a href="#" aria-controls="datatable-responsive" data-dt-idx="6" tabindex="0">...</a></li>
 							{% endif %}
