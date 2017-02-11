@@ -32,6 +32,9 @@
                         <div class="clearfix"></div>
                     </div>
                         <div class="panel-body">
+                                <div class="alert alert-info">
+                                form.instance.pk {{form.instance.pk}}
+                                </div>
                                 {% if vars.debug == True%}
                                     {% if form.errors %}
                                     <div class="alert alert-danger">
@@ -39,10 +42,11 @@
                                     </div>
                                     {% endif %}
                                 {%endif%}
-                                <form method='post' action="/settings/user/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">
+                                <form method='post' action="/settings/user/{%if form.instance.id %}{{form.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">
                                 {% csrf_token %}
                             <!--One main row + two div cols -->
                                 <div class="row">
+
                                     <div class="col-md-6 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                         <label>Username</label>
@@ -113,9 +117,9 @@
                                     <div class="col-md-6 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                         <label>Password</label>
-                                                        {{form.password|addcss:"form-control"}}
+                                                        {{form.password_first|addcss:"form-control"}}
                                                         <p class="help-block"></p>
-                                                        {{form.password.errors}}
+                                                        {{form.password_first.errors}}
                                             </div>
 
 
