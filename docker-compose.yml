@@ -1,14 +1,13 @@
----
-version: '3'
+version: '2'
+
 services:
 
   db:
-    image: 'ticketator/db'
+    image: sameersbn/postgresql:9.5-1
     build: ./docker/db
     env_file: './docker/envs/${DOCKER_COMPOSE_ENV}.env'
     volumes:
-      - /tmp/docker/ticketator/postgresql/data/:/var/lib/postgresql/data
-      - /tmp/docker/ticketator/postgresql/log/:/var/log/postgresql
+       - ticketator-db-volume:/var/lib/postgresql:Z
 
   backend:
     image: 'ticketator/backend'
@@ -21,3 +20,7 @@ services:
       - '8000:8000'
     depends_on:
       - db
+
+volumes:
+  ticketator-db-volume:
+    external: true
