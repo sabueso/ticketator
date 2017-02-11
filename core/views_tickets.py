@@ -52,9 +52,11 @@ def list_tickets(request, assigned_state=None):
     states = State.objects.all()
     # We pass always granted_queues as a roundup to query_view requirements
     if not assigned_state:
-        tickets = Ticket.objects.filter(queues, Q(assigned_state=2)|Q(assigned_state=1))
+        tickets = Ticket.objects.filter(queues, Q(assigned_state=2) | Q(assigned_state=1))
+
     else:
         tickets = Ticket.objects.filter(queues, assigned_state=assigned_state)
+
     return render(request, 'tickets/list_tickets.html', locals())
 
 
