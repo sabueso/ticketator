@@ -58,10 +58,12 @@ class User(AbstractUser):
 class UserForm(ModelForm):
     date_joined = forms.DateField(
         widget=forms.SelectDateWidget(), initial=util.now)
-    password = forms.CharField(widget=forms.PasswordInput, required=False)
+    password_first = forms.CharField(
+        label='Initial Password', widget=forms.PasswordInput, 
+        required=False,initial='')
     password_check = forms.CharField(
         label='Password confirmation', widget=forms.PasswordInput,
-        required=False)
+        required=False,initial='')
     is_active = forms.BooleanField(required=False, initial=True)
 
     # is_superuser = forms.BooleanField(initial=False)
@@ -72,21 +74,24 @@ class UserForm(ModelForm):
 
     class Meta:
         model = User
-        fields = '__all__'
+        #fields = ['username', 'first_name', 'last_name', 'email', 'is_superuser', 'is_staff',
+        #                    'is_active', 'rssfeed', ]
+        exclude = ['password']
 
     def clean_password_check(self):
-        password_raw = self.cleaned_data.get('password')
+        password_raw = self.cleaned_data.get('password_first')
         password_chk = self.cleaned_data.get('password_check')
         # First password but not second
         if not password_chk and password_raw:
             raise forms.ValidationError("You must confirm your password")
         # First and second but differents
-        if password_raw != password_chk:
+        elif password_raw != password_chk:
             raise forms.ValidationError("Your passwords do not match")
         # Not updating password
-        if self.instance.pk and not password_chk and password_raw:
+        elif self.instance.pk and password_chk == "" and password_raw == "":
             pass
-        return password_chk
+        else:
+            return password_chk
 
     # Only admin can set is_superuser to TRUE or change it to normal users
     def clean_is_superuser(self):
