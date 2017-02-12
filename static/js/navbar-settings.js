@@ -5,7 +5,6 @@ var tckstorage = localStorage;
 
 
 //Startup check
-
 if (tckstorage['bar-colapsed'] === "true")
  	{
 	$('body').toggleClass('nav-md nav-sm');
@@ -31,10 +30,6 @@ function set_bar()
 
 //Click event
 $('.nav').on("click", "#menu_toggle", function(){
-     //console.log('TOGGLE');
-     //tckstorage.setItem('bar-colapsed', true);
-	 // var idActualMK = $(this).closest("td#buttons").find("input[name='idmk']").val();
-	 // edit_microtask(idActualMK);
 	 set_bar();
 	 console.log(tckstorage);
 
