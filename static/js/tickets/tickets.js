@@ -171,7 +171,7 @@ $().ready(function() {
                             '<img alt="Avatar" class="avatar" src="/static/images/'+img_parsed+'">'+
                             '<span class="pull-right" style="padding-right: 20px; padding-top: 40px;">'+item.date_data+'</span>'+
                             '<h5>'+item.human_name+'</h5>'+
-                            '<div class="well" style="padding-bottom: 50px;>'+
+                            '<div class="well" style="padding-bottom: 50px;">'+
                             '<p class="message content-markdown">'+item.comment_data+'</p>'+
                             '<div class="comment-toolbar pull-right">'+
                             '<input type="hidden" id="idPMessage" name="idPMessage" value="'+item.id+'">'+
@@ -181,7 +181,7 @@ $().ready(function() {
                             '</div>'
                              );
                         });
-                        markdownfunction()
+                        markdownfunction();
                     }
              })
     }
@@ -457,6 +457,7 @@ $().ready(function() {
 
     function markdownfunction(){
       $(".content-markdown").each(function(){
+        console.log("oli")
         $(this).html(marked($(this).text()))
       })
     }
