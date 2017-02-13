@@ -172,7 +172,7 @@ $().ready(function() {
                             '<span class="pull-right" style="padding-right: 20px; padding-top: 40px;">'+item.date_data+'</span>'+
                             '<h5>'+item.human_name+'</h5>'+
                             '<div class="well" style="padding-bottom: 50px;">'+
-                            '<p class="message content-markdown">'+item.comment_data+'</p>'+
+                            '<p class="message content-markdown-new">'+item.comment_data+'</p>'+
                             '<div class="comment-toolbar pull-right">'+
                             '<input type="hidden" id="idPMessage" name="idPMessage" value="'+item.id+'">'+
                             '<button href="#" class="del-message btn btn-xs btn-danger" onClick="return false;">Delete comment</button>'+
@@ -456,7 +456,7 @@ $().ready(function() {
     });
 
     function markdownfunction(){
-      $(".content-markdown").each(function(){
+      $(".content-markdown-new").each(function(){
         console.log("oli")
         $(this).html(marked($(this).text()))
       })
