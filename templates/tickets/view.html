@@ -119,12 +119,12 @@
               </div>
 
               <div class="col-md-12 col-sm-12 col-xs-12 ">
-                <label class="pull-center">Date</label>
+                <label class="pull-center">Created</label>
               </div>
 
               <div class="col-md-12 col-sm-12 col-xs-12 ">
                 {% if form_ticket.instance.id %}
-                <input id="id_ticket-date_disabled" name="ticket-date" class="form-control" value="{{form_ticket.instance.date|date:"d/m/y G:i"}}" readonly/>
+                <input id="id_ticket-date_disabled" name="ticket-date" class="form-control" value="{{form_ticket.instance.created|date:"d/m/y G:i"}}" readonly/>
                 {%else%}
                 <input id="id_ticket-date" name="ticket-date" class="form-control" value="">
                 <!--<input id="id_ticket-date" type="text" aria-describedby="inputSuccess2Status"  class="form-control has-feedback-left">-->
@@ -181,6 +181,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <div class="content-markdown" style="background-color: #f5f5f5; border: 1px solid #e3e3e3; border-radius: 4px; padding: 15px;">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</div>
                 </div>
+                <div style="padding-left:10px; font-size:11px;">{%if form_ticket.instance.updated != form_ticket.instance.created %}Last modified: {{form_ticket.instance.updated|date:"d/m/y G:i" }}{%endif%}</div>
                 <hr></hr>
 
                 {% if actual_files %}
