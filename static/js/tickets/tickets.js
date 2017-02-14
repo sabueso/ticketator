@@ -168,7 +168,7 @@ $().ready(function() {
                             else
                                 {var img_parsed = "user.png"}
                             $(".comment_box").append(
-                            '<div class="row"><div class="col-sm-1"><div class="thumbnail">'+
+                            '<div class="row" id="comment"><div class="col-sm-1"><div class="thumbnail">'+
                             '<img alta="Avatar" class="img-responsive user-photo" src="/static/images/'+img_parsed+'"></div></div>'+
                             '<div class="col-sm-11"><div class="panel panel-default"><div class="panel-heading">'+
                             '<strong>'+item.human_name+'</strong> <span class="text-muted">commented '+date+'</span>'+
