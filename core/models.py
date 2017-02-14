@@ -468,12 +468,12 @@ class Comments(TimeStampedModelMixin):
 
     def as_json(self):
         return dict(
-            human_name="" + self.user_rel.first_name + " " + self.user_rel.last_name + "",
+            human_name="" + self.user_rel.username + "",
             avatar_data=str(self.user_rel.avatar),
             # UTF8 in order to avoid encoding problems
             comment_data=str(self.comment.encode('utf8')),
             id=str(self.id),
-            date_data=str(self.created.strftime('%d-%m-%Y %H:%M')))
+            date_data=str(self.created.strftime('%Y-%m-%d %H:%M')))
 
 
 class Microtasks(TimeStampedModelMixin):

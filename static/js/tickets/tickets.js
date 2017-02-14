@@ -162,25 +162,22 @@ $().ready(function() {
                         //alert(data.length);
                         $( ".comment_box" ).empty();
                         $.each(dataparsed, function(i, item){
+                            var date = moment(item.date_data, "YYYY-MM-DD HH:mm").fromNow();
                             if (item.avatar_data)
                                 {var img_parsed = item.avatar_data }
                             else
                                 {var img_parsed = "user.png"}
                             $(".comment_box").append(
-                            '<div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">'+
-                            '<img alt="Avatar" class="avatar" src="/static/images/'+img_parsed+'">'+
-                            '<span class="pull-right" style="padding-right: 20px; padding-top: 40px;">'+item.date_data+'</span>'+
-                            '<h5>'+item.human_name+'</h5>'+
-                            '<div class="well" style="padding-bottom: 50px;">'+
-                            '<p class="message content-markdown-new">'+item.comment_data+'</p>'+
-                            '<div class="comment-toolbar pull-right">'+
+                            '<div class="row"><div class="col-sm-1"><div class="thumbnail">'+
+                            '<img alta="Avatar" class="img-responsive user-photo" src="/static/images/'+img_parsed+'"></div></div>'+
+                            '<div class="col-sm-11"><div class="panel panel-default"><div class="panel-heading">'+
+                            '<strong>'+item.human_name+'</strong> <span class="text-muted">commented '+date+'</span>'+
                             '<input type="hidden" id="idPMessage" name="idPMessage" value="'+item.id+'">'+
-                            '<button href="#" class="del-message btn btn-xs btn-danger" onClick="return false;">Delete comment</button>'+
-                            '</div>'+
-                            '</div>'+
-                            '</div>'
+                            '<button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;">Delete comment</button></div>'+
+                            '<div class="panel-body"><div class="content-markdown-new">'+item.comment_data+'</div></div></div></div></div>'
                              );
                         });
+                        console.log("oli")
                         markdownfunction();
                     }
              })
@@ -457,7 +454,6 @@ $().ready(function() {
 
     function markdownfunction(){
       $(".content-markdown-new").each(function(){
-        console.log("oli")
         $(this).html(marked($(this).text()))
       })
     }

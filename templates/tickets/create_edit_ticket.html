@@ -1,10 +1,12 @@
 {% extends "dashboard/index.html" %}
+{% load humanize %}
 
 {% block extend_css%}
 {% load staticfiles %}
 <link href="{% static "vendors/normalize-css/normalize.css" %}" rel="stylesheet">
 <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.css" %}" rel="stylesheet">
 <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" %}" rel="stylesheet">
+<link href="{% static "css/ticket/view.css" %}" rel="stylesheet">
 {%endblock%}
 
 {% block extend_js%}
@@ -18,16 +20,15 @@
 
 {% endblock%}
 
-
-
 {% block content %}
 {% load core_settings_data %}
 {% url_tickets as urlt %}
 <div class="x_panel">
   <div class="x_title">
-    <h2 >New ticket</h2>
-
     {% if form_ticket.instance.id %}
+
+
+    <h2>{{form_ticket.instance.subject}}</h2>
     <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 3px;" type="submit" name="save-signal">Save</button>
     <button form="ticketform" class="btn btn-default btn-sm pull-right"  style="margin-right: 5px;" type="submit" name="update-signal">Update</button>
     <div class="btn-group pull-right" style="margin-right: 5px;">
@@ -311,46 +312,10 @@
               <!--end-->
               <!--comments part -->
               {% if form_ticket.instance.id %}
-              <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                <hr>
 
-                <label>Add comment:</label>
-              </div>
-              <!--<div class"cold-md-12">
-              <label> TEST </label>
-              <button class="btn btn-info botonazo" type="button">Info</button>
-              <ul></ul>
-            </div>-->
-            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-              <label for="message">Message (20 chars min, 100 max) :</label>
-              <textarea  data-parsley-maxlength="100" data-parsley-trigger="keyup" name="message_data" class="form-control" id="message_data"></textarea>
-              <br>
-              <button class="btn btn-info btn-xs pull-right add-message" type="button">Add mesasge</button>
-            </div>
+
             <!--new messages-->
 
-            <div class="col-sm-12">
-              <div class="comment_box">
-                {% for comm in actual_comments %}
-                <div id="comment" class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  {% if comm.user_rel.avatar %}
-                  <img alt="Avatar" class="avatar" src="{{ comm.user_rel.avatar.url }}">
-                  {% else %}
-                  <img alta="Avatar" class="avatar" src="{% static 'images/user.png' %}">
-                  {%endif%}
-                  <span class="pull-right" style="padding-right: 20px; padding-top: 40px;"{>{comm.created|date:'d-m-Y H:i'}}</span>
-                  <h5>{{comm.user_rel.first_name}} {{comm.user_rel.last_name}}</h5>
-                  <div class="well" style="padding-bottom: 50px;">
-                    <p class="message content-markdown">{{comm.comment}}</p>
-                    <div class="comment-toolbar pull-right">
-                      <input type="hidden" id="idPMessage" name="idPMessage" value="{{comm.id}}">
-                      <button href="#" class="del-message btn btn-xs btn-danger" onClick="return false;">Delete comment</button>
-                    </div>
-                  </div>
-                </div>
-                {%endfor%}
-              </div>
-            </div>
             <!--new messages-->
 
           </div>

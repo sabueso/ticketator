@@ -143,7 +143,7 @@ def view_ticket(request, ticket_id=None):
         if ticket_rights.can_view:
             actual_ticket = get_object_or_404(Ticket, pk=ticket_id)
             actual_files = Attachment.objects.filter(ticket_rel=ticket_id)
-            actual_comments = Comments.objects.filter(ticket_rel=ticket_id).order_by('id')
+            actual_comments = Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
             actual_logs = Logs.objects.filter(log_ticket=ticket_id).order_by('-id')
             actual_microtasks = Microtasks.objects.filter(ticket_rel=ticket_id).order_by('-id')
             if ticket_rights.can_edit or request.user.is_superuser:
@@ -237,7 +237,7 @@ def get_comments_jx(request, ticket_id=None):
     of-model-objects-in-django-python
     we can return all the data directly as a JSON an treat it in the ajax side
     '''
-    qry = Comments.objects.filter(ticket_rel=ticket_id).order_by('id')
+    qry = Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
     data = [ob.as_json() for ob in qry]
     return JsonResponse(data, safe=False)
 
