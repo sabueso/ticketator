@@ -177,7 +177,6 @@ $().ready(function() {
                             '<div class="panel-body"><div class="content-markdown-new">'+item.comment_data+'</div></div></div></div></div>'
                              );
                         });
-                        console.log("oli")
                         markdownfunction();
                     }
              })
@@ -196,8 +195,6 @@ $().ready(function() {
 		                    $("#message_data").val("");
                             //console.log(data);
                             notif('info','Success','Message added');
-                            update_comments_new();
-
                             },
             error: function(xhr, status, error) {
                             //$("#message_data").val("");
@@ -205,7 +202,7 @@ $().ready(function() {
                             var error_message = json.message;
                             notif('error','Oops!',error_message);
                             }
-            });
+            }).done(update_comments_new());
     });
 
     //Post delete meessage
