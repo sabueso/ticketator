@@ -177,9 +177,11 @@ $().ready(function() {
                             '<div class="panel-body"><div class="content-markdown-new">'+item.comment_data+'</div></div></div></div></div>'
                              );
                         });
-                        markdownfunction();
+
                     }
-             })
+             }).done(markdownfunction())
+             return false;
+
     }
 
 
