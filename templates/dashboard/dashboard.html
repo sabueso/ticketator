@@ -31,7 +31,7 @@
 
             {% for t in open_tickets.data %}
             <a class="title" href="tickets/view/{{ t.id }}">#{{ t.id }} - {{ t.date|date:"d/m/y G:i:s" }} - {{ t.subject }}</a>
-            <p class="content-markdown homy"> {{t.body | truncatechars:90}}</p>
+            <p class="content-markdown-old homy"> {{t.body | truncatechars:90}}</p>
             <hr>
             {%endfor%}
           </div>
@@ -55,8 +55,8 @@
 
           <div class="media-body">
             {% for m in pending_tickets.data %}
-            <a class="title" href="tickets/view/{{ t.id }}">#{{ m.id }} - {{ m.date|date:"d/m/y G:i:s" }} - {{ m.subject }}</a>
-            <p class="content-markdown homy"> {{m.body}}</p>
+            <a class="title" href="tickets/view/{{ m.id }}">#{{ m.id }} - {{ m.date|date:"d/m/y G:i:s" }} - {{ m.subject }}</a>
+            <p class="content-markdown-old homy"> {{m.body}}</p>
             <hr>
             {%endfor%}
           </div>
@@ -82,7 +82,7 @@
 
             {% for t in my_tickets.data %}
             <a class="title" href="tickets/view/{{ t.id }}">#{{ t.id }} - {{ t.date|date:"d/m/y G:i:s" }} - {{ t.subject }}</a>
-            <p class="content-markdown homy"> {{t.body}}</p>
+            <p class="content-markdown-old homy"> {{t.body}}</p>
             <hr>
             {%endfor%}
 
