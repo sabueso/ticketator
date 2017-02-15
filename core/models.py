@@ -59,7 +59,7 @@ class User(AbstractUser):
 # => Auth forms
 class UserForm(ModelForm):
     date_joined = forms.DateField(
-        widget=forms.SelectDateWidget(), initial=util.now)
+        widget=forms.SelectDateWidget(), input_formats=['%d/%m/%Y'],initial=util.now)
     password_first = forms.CharField(
         label='Initial Password', widget=forms.PasswordInput,
         required=False,initial='')
