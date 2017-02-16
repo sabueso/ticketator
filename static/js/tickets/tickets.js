@@ -167,14 +167,20 @@ $().ready(function() {
                                 {var img_parsed = item.avatar_data }
                             else
                                 {var img_parsed = "user.png"}
+                            if (item.delete_comment == "True"){
+                              var delete_comment = '<button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;">Delete comment</button>'
+
+                            }
+                            else{
+                              var delete_comment = ''
+                            }
                             $(".comment_box").append(
                             '<div class="row" id="comment"><div class="col-sm-1"><div class="thumbnail">'+
                             '<img alta="Avatar" class="img-responsive user-photo" src="/static/images/'+img_parsed+'"></div></div>'+
                             '<div class="col-sm-11"><div class="panel panel-default"><div class="panel-heading">'+
                             '<strong>'+item.human_name+'</strong> <span class="text-muted">commented '+date+'</span>'+
-                            '<input type="hidden" id="idPMessage" name="idPMessage" value="'+item.id+'">'+
-                            '<button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;">Delete comment</button></div>'+
-                            '<div class="panel-body"><div class="content-markdown-new">'+item.comment_data+'</div></div></div></div></div>'
+                            '<input type="hidden" id="idPMessage" name="idPMessage" value="'+item.id+'">'+delete_comment+
+                            '</div><div class="panel-body"><div class="content-markdown-new">'+item.comment_data+'</div></div></div></div></div>'
                              );
                         });
                         markdownfunction();

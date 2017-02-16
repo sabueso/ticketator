@@ -248,7 +248,7 @@
                       <div class="panel-heading">
                         <strong>{{comm.user_rel.username}}</strong> <span class="text-muted">commented {{comm.created|naturaltime}}</span>
                         <input type="hidden" id="idPMessage" name="idPMessage" value="{{comm.id}}">
-                        <button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;">Delete comment</button>
+                        {%if request.user.is_superuser or request.user.id == comm.user_rel.id %}<button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;">Delete comment</button>{%endif%}
                       </div>
                       <div class="panel-body">
                         <div class="content-markdown-old">

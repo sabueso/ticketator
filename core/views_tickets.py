@@ -190,11 +190,10 @@ def del_comment(request, message_id=None):
 def add_comment_jx(request, ticket_id=None):
     if request.is_ajax() and request.POST:
         if request.POST.get('message_text'):
-            user_obj = request.user
             '''Check if we can add comment trought get_rights_for_ticket'''
             user_object_rights = rights.get_rights_for_ticket(
-                user=user_obj, queue=None, ticket_id=ticket_id)
-            if user_object_rights.can_comment:
+                user=request.user, queue=None, ticket_id=ticket_id)
+            if user_object_rights.can_comment or request.user.is_superuser:
                 message_data = request.POST.get('message_text')
                 status = save_comment(
                     request=request, comment_data=message_data, private_data=False,
@@ -209,14 +208,13 @@ def add_comment_jx(request, ticket_id=None):
     else:
         raise Http404
 
-
+@login_required
 def del_comment_jx(request, ticket_id=None):
     if request.is_ajax() and request.POST:
         if request.POST.get('message_id'):
-            user_obj = request.user
             '''Check if we can add comment trought get_rights_for_ticket'''
             user_object_rights = rights.get_rights_for_ticket(
-                user=user_obj, queue=None, ticket_id=ticket_id)
+                user=request.user, queue=None, ticket_id=ticket_id)
             if user_object_rights.can_comment or request.user.is_superuser:
                 message_data = request.POST.get('message_id')
                 status = del_comment(request=request, message_id=message_data)
@@ -244,7 +242,7 @@ def get_comments_jx(request, ticket_id=None):
     we can return all the data directly as a JSON an treat it in the ajax side
     '''
     qry = Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
-    data = [ob.as_json() for ob in qry]
+    data = [ob.as_json(request) for ob in qry]
     return JsonResponse(data, safe=False)
 
 

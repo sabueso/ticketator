@@ -466,13 +466,19 @@ class Comments(TimeStampedModelMixin):
 
     '''Return this dict to avoid the NO-NESTED objects in serialize library'''
 
-    def as_json(self):
+    def as_json(self, request):
+        if request.user.id == self.user_rel.id or request.user.is_superuser:
+            delete_comment = True
+        else:
+            delete_comment = False
+
         return dict(
             human_name="" + self.user_rel.username + "",
             avatar_data=str(self.user_rel.avatar),
             # UTF8 in order to avoid encoding problems
             comment_data=str(self.comment.encode('utf8')),
             id=str(self.id),
+            delete_comment=str(delete_comment),
             date_data=str(self.created.strftime('%Y-%m-%d %H:%M')))
 
 
