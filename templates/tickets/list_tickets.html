@@ -32,7 +32,8 @@
     <script type="text/javascript" charset="utf-8">
         //Initial table definition
         $(document).ready(function() {
-            $('#dataTables-example').DataTable();
+            var table = $('#dataTables-example').DataTable();
+            table.order( [ 0, 'desc' ] ).draw();
         });
     </script>
 {%endblock%}
@@ -44,9 +45,7 @@
       <div class="x_title">
         <h2>List of tickets</h2>
         <ul class="nav navbar-right panel_toolbox">
-
           <li>
-            {{assigned_state}}Filter:
             <select class="form-control pointer" id="id_status" name="ticket-status" onchange="javascript:location.href = this.value;">
               <option value="/tickets/" {%if not assigned_state%}selected{%endif%} >Open & In progress</option>
               {%for state in states%}

@@ -52,10 +52,14 @@ def list_tickets(request, assigned_state=None):
     states = State.objects.all()
     # We pass always granted_queues as a roundup to query_view requirements
     if not assigned_state:
-        tickets = Ticket.objects.filter(queues, Q(assigned_state=2) | Q(assigned_state=1))
+        tickets = Ticket.objects.filter(queues) \
+                                .filter(Q(assigned_state=2) | Q(assigned_state=1)) \
+                                .order_by('-id')
 
     else:
-        tickets = Ticket.objects.filter(queues, assigned_state=assigned_state)
+        tickets = Ticket.objects.filter(queues) \
+                                .filter(assigned_state=assigned_state) \
+                                .order_by('-id')
 
     return render(request, 'tickets/list_tickets.html', locals())
 
@@ -70,8 +74,10 @@ def delete_ticket(request, ticket_id=None):
         obj_to_delete = get_object_or_404(Ticket, pk=ticket_id)
         try:
             attach_to_delete = Attachment.objects.filter(ticket_rel=ticket_id)
+
         except Attachment.DoesNotExist:
             pass
+
         else:
             attach_to_delete.delete()
         obj_to_delete.delete()
