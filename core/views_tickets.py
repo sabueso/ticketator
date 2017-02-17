@@ -187,7 +187,7 @@ def del_comment(request, message_id=None):
 
 # AJAX comments
 @login_required
-def add_comment_jx(request, ticket_id=None):
+def add_comment_jx(request, ticket_id):
     if request.is_ajax() and request.POST:
         if request.POST.get('message_text'):
             '''Check if we can add comment trought get_rights_for_ticket'''
@@ -209,9 +209,10 @@ def add_comment_jx(request, ticket_id=None):
         raise Http404
 
 @login_required
-def del_comment_jx(request, ticket_id=None):
+def del_comment_jx(request):
     if request.is_ajax() and request.POST:
-        if request.POST.get('message_id'):
+        if request.POST.get('message_id') and request.POST.get('ticket_id'):
+            ticket_id = int(request.POST.get('ticket_id'))
             '''Check if we can add comment trought get_rights_for_ticket'''
             user_object_rights = rights.get_rights_for_ticket(
                 user=request.user, queue=None, ticket_id=ticket_id)
