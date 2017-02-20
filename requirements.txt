@@ -1,5 +1,5 @@
 appdirs==1.4.0
-cffi==1.9.1
+cffi==0.8.6
 chardet==2.3.0
 colorama==0.3.2
 contextlib2==0.5.4
