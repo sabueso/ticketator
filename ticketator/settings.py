@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_extensions',
     'core',
+    'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -151,3 +152,11 @@ AUTH_USER_MODEL = 'core.User'
 
 # Logo ticketator
 LOGO_COMPANY = STATIC_URL + 'images/logo/tk-tiny.png'
+
+# Sentry configure
+RAVEN_CONFIG = {
+    'dsn': 'https://18d509f919784813bc69524351ca56e7:1db31ffdbeeb498c88af0cc4691a06ad@sentry.io/140407',
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': '6.0.0',
+}

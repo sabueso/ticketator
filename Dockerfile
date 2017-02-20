@@ -2,6 +2,7 @@ FROM python:2.7
 
 RUN apt-get update
 RUN apt-get install -Vy netcat
+RUN apt-get install -Vy libffi-dev
 
 WORKDIR /code
 
