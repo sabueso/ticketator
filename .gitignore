@@ -29,9 +29,16 @@ lib64/
 parts/
 sdist/
 var/
+local/
+share/
 *.egg-info/
 .installed.cfg
 *.egg
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
+
 
 # Installer logs
 pip-log.txt
