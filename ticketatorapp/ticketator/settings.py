@@ -79,16 +79,26 @@ WSGI_APPLICATION = 'ticketator.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+# Postgresql, for production use
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME', 'tickets_db'),
+#         'USER': os.getenv('DB_USER', 'ticket_user_db'),
+#         'PASSWORD': os.getenv('DB_PASS', 'ticket4everyone'),
+#         'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+#         'PORT': os.getenv('DB_PORT', '5432'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'tickets_db'),
-        'USER': os.getenv('DB_USER', 'ticket_user_db'),
-        'PASSWORD': os.getenv('DB_PASS', 'ticket4everyone'),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

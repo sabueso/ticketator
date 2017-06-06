@@ -1,6 +1,9 @@
+contextlib2==0.5.5
 Django==1.10.5
 django-colorfield==0.1.10
 django-extensions==1.7.3
 feedparser==5.2.1
 pytz==2016.7
+raven==6.1.0
 requests==2.6.0
+six==1.10.0
