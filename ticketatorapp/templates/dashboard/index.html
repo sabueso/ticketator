@@ -13,23 +13,6 @@
 
   {% load staticfiles %}
 
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js"integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-  <script src=https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js></script>
-  <script src=https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js></script>
-  <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
-  <script src="{% static "vendors/bootstrap/dist/js/bootstrap.min.js" %}"></script>
-  <script src="{% static "vendors/fastclick/lib/fastclick.js" %}"></script>
-  <script src="{% static "vendors/bootstrap-progressbar/bootstrap-progressbar.min.js" %}"></script>
-  <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
-  <script src="{% static "js/navbar-settings.js" %}"></script>
-
-  <!-- PNotify -->
-  <script src="{% static "vendors/pnotify/dist/pnotify.js" %}"></script>
-  <script src="{% static "vendors/pnotify/dist/pnotify.buttons.js" %}"></script>
-  <script src="{% static "vendors/pnotify/dist/pnotify.nonblock.js" %}"></script>
-
-  {% block extend_js %}
-  {% endblock %}
 
   <link href="{% static "vendors/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
   <link href="{% static "vendors/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
@@ -37,16 +20,32 @@
   <link href="{% static "vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" %}" rel="stylesheet">
   <link href="{% static "css/maps/jquery-jvectormap-2.0.3.css" %}" rel="stylesheet">
 
-  <!-- PNotify -->
-  <link href="{% static "vendors/pnotify/dist/pnotify.css" %}" rel="stylesheet">
-  <link href="{% static "vendors/pnotify/dist/pnotify.buttons.css" %}" rel="stylesheet">
-  <link href="{% static "vendors/pnotify/dist/pnotify.nonblock.css" %}" rel="stylesheet">
-
+  {% include "dashboard/skel_css/pnotify_css" %}
+  
   <!--Custom -->
   <link href="{% static "build/css/custom.css" %}" rel="stylesheet" type="text/css">
 
   {% block extend_css %}
   {% endblock %}
+
+
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  {% include "dashboard/skel_js/navbar_settings_js" %}
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js></script>
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js></script>
+  <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
+  <script src="{% static "vendors/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+  <script src="{% static "vendors/fastclick/lib/fastclick.js" %}"></script>
+  <script src="{% static "vendors/bootstrap-progressbar/bootstrap-progressbar.min.js" %}"></script>
+  <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
+  {% include "dashboard/skel_js/pnotify_js" %}
+
+
+  {% block extend_js %}
+  {% endblock %}
+
+
 
 
 </head>
