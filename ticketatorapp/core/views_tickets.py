@@ -402,7 +402,7 @@ def del_microtask_jx(request, ticket_id=None):
         raise Http404
 
 
-def get_microtask_jx(request, mk_id=None):
-    qry = Microtasks.objects.get(id=mk_id)
+def get_microtask_jx(request, user_id=None):
+    qry = User.objects.get(id=user_id)
     data = qry.as_json()
     return JsonResponse(data, safe=False)

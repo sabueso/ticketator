@@ -44,6 +44,8 @@ urlpatterns = [
     url(r'^settings/user/create', vusers.manage_user, name='user-create'),
     url(r'^settings/user/(?P<user_id>\d+)?$', vusers.manage_user, name='user-edit'),
     url(r'^settings/user/delete/(?P<user_id>\d+)?$', vusers.delete_user, name='user-delete'),
+    url(r'^settings/user/set_togglenavbar/$',
+        vusers.set_collapsednavbar_jx, name='user-set-collapsednavbar'),
 
     # Groups
     url(r'^settings/groups/$', vgroup.list_groups, name='group-list'),

@@ -47,7 +47,11 @@
 </head>
 
 
+{% if request.user.collapsednavbar == True %}
+<body class="nav-sm">
+{% else %}
 <body class="nav-md">
+{% endif %}
   <div class="container body">
     <div class="main_container">
       <!-- Navigation -->
@@ -88,10 +92,12 @@
       <script src="{% static "build/js/custom.min.js" %}"></script>
 
 
-
+    <input type="hidden" id="idUser" name="idUserVar" value="{{ request.user.id }}">
     </body>
 
 
 
 
     </html>
+}
+}

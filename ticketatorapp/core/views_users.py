@@ -3,6 +3,9 @@ from django.contrib.auth import get_user_model
 from core.models import UserForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
+from django.contrib.auth.decorators import login_required
+from django.db.models import Case, Value, When
+import json
 
 User = get_user_model()
 
@@ -58,3 +61,15 @@ def delete_user(request, user_id=None):
             return redirect("/settings/user")
         else:
             return HttpResponse("User is not found")
+
+@login_required
+def set_collapsednavbar_jx(request, mk_id=None):
+    if request.is_ajax() and request.POST and [request.user.id == request.POST.get('submited_user_id')]:
+        user_to_toggle = User.objects.filter(id=request.user.id)
+        user_to_toggle.update(collapsednavbar=Case(
+                        When(collapsednavbar=True, then=Value(False)),default=Value(True))
+                        )
+        data = {'message': 'Toggled'}
+        return HttpResponse(json.dumps(data), content_type='application/json')
+    else:
+        raise Http404

@@ -47,6 +47,7 @@ class User(AbstractUser):
         UserType, on_delete=models.CASCADE, null=True, blank=True)
     avatar = models.FileField(upload_to='avatar/', null=True, blank=True)
     rssfeed = models.CharField(max_length=400, null=True, blank=True)
+    collapsednavbar = models.BooleanField(default=False)
 
     # If is_superuser comes with NULL value, set it to FALSE
     # (we use a personalized form and if not checked, comes as NULL)
