@@ -1,23 +1,22 @@
 {% extends "dashboard/index.html" %}
 {% load humanize %}
+{% load staticfiles %}
 
 {% block extend_css%}
-{% load staticfiles %}
-<link href="{% static "vendors/normalize-css/normalize.css" %}" rel="stylesheet">
-<link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.css" %}" rel="stylesheet">
-<link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" %}" rel="stylesheet">
-<link href="{% static "css/ticket/view.css" %}" rel="stylesheet">
+  <link href="{% static "vendors/normalize-css/normalize.css" %}" rel="stylesheet">
+  <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.css" %}" rel="stylesheet">
+  <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" %}" rel="stylesheet">
+  <link href="{% static "css/ticket/view.css" %}" rel="stylesheet">
+  {% include "dashboard/skel_css/pnotify_css" %}
 {%endblock%}
 
 {% block extend_js%}
-{% load staticfiles %}
-<script src="{% static "vendors/moment/moment.js" %}"></script>
-<script src="{% static "js/datepicker/daterangepicker.js" %}"></script>
-<!--<script src="{% static "vendors/bootstrap-daterangepicker/daterangepicker.js" %}"></script>-->
-<script src="{% static "vendors/ion.rangeSlider/js/ion.rangeSlider.min.js" %}"></script>
-<!--tickets JS-->
-<script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>
 
+  <script src="{% static "vendors/moment/moment.js" %}"></script>
+  <script src="{% static "js/datepicker/daterangepicker.js" %}"></script>
+  <script src="{% static "vendors/ion.rangeSlider/js/ion.rangeSlider.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>
+  {% include "dashboard/skel_js/pnotify_js" %}
 {% endblock%}
 
 {% block content %}
@@ -26,7 +25,6 @@
 <div class="x_panel">
   <div class="x_title">
     {% if form_ticket.instance.id %}
-
 
     <h2>{{form_ticket.instance.subject}}</h2>
     <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 3px;" type="submit" name="save-signal">Save</button>

@@ -41,7 +41,7 @@ try {
 }
 catch (e) {}
 
-console.log(userid_data)
+//console.log(userid_data)
 
 
 function set_navbar(final_value)
