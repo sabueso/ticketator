@@ -460,11 +460,21 @@ $().ready(function() {
        })
      }
 
+    // function activateBodyTab(){
+    //     $('#tab_content4').addClass('active in');
+    //     //$( "#myTabContent" ).tabs({ active: 0 });
+    // }
+
+    // $('#main-tab').on("click", function(){
+    //     activateBodyTab();
+    // });
 
 });
 
 function previewMarkdown(){
     $("#id_ticket-body_preview").html(marked($("#id_ticket-body").val()))
 }
+
+
 
 

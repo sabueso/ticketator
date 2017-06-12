@@ -44,31 +44,27 @@
 
 <div class="x_content">
 
-
   <div class="" role="tabpanel" data-example-id="togglable-tabs">
     <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#tab_content1" id="main-tab" role="tabpanel" data-toggle="tab" aria-expanded="false">Main</a></li>
+      <li role="presentation" class="active"><a href="#tab_content1" id="main-tab" role="tabpanel" data-target="#tab_content1, #tab_content4" data-toggle="tab" aria-expanded="false">Main</a></li>
       {% if form_ticket.instance.id %}
         <li role="presentation" class=""><a href="#tab_content2" role="tabpanel" id="microtask-tab" data-toggle="tab" aria-expanded="false">Microtasks</a></li>
         <li role="presentation" class=""><a href="#tab_content3" role="tabpanel" id="log-tab" data-toggle="tab" aria-expanded="false">Log</a></li>
-
       {%endif%}
     </ul>
 
     <div id="myTabContent" class="tab-content">
       <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="main-tab">
         <div class="row">
-          <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit-dev/{{form_ticket.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
+          <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit/{{form_ticket.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
 
-            <!--usefull for JS scripts-->
+            <!--data for Js scripts-->
             <input type="hidden" id="idTicket" name="variable" value="{{ form_ticket.instance.id }}">
             <input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="{{ form_ticket.instance.percentage }}">
             <input type="hidden" id="count_microtask" name="variable" value="{{actual_microtasks.count }}">
 
-
             <!--Left side-->
             {% if vars.debug == True%}
-
 
             {% if form_ticket.errors %}
             <div class="alert alert-danger">
@@ -224,31 +220,26 @@
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                 <input id="id_ticket-subject" name="ticket-subject" class="form-control" placeholder="Brief description about the ticket" autofocus="autofocus"
-                {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %} >
+                {% if form_ticket.instance.subject %} value="{{form_ticket.instance.subject}}" {% endif %}/>
                 {{form_ticket.subject.errors}}
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                 <label>Description:</label>
               </div>
-              <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                <ul id="myTab" class="nav nav-tabs" role="tablist">
-                  <li role="presentation" class="active"><a href="#tab_content4" id="main-tab" role="tabpanel" data-toggle="tab" aria-expanded="false">Write</a>
-                  </li>
-                  <li role="presentation" class="" onclick="previewMarkdown();"><a href="#tab_content5" role="tabpanel" id="microtask-tab" data-toggle="tab" aria-expanded="false">Preview</a>
-                  </li>
+              <div id="myTab" class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active in"><a href="#tab_content4" id="main-tab" role="tabpanel" data-toggle="tab" aria-expanded="false">Write</a></li>
+                  <li role="presentation" class="" onclick="previewMarkdown();"><a href="#tab_content5" role="tabpanel" id="microtask-tab" data-toggle="tab" aria-expanded="false">Preview</a></li>
                 </ul>
 
                 <div id="myTabContent" class="tab-content">
-                  <div role="tabpanel" class="tab-pane fade active in" id="tab_content4" aria-labelledby="main-tab">
+                  <div role="tabpanel" class="tab-pane active in" id="tab_content4">
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                      <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control"/>
-                      {% if form_ticket.instance.body %}
-                        {{form_ticket.instance.body}}{%endif%}
-                      </textarea>
+                      <textarea id="id_ticket-body" name="ticket-body" rows="5" placeholder="Describe now your problem" class="form-control"/>{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</textarea>
                     </div>
                     <hr></hr>
                   </div>
-                  <div role="tabpanel" class="tab-pane" id="tab_content5" aria-labelledby="main-tab">
+                  <div role="tabpanel_3" class="tab-pane" id="tab_content5" aria-labelledby="main-tab">
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                       <div id="id_ticket-body_preview" style="background-color: #f5f5f5; border: 1px solid #e3e3e3; border-radius: 4px; padding: 15px; width:auto;"></div>
                     </div>
@@ -277,7 +268,7 @@
                       </div>
                     </div>
                     <!--modal part-->
-                    <div id="img{{i.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div id="img{{i.id}}" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-body">
@@ -334,7 +325,7 @@
       </button>
 
       <!--modal microtask-->
-      <div class="modal fade" id="microtask_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+      <div class="modal fade" id="microtask_modal" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
