@@ -44,15 +44,15 @@ $().ready(function() {
 
     function update_percentage_input(percentage_value)
     {
-    var raw_value = percentage_value;
-    if($('#id_ticket-percentage').val())
-       {
-        $('#id_ticket-percentage').val(raw_value)
-       }
-    else
-       {
-        $('#ticketform').append('<input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="'+raw_value+'">');
-       }
+        var raw_value = percentage_value;
+        if($('#id_ticket-percentage').val())
+           {
+            $('#id_ticket-percentage').val(raw_value)
+           }
+        else
+           {
+            $('#ticketform').append('<input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="'+raw_value+'">');
+           }
     }
 
     //Update the global percentage via ajax call
@@ -115,9 +115,9 @@ $().ready(function() {
     //of microtasks
 
     if (count_microtask_data != 0 || path == "view")
-    {
-        slider_for_existing.update({disable: true});
-    }
+        {
+            slider_for_existing.update({disable: true});
+        }
     //console.log(count_microtask_data);
 
 
@@ -188,7 +188,6 @@ $().ready(function() {
              })
     }
 
-
     //Post new message
     $('.add-message').click(function(event){
       //console.log('am i called');
@@ -236,7 +235,6 @@ $().ready(function() {
             });
     });
 
-
     //Update all microtask table
     function update_microtasks()
     {
@@ -280,8 +278,6 @@ $().ready(function() {
                     }
              });
     }
-
-
 
     //Microtask percentage
     var PercentageNewMK = 0 ;
@@ -459,12 +455,16 @@ $().ready(function() {
     });
 
     function markdownfunction(){
-      $(".content-markdown-new").each(function(){
-        $(this).html(marked($(this).text()))
-      })
-    }
+       $(".content-markdown-new").each(function(){
+         $(this).html(marked($(this).text()))
+       })
+     }
+
+
 });
 
 function previewMarkdown(){
-  $("#id_ticket-body_preview").html(marked($("#id_ticket-body").val()))
+    $("#id_ticket-body_preview").html(marked($("#id_ticket-body").val()))
 }
+
+

@@ -87,7 +87,7 @@ def delete_ticket(request, ticket_id=None):
 
 
 @login_required
-def manage_ticket_dev(request, ticket_id=None):
+def manage_ticket(request, ticket_id=None):
     # site_vars = utils.site_vars()
     # Common data
     common_data = common_ticket_data()
@@ -125,7 +125,7 @@ def manage_ticket_dev(request, ticket_id=None):
                 new_form_attach.ticket_rel = new_ticket_form
                 new_form_attach.save()
                 if 'update-signal' in request.POST:
-                    return redirect("/tickets/edit-dev/" + ticket_id + "")
+                    return redirect("/tickets/edit/" + ticket_id + "")
                 elif 'save-signal' in request.POST:
                     return redirect("/tickets")
             else:

@@ -50,7 +50,7 @@
       <div id="myTabContent" class="tab-content">
         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="main-tab">
           <div class="row">
-            <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit-dev/{{form_ticket.instance.id}}{%else%}create-new-devb{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
+            <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit-dev/{{form_ticket.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
 
               <!--usefull for JS scripts-->
               <input type="hidden" id="idTicket" name="variable" value="{{ form_ticket.instance.id }}">
