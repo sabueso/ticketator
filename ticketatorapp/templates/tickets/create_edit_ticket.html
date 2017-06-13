@@ -152,7 +152,7 @@
 
               <div class="col-md-12 col-sm-12 col-xs-12 ">
                 {% if form_ticket.instance.id %}
-                <input id="id_ticket-date_disabled" name="ticket-date" class="form-control" value="{{form_ticket.instance.date|date:"d/m/y G:i"}}" readonly/>
+                <input id="id_ticket-date" name="ticket-date" class="form-control" value="{{form_ticket.instance.date|date:"d/m/y G:i"}}" readonly/>
                 {%else%}
                 <input id="id_ticket-date" name="ticket-date" class="form-control" value="">
                 <!--<input id="id_ticket-date" type="text" aria-describedby="inputSuccess2Status"  class="form-control has-feedback-left">-->

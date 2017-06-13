@@ -460,14 +460,6 @@ $().ready(function() {
        })
      }
 
-    // function activateBodyTab(){
-    //     $('#tab_content4').addClass('active in');
-    //     //$( "#myTabContent" ).tabs({ active: 0 });
-    // }
-
-    // $('#main-tab').on("click", function(){
-    //     activateBodyTab();
-    // });
 
 });
 
