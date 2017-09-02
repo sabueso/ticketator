@@ -22,7 +22,8 @@ __pycache__/
 .Python
 [Bb]in
 [Ii]nclude
-[Ll]ib
+#In order to avoid tracking os some Js lib vendor files
+#[Ll]ib
 [Ll]ib64
 [Ll]ocal
 [Ss]cripts
