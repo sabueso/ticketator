@@ -67,7 +67,10 @@ docker exec -it ticketator_backend_1 ./manage.py createsuperuser
 
 # Login on http://localhost:8000
 ```
-
+### PEP8
+```sh
+pep8 --max-line-length=100 . --exclude=migrations
+```
 ### Disclaimer & Feedback
 
 Ticketator is under active developement and some areas could not be working as expected.

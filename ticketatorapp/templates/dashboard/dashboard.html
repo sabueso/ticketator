@@ -1,0 +1,147 @@
+{% extends "dashboard/index.html" %}
+
+{% block extend_css%}
+{%endblock%}
+
+{% load humanize %}
+
+
+{% block extend_js%}
+{% endblock%}
+
+{%block content %}
+{% load core_settings_data %}
+
+<div class="row">
+
+  <div class="col-md-4">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Open tickets <!--<small>Sessions</small>--></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <article class="media event">
+
+          <div class="media-body">
+
+            {% for t in open_tickets.data %}
+            #<a class="title" href="tickets/view/{{ t.id }}">{{ t.id }} - {{ t.subject }}</a> <span class="pull right"><i class="fa fa-comment-o"></i>{{t.ticket_rel_comm.count}}</span>
+            <p class="byline">{{ t.created | naturaltime }} by {{t.create_user.username}}</p>
+            <p class="excerpt"> {{t.body | truncatechars:90}} <a href="tickets/view/{{ t.id }}">Read more</a></p>
+            <hr>
+            {%endfor%}
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>In progress tickets <!--<small>Sessions</small>--></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <article class="media event">
+
+          <div class="media-body">
+            {% for t in pending_tickets.data %}
+            #<a class="title" href="tickets/view/{{ t.id }}">{{ t.id }} - {{ t.subject }}</a> <span class="pull right"><i class="fa fa-comment-o"></i>{{t.ticket_rel_comm.count}}</span>
+            <p class="byline">{{ t.created | naturaltime }} by {{t.create_user.username}}</p>
+            <p class="excerpt"> {{t.body | truncatechars:90}} <a href="tickets/view/{{ t.id }}">Read more</a></p>
+            <hr>
+            {%endfor%}
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>My tickets <!--<small>Sessions</small>--></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <article class="media event">
+
+          <div class="media-body">
+
+            {% for t in my_tickets.data %}
+            #<a class="title" href="tickets/view/{{ t.id }}">{{ t.id }} - {{ t.subject }}</a> <span class="pull right"><i class="fa fa-comment-o"></i>{{t.ticket_rel_comm.count}}</span>
+            <p class="byline">{{ t.created | naturaltime }} by {{t.create_user.username}}</p>
+            <p class="excerpt"> {{t.body | truncatechars:90}} <a href="tickets/view/{{ t.id }}">Read more</a></p>
+            <hr>
+            {%endfor%}
+
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</div>
+  {% if rssdata %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2><a class="title pull-center" href="{{rssfeed.url}}" target="_blank">Rss Feed | {{rssfeed.feed.title}}</a></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+
+        <article class="media event">
+          <div class="media-body">
+
+            {% for i in  rssfeed.entries|slice:":5"%}
+            <p>
+
+              {% for k in i.links %}<a href="{{k.href}}"" target="_blank"">{%endfor%}{{i.title}}</a>
+            </p>
+            <p>
+              {{i.summary|safe}}
+            </p>
+
+            <hr>
+            {%endfor%}
+          </div>
+        </article>
+
+
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+
+
+
+
+
+
+
+</div>
+
+{%endblock%}

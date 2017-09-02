@@ -1,0 +1,107 @@
+
+{% extends "dashboard/index.html" %}
+
+{% load staticfiles %}
+
+{% block extend_css%}
+    <link href="{% static "vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block extend_js%}
+    <!-- Datatables -->
+    <script src="{% static "vendors/datatables.net/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-bs/js/dataTables.bootstrap.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-buttons/js/dataTables.buttons.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-buttons/js/buttons.flash.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-buttons/js/buttons.html5.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-buttons/js/buttons.print.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-keytable/js/dataTables.keyTable.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-responsive/js/dataTables.responsive.min.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js" %}"></script>
+    <script src="{% static "vendors/datatables.net-scroller/js/dataTables.scroller.min.js" %}"></script>
+    <!--<script src="{% static "vendors/jszip/dist/jszip.min.js" %}"></script>
+    <script src="{% static "vendors/pdfmake/build/pdfmake.min.js" %}"></script>
+    <script src="{% static "vendors/pdfmake/build/vfs_fonts.js" %}"></script>-->
+
+
+    <script type="text/javascript" charset="utf-8">
+        //Initial table definition
+        $(document).ready(function() {
+            $('#dataTables-example').DataTable();
+        });
+    </script>
+{% endblock %}
+
+{%block content %}
+	<div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 col-sm-offset-0">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3><i class="fa fa-user "></i>Manage users</h3>
+                </div>
+                {% if request.user.is_superuser == True %}
+                <div class="title_right">
+                    <a href="/settings/user/create" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 16px;"></i>Add user</a>
+                </div>
+                {%endif%}
+            </div>
+    </div>
+    
+
+    <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 col-sm-offset-0">
+    <div class="x_panel">
+
+                 
+                        
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!--<div class="dataTable_wrapper">-->
+                                <table id="dataTables-example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th class="text-center">User</th>
+                                            <th>Name</th>
+                                            <th>Surname</th>
+                                            <th class="text-center" width="5px">Active</th>
+                                            <th class="text-center" >Email</th>
+                                            <th class="text-center" >Added</th>
+                                            <th class="text-center" >Staff</th>
+                                            <th class="text-center" >UserType</th>
+                                            <th class="text-center" >SuperUser</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    	{%for line in user_list %}
+                                    	<tr class="odd gradeX">
+                                    	<td><a href="/settings/user/{{line.id}}">{{line.id}}</a></td>
+                                    	<td class="text-center">{{line.username}}</td>
+                                    	<td>{{line.first_name}}</td>
+                                    	<td>{{line.last_name}}</td>
+                                    	<td class="text-center" >{% if line.is_active == True %}<i class="glyphicon glyphicon-ok"></i>{%else%}<i class="glyphicon glyphicon-remove"></i>{%endif%}</td>
+                                        <td class="text-center" >{{line.email}}</td>
+                                        <td class="text-center" >{{line.date_joined|date:"d/m/y m:h:s"}}</td>
+                                        <td class="text-center" >{{line.is_staff}}</td>
+                                        <td class="text-center" >{% if line.status_rel.status == "Operator" %}<i class="fa fa-shield"></i>{%else%}<i class="fa fa-user"></i>{%endif%}</td>
+                                        <td class="text-center" >{% if line.is_superuser == True %}<img src="/static/images/superman.png">{%else%} - {%endif%}</td>
+                                    	{%endfor%}
+                                    </tbody>
+
+                                </table>
+                            <!--</div>-->
+                            <!-- /.table-responsive -->
+                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+    </div>
+{%endblock%}

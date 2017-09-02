@@ -1,0 +1,254 @@
+{% extends "dashboard/index.html" %}
+{% load staticfiles %}
+
+{% block content %}
+{% load core_settings_data %}
+{%site_vars as vars %}
+<!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
+
+<div class="col-md-10 col-sm-12 col-xs-12 col-md-offset-1 col-sm-offset-0">
+    <div class="x_panel">
+
+                    <div class="x_title">
+                        {% if not form.instance.id %}
+                            <h2>New User</h2>
+
+                        {%else%}
+                            <h2>Edit User</h2>
+                                <div class="btn-group pull-right" style="margin-right: 5px;">
+                                          <button class="btn btn-default btn-sm" type="button">More</button>
+                                          <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                          </button>
+                                          <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#" data-target=".bs-example-modal-lg" data-toggle="modal">Delete</a>
+                                            </li>
+                                            </li>
+                                          </ul>
+                                </div>
+                            {% include "users/delete_modal_user.html" %}
+                        {%endif%}
+                        <div class="clearfix"></div>
+                    </div>
+                        <div class="panel-body">
+                                <div class="alert alert-info">
+                                form.instance.pk {{form.instance.pk}}
+                                </div>
+                                {% if vars.debug == True%}
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {{form.errors}}
+                                    </div>
+                                    {% endif %}
+                                {%endif%}
+                                <form method='post' action="/settings/user/{%if form.instance.id %}{{form.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">
+                                {% csrf_token %}
+                            <!--One main row + two div cols -->
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                        <label>Username</label>
+                                                        {% if form.instance.username %}
+                                                        <input id="username" name="username" value="{{form.instance.username}}" class="form-control">
+                                                        {% else %}
+                                                        <input id="username" name="username" class="form-control">
+                                                        {%endif%}
+                                                        <p class="help-block"></p>
+                                                        {{form.username.errors}}
+                                            </div>
+
+                                            <div class="form-group">
+                                                        <label>First name</label>
+                                                        {% if form.instance.first_name%}
+                                                        <input id="first_name" name="first_name" value="{{form.instance.first_name}}" class="form-control">
+                                                        {% else%}
+                                                        <input id="first_name" name="first_name" class="form-control">
+                                                        {% endif%}
+                                                        <p class="help-block"></p>
+                                                        {{form.first_name.errors}}
+                                            </div>
+
+                                            <div class="form-group">
+                                                       <label>Last name</label>
+                                                        {% if form.instance.last_name%}
+                                                        <input id="last_name" name="last_name" value="{{form.instance.last_name}}" class="form-control">
+                                                        {% else%}
+                                                        <input id="last_name" name="last_name" class="form-control">
+                                                        {% endif%}
+                                                        <p class="help-block"></p>
+                                                        {{form.last_name.errors}}
+                                            </div>
+
+                                            <div class="form-group">
+                                                       <label>Email</label>
+                                                        {% if form.instance.email%}
+                                                        <input id="email" name="email" value="{{form.instance.email}}" class="form-control">
+                                                        {% else%}
+                                                        <input id="email" name="email" class="form-control">
+                                                        {% endif%}
+                                                        <p class="help-block"></p>
+                                                        {{form.email.errors}}
+                                            </div>
+
+                                            <hr></hr>
+                                            <div class="form-group">
+                                                <label>Avatar</label>
+                                                <div class="flex">
+                                                      <ul class="list-inline widget_profile_box">
+                                                        <li>
+                                                            {%if form.instance.avatar%}
+                                                                <img class="img-circle profile_img" alt="..." src="{{ form.instance.avatar.url }}">
+                                                            {%else%}
+                                                                <img class="img-circle profile_img" alt="..." src="{% static 'images/user.png' %}">
+                                                            {%endif%}
+                                                        </li>
+                                                        <li>
+
+                                                        </li>
+
+                                                      </ul>
+                                                    </div>
+                                                    {{form.avatar}}
+                                            </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                        <label>Password</label>
+                                                        {{form.password_first|addcss:"form-control"}}
+                                                        <p class="help-block"></p>
+                                                        {{form.password_first.errors}}
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                         <label>Password (repeat)</label>
+                                                         {{form.password_check|addcss:"form-control"}}
+                                                         <p class="help-block"></p>
+                                                         {{form.password_check.errors}}
+                                            </div>
+
+                                            <div class="form-group">
+                                                       <label>Date Joined</label>
+                                                        {% if form.instance.date_joined%}
+                                                        <input id="date_joined" name="date_joined" value="{{form.instance.date_joined|date:"d/m/Y"}}" class="form-control">
+                                                        {% else%}
+                                                        <input id="date_joined" name="date_joined" class="form-control">
+                                                        {% endif%}
+                                                        <p class="help-block"></p>
+                                                        {{form.date_joined.errors}}
+                                            </div>
+
+                                            <div class="form-group">
+                                                       <label>Rss feed</label>
+                                                        {% if form.instance.rssfeed%}
+                                                        <input id="rssfeed" name="rssfeed" value="{{form.instance.rssfeed}}" class="form-control">
+                                                        {% else%}
+                                                        <input id="rssfeed" name="rssfeed" class="form-control">
+                                                        {% endif%}
+                                                        <p class="help-block"></p>
+                                                        {{form.rssfeed.errors}}
+                                            </div>
+
+                                            <div class="form-group">
+                                                        <label>User type</label>
+                                                        {{form.status_rel}}
+                                                        <p class="help-block"></p>
+                                                        {{form.status_rel.errors}}
+                                            </div>
+
+                                            <hr></hr>
+
+                                            <div class="form-group">
+                                                <label>Checkboxes</label>
+                                                <div class="checkbox pull-right">
+
+                                                {% if request.user.username == 'admin' %}
+                                                    <label>
+                                                        {% if form.instance.is_superuser %}
+
+                                                            {% if form.instance.is_superuser == True %}
+                                                            <input id="is_superuser" name="is_superuser" type="checkbox" checked> Superuser
+                                                                {% else %}
+                                                            <input id="is_superuser" name="is_superuser" type="checkbox"> Superuser
+                                                            {% endif %}
+
+                                                        {% else %}
+                                                            <input id="is_superuser" name="is_superuser" type="checkbox"> Superuser
+                                                        {% endif %}
+                                                    </label>
+                                                {%endif%}
+
+
+
+                                                    <label>
+                                                        {% if form.instance.is_staff %}
+                                                            {% if form.instance.is_staff == True %}
+                                                            <input id="is_staff" name="is_staff" type="checkbox" checked> Staff
+                                                            {% else %}
+                                                            <input id="is_staff" name="is_staff" type="checkbox"> Staff
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <input id="is_staff" name="is_staff" type="checkbox"> Staff
+                                                        {% endif %}
+
+                                                    </label>
+                                                    {{form.is_staff.errors}}
+
+                                                    <label>
+                                                        {% if form.instance.is_active %}
+                                                            {% if form.instance.is_active == True %}
+                                                            <input id="is_active" name="is_active" type="checkbox" checked> Active
+                                                            {% else %}
+                                                            <input id="is_active" name="is_active" type="checkbox"> Staff
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <input id="is_active" name="is_active" type="checkbox"> Staff
+                                                        {% endif %}
+
+                                                    </label>
+                                                    {{form.is_staff.errors}}
+                                                </div>
+                                            </div>
+                                            <hr></hr>
+
+                                            <div class="form-group">
+                                                <label>Groups</label>
+                                                <div class="checkbox pull-right">
+                                                    <label>
+                                                        {{form.groups}}
+
+                                                    </label>
+                                                    {{form.is_staff.errors}}
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+
+                                <!--line separator for buttons -->
+
+                                <div class="row">
+                             			<div class="">
+                             				<div class="form-group">
+                                                <!--submit-->
+
+                                                    <div class="ln_solid">
+                                                    </div>
+
+                                 				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save user</button>
+                                              	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                          	</div>
+                             			</div>
+
+
+                            </div></div></div></div></div>
+                            <!-- /.row (nested) -->
+                        <!-- /.panel-body -->
+                    <!-- /.panel -->
+                <!-- /.col-lg-12 -->
+            <!-- /.main row -->
+</form>
+
+{%endblock%}

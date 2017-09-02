@@ -1,1 +1,0 @@
-[{"model": "core.state", "pk": 1, "fields": {"name": "open", "description": "open", "active": false, "color": "ff6f6f"}}, {"model": "core.state", "pk": 2, "fields": {"name": "on course", "description": "on course", "active": false, "color": "fff42a"}}, {"model": "core.state", "pk": 3, "fields": {"name": "closed", "description": "closed", "active": false, "color": "85ce55"}}]

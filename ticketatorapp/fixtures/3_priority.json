@@ -1,0 +1,1 @@
+[{"model": "core.priority", "pk": 1, "fields": {"name": "Normal", "created": "2010-10-10 00:00", "updated":"2010-10-10 00:00"}}, {"model": "core.priority", "pk": 2, "fields": {"name": "Medium", "created": "2010-10-10 00:00", "updated":"2010-10-10 00:00"}}, {"model": "core.priority", "pk": 3, "fields": {"name": "High", "created": "2010-10-10 00:00", "updated":"2010-10-10 00:00"}}]

@@ -7,6 +7,7 @@
 # Custom
 tmp/
 media/
+.DS_store
 
 
 # Byte-compiled / optimized / DLL files
@@ -16,22 +17,23 @@ __pycache__/
 # C extensions
 *.so
 
-# Distribution / packaging
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
 .Python
-env/
-bin/
-build/
-develop-eggs/
-dist/
-eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
+[Bb]in
+[Ii]nclude
+#In order to avoid tracking os some Js lib vendor files
+#[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+[Ss]hare
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
+
+
 
 # Installer logs
 pip-log.txt
@@ -72,5 +74,3 @@ docs/_build/
 
 # Vim swap
 *.swp
-
-media/

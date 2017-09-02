@@ -1,1 +1,0 @@
-[{"model": "core.priority", "pk": 1, "fields": {"name": "Normal"}}, {"model": "core.priority", "pk": 2, "fields": {"name": "Medium"}}, {"model": "core.priority", "pk": 3, "fields": {"name": "High"}}]
