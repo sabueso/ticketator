@@ -50,10 +50,7 @@ $().ready(function() {
                         		});
 
 
-					}
-
-
-
+    }
 
 
 	//Send search data
@@ -119,7 +116,6 @@ $().ready(function() {
             }
         }
     });
-
 
 
 });

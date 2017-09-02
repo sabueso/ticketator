@@ -1,12 +1,16 @@
 {% extends "dashboard/index.html" %}
-
-{% block extend_css%}
+{% load humanize %}
 {% load staticfiles %}
-<link href="{% static "css/tickets-list-custom.css" %}" rel="stylesheet">
-<script type="text/javascript" src="{% static "js/search/search.js" %}"></script>
 
+  {% block extend_css%}
+  <link href="{% static "css/tickets-list-custom.css" %}" rel="stylesheet">
+  {% endblock%}
 
-{%endblock%}
+  {% block extend_js%}
+  <script type="text/javascript" src="{% static "js/search/search.js" %}"></script>
+  {% include "dashboard/skel_js/pnotify_js" %}
+  {% endblock%}
+
 
 {%block content %}
 
