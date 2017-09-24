@@ -60,13 +60,13 @@ class User(AbstractUser):
 # => Auth forms
 class UserForm(ModelForm):
     date_joined = forms.DateField(
-        widget=forms.SelectDateWidget(), input_formats=['%d/%m/%Y'],initial=util.now)
+        widget=forms.SelectDateWidget(), input_formats=['%d/%m/%Y'], initial=util.now)
     password_first = forms.CharField(
         label='Initial Password', widget=forms.PasswordInput,
-        required=False,initial='')
+        required=False, initial='')
     password_check = forms.CharField(
         label='Password confirmation', widget=forms.PasswordInput,
-        required=False,initial='')
+        required=False, initial='')
     is_active = forms.BooleanField(required=False, initial=True)
 
     # is_superuser = forms.BooleanField(initial=False)
@@ -77,7 +77,7 @@ class UserForm(ModelForm):
 
     class Meta:
         model = User
-        #fields = ['username', 'first_name', 'last_name', 'email', 'is_superuser', 'is_staff',
+        # fields = ['username', 'first_name', 'last_name', 'email', 'is_superuser', 'is_staff',
         #                    'is_active', 'rssfeed', ]
         exclude = ['password']
 
@@ -119,6 +119,7 @@ class UserForm(ModelForm):
 
 
 class GroupForm(ModelForm):
+
     class Meta:
         model = Group
         fields = '__all__'
@@ -128,7 +129,7 @@ class GroupForm(ModelForm):
 class Company(TimeStampedModelMixin):
     name = models.CharField(max_length=100)
     # More fields will be needed...
-    logo = models.FileField(upload_to='logo/')
+    logo = models.FileField(upload_to='logo/', blank=True, null=True)
 
     # phone = pending
     # address = pending
@@ -137,6 +138,7 @@ class Company(TimeStampedModelMixin):
 
 
 class CompanyForm(ModelForm):
+
     class Meta:
         model = Company
         fields = '__all__'
@@ -156,6 +158,7 @@ class Queue(TimeStampedModelMixin):
 
 
 class QueueForm(ModelForm):
+
     class Meta:
         model = Queue
         fields = '__all__'
@@ -208,6 +211,7 @@ class Rights(TimeStampedModelMixin):
 
 
 class RightForm(ModelForm):
+
     class Meta:
         model = Rights
         fields = '__all__'
@@ -231,7 +235,8 @@ class State(TimeStampedModelMixin):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=150, null=True, blank=True)
     active = models.BooleanField(default=True)
-    color = models.CharField(default='008ac6', max_length=10, null=True, blank=True)
+    color = models.CharField(
+        default='008ac6', max_length=10, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.color.startswith("# "):
@@ -243,6 +248,7 @@ class State(TimeStampedModelMixin):
 
 
 class StateForm(ModelForm):
+
     class Meta:
         model = State
         fields = '__all__'
@@ -257,6 +263,7 @@ class Priority(TimeStampedModelMixin):
 
 
 class PriorityForm(ModelForm):
+
     class Meta:
         model = Priority
         fields = '__all__'
@@ -293,6 +300,7 @@ class Ticket(TimeStampedModelMixin):
         return '%s' % (self.id)
 
     '''Return a empty string to avoid problems in JSON serialization'''
+
     def str_assigned_user_name(self):
         try:
             assigned_user_data = "" + str(self.assigned_user.first_name) + \
@@ -328,6 +336,7 @@ class Ticket(TimeStampedModelMixin):
 class TicketForm(ModelForm):
     #  Pass request to a form => http://stackoverflow.com/questions/6325681/
     #  passing-a-user-request-to-forms
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(TicketForm, self).__init__(*args, **kwargs)
@@ -353,6 +362,7 @@ class TicketForm(ModelForm):
     '''
     Check if the new queue assigned is permited...
     '''
+
     def clean_assigned_queue(self):
         if self.instance.pk is not None:   # new instance only
             user_object_rights = rights.get_rights_for_ticket(
@@ -368,17 +378,20 @@ class TicketForm(ModelForm):
 
     def clean_assigned_user(self):
         if self.instance.pk is not None:   # new instance only
-            self.field_checker(self.instance.assigned_user, self.cleaned_data.get('assigned_user'))
+            self.field_checker(self.instance.assigned_user,
+                               self.cleaned_data.get('assigned_user'))
         return self.cleaned_data.get('assigned_user')
 
     def clean_subject(self):
         if self.instance.pk is not None:  # new instance only
-            self.field_checker(self.instance.subject, self.cleaned_data.get('subject'))
+            self.field_checker(self.instance.subject,
+                               self.cleaned_data.get('subject'))
         return self.cleaned_data.get('subject')
 
     def clean_body(self):
         if self.instance.pk is not None:  # new instance only
-            self.field_checker(self.instance.body, self.cleaned_data.get('body'))
+            self.field_checker(self.instance.body,
+                               self.cleaned_data.get('body'))
         return self.cleaned_data.get('body')
 
     '''
@@ -440,7 +453,8 @@ class TicketForm(ModelForm):
 
 
 # => Attachments
-#  Method to store tickets attachments inside folders called with related ticket id
+# Method to store tickets attachments inside folders called with related
+# ticket id
 def get_attachment_upload_path(instance, filename):
     return os.path.join("ticket_files/%s" % instance.ticket_rel.id, filename)
 
@@ -453,6 +467,7 @@ class Attachment(TimeStampedModelMixin):
 
 
 class AttachmentForm(ModelForm):
+
     class Meta:
         model = Attachment
         fields = '__all__'
