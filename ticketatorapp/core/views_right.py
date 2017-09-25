@@ -35,3 +35,14 @@ def manage_right(request, right_id=None):
 
 # some unusefull comment
 # another one
+
+
+# Delete state
+def delete_right(request, right_id=None):
+    if request.user.is_superuser:
+        if right_id:
+            actual_right = get_object_or_404(Rights, pk=right_id)
+            actual_right.delete()
+            return redirect("/settings/rights")
+    else:
+        raise Http404
