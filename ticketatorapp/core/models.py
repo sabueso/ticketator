@@ -465,6 +465,9 @@ class Attachment(TimeStampedModelMixin):
     file_name = models.FileField(
         upload_to=get_attachment_upload_path, null=True, blank=True)
 
+    def shortfilename(self):
+        return os.path.basename(self.file_name.name)
+
 
 class AttachmentForm(ModelForm):
 
