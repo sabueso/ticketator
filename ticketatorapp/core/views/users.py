@@ -1,6 +1,6 @@
 # User views: list, create, delete
 from django.contrib.auth import get_user_model
-from core.models import UserForm
+from core.forms import UserForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required

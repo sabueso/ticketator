@@ -1,6 +1,7 @@
 # Company views: list, create, delete
 
-from core.models import Rights, RightForm
+from core.models import Rights
+from core.forms import RightForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 

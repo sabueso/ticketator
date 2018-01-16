@@ -8,7 +8,8 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.db.models import Q
 
 # from core import views_utils as utils
-from core.models import Ticket, TicketForm, Attachment, AttachmentForm
+from core.models import Ticket, Attachment
+from core.forms import TicketForm, AttachmentForm
 from core.models import State, Queue, Priority, Company, Comments
 from core.models import Logs, Microtasks
 # Needed for forms

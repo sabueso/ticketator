@@ -1,6 +1,7 @@
 # priority views: list, create, delete
 
-from core.models import Priority, PriorityForm
+from core.models import Priority
+from core.forms import PriorityForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 

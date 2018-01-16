@@ -1,6 +1,7 @@
 # Company views: list, create, delete
 
-from core.models import State, StateForm
+from core.models import State
+from core.forms import StateForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 

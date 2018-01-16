@@ -1,6 +1,7 @@
 # Company views: list, create, delete
 
-from core.models import Queue, QueueForm
+from core.models import Queue
+from core.forms import QueueForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 

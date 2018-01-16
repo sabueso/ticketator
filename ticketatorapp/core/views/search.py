@@ -3,7 +3,7 @@ from core.models import Ticket
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
-from views_tickets import common_ticket_data
+from .tickets import common_ticket_data
 from django.contrib.auth import get_user_model
 
 

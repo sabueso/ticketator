@@ -1,6 +1,7 @@
 # Company views: list, create, delete
 
-from core.models import Company, CompanyForm
+from core.models import Company
+from core.forms import CompanyForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 
