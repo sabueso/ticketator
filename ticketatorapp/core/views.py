@@ -15,17 +15,32 @@ User = get_user_model()
 
 @login_required
 def index(request):
-    '''
+    """
     Ticket listing
-    '''
+    """
     queues = rights.get_queues_as_q_for_ticket_model(request.user)
     # We pass always granted_queues as a roundup to query_view requirements
     open_tickets = query_view(
-        Ticket, request.GET, granted_queues=queues, assigned_state=1, limit=5)
+        Ticket,
+        request.GET,
+        granted_queues=queues,
+        assigned_state=1,
+        limit=5
+    )
     pending_tickets = query_view(
-        Ticket, request.GET, granted_queues=queues, assigned_state=2, limit=5)
+        Ticket,
+        request.GET,
+        granted_queues=queues,
+        assigned_state=2,
+        limit=5
+    )
     my_tickets = query_view(
-        Ticket, request.GET, granted_queues=queues, assigned_user_id=request.user.id, limit=5)
+        Ticket,
+        request.GET,
+        granted_queues=queues,
+        assigned_user_id=request.user.id,
+        limit=5
+    )
 
     rssdata = User.objects.get(id=request.user.id).rssfeed
     if rssdata:

@@ -6,7 +6,6 @@ from django.contrib.auth import views as auth_views
 from .views import (
     index,
     settings,
-    auth as vauth,
     company as vcompanies,
     group as vgroup,
     priority as vpriorities,
@@ -25,12 +24,12 @@ urlpatterns = [
     url(r'^$', index),
 
     # Settings & utilities
-    url(r'^settings/$', settings, name='tickets-settings'),
+    url(r'^settings$', settings, name='tickets-settings'),
 
     # Auth
     url(r'^login$', auth_views.login, {'template_name': 'auth/login.html'}, name='login'),
 
-    url(r'^logoff', vauth.logout_v, name='logout'),
+    url(r'^logoff', auth_views.logout_then_login, name='logout'),
 
     # Users
     url(r'^settings/user/$', vusers.list_users, name='user-list'),
@@ -49,6 +48,8 @@ urlpatterns = [
     url(r'^settings/rights/$', vright.list_rights, name='right-list'),
     url(r'^settings/rights/create', vright.manage_right, name='right-create'),
     url(r'^settings/rights/(?P<right_id>\d+)?$', vright.manage_right, name='right-edit'),
+    url(r'^settings/rights/delete/(?P<right_id>\d+)?$',
+        vright.delete_right, name='right-delete'),
 
     # States
     url(r'^settings/state/$', vstates.list_state, name='state-list'),

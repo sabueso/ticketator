@@ -12,7 +12,7 @@ def list_queues(request):
         queue_list = Queue.objects.all().order_by("-id")
     else:
         raise Http404
-    return render(request, 'queues/list_queues.html', locals())
+    return render(request, 'core/queues/list_queues.html', locals())
 
 
 def manage_queue(request, queue_id=None):
@@ -33,7 +33,7 @@ def manage_queue(request, queue_id=None):
         else:
             # Non-POST mode, show only
             form = QueueForm(instance=actual_queue)
-        return render(request, 'queues/create_edit_queue.html', locals())
+        return render(request, 'core/queues/create_edit_queue.html', locals())
     else:
         raise Http404
 

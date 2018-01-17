@@ -1,1 +1,0 @@
-[{"model": "core.usertype", "pk": 1, "fields": {"status": "OP", "created": "2010-10-10 00:00", "updated":"2010-10-10 00:00"}}, {"model": "core.usertype", "pk": 2, "fields": {"status": "User", "created": "2010-10-10 00:00", "updated":"2010-10-10 00:00"}}]

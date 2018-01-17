@@ -41,9 +41,9 @@ def common_ticket_data():
     }
 
 
-'''
+"""
 list_tickets: list functions called in urls.py used to list tickets under /tickets url
-'''
+"""
 
 
 @login_required
@@ -62,13 +62,13 @@ def list_tickets(request, assigned_state=None):
                                 .filter(assigned_state=assigned_state) \
                                 .order_by('-id')
 
-    return render(request, 'tickets/list_tickets.html', locals())
+    return render(request, 'core/tickets/list_tickets.html', locals())
 
 
 @login_required
 def delete_ticket(request, ticket_id=None):
     user_obj = request.user
-    '''Check if we can add comment trought get_rights_for_ticket'''
+    """Check if we can add comment trought get_rights_for_ticket"""
     user_object_rights = rights.get_rights_for_ticket(
         user=user_obj, queue=None, ticket_id=ticket_id)
     if user_object_rights.can_delete:
@@ -136,7 +136,7 @@ def manage_ticket(request, ticket_id=None):
         # Non-POST mode, show only
         form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
         form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
-    return render(request, 'tickets/create_edit_ticket.html', locals())
+    return render(request, 'core/tickets/create_edit_ticket.html', locals())
 
 
 @login_required
@@ -166,7 +166,7 @@ def view_ticket(request, ticket_id=None):
 
     form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
     form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
-    return render(request, 'tickets/view.html', locals())
+    return render(request, 'core/tickets/view.html', locals())
 
 
 def save_comment(request, comment_data=None, private_data=None, ticket_data=None):
@@ -191,7 +191,7 @@ def del_comment(request, message_id=None):
 def add_comment_jx(request, ticket_id):
     if request.is_ajax() and request.POST:
         if request.POST.get('message_text'):
-            '''Check if we can add comment trought get_rights_for_ticket'''
+            """Check if we can add comment trought get_rights_for_ticket"""
             user_object_rights = rights.get_rights_for_ticket(
                 user=request.user, queue=None, ticket_id=ticket_id)
             if user_object_rights.can_comment or request.user.is_superuser:
@@ -212,9 +212,10 @@ def add_comment_jx(request, ticket_id):
 @login_required
 def del_comment_jx(request):
     if request.is_ajax() and request.POST:
+        status = 0
         if request.POST.get('message_id') and request.POST.get('ticket_id'):
             ticket_id = int(request.POST.get('ticket_id'))
-            '''Check if we can add comment trought get_rights_for_ticket'''
+            """Check if we can add comment trought get_rights_for_ticket"""
             user_object_rights = rights.get_rights_for_ticket(
                 user=request.user, queue=None, ticket_id=ticket_id)
             if user_object_rights.can_comment or request.user.is_superuser:
@@ -235,14 +236,14 @@ def del_comment_jx(request):
 
 
 def get_comments_jx(request, ticket_id=None):
-    ''''
+    """'
     As we comment in modules.py, in as_json function, serialize do not work with nested object
     so we construct that function to make
     As view here =>
     http://stackoverflow.com/questions/13031058/how-to-serialize-to-json-a-list-
     of-model-objects-in-django-python
     we can return all the data directly as a JSON an treat it in the ajax side
-    '''
+    """
     qry = Comments.objects.filter(ticket_rel=ticket_id).order_by('-id')
     data = [ob.as_json(request) for ob in qry]
     return JsonResponse(data, safe=False)
@@ -304,13 +305,13 @@ def del_microtask(request, mk_id=None):
 # AJAX microtask
 def add_microtask_jx(request, ticket_id=None):
     if request.is_ajax() and request.POST:
-        '''if mk_id exists'''
+        """if mk_id exists"""
         if request.POST.get('id_mk'):
             if (
                 request.POST.get('subject_text') and request.POST.get('body_text') and
                     request.POST.get('state_id')):
                 user_obj = request.user
-                '''Check if we can add comment trought get_rights_for_ticket'''
+                """Check if we can add comment trought get_rights_for_ticket"""
                 user_object_rights = rights.get_rights_for_ticket(
                     user=user_obj, queue=None, ticket_id=ticket_id)
                 if user_object_rights.can_edit or request.user.is_superuser:
@@ -339,7 +340,7 @@ def add_microtask_jx(request, ticket_id=None):
                 request.POST.get('subject_text') and request.POST.get('body_text') and
                     request.POST.get('state_id')):
                 user_obj = request.user
-                '''Check if we can add comment trought get_rights_for_ticket'''
+                """Check if we can add comment trought get_rights_for_ticket"""
                 user_object_rights = rights.get_rights_for_ticket(
                     user=user_obj, queue=None, ticket_id=ticket_id)
                 if user_object_rights.can_edit or request.user.is_superuser:
@@ -368,13 +369,13 @@ def add_microtask_jx(request, ticket_id=None):
 
 
 def get_microtasks_jx(request, ticket_id=None):
-    ''''
+    """'
     As we comment in modules.py, in as_json function, serialize do not work with nested object
     so we construct that function to make
     As view here => http://stackoverflow.com/questions/13031058/how-to-serialize-
     to-json-a-list-of-model-objects-in-django-python
     we can return all the data directly as a JSON an treat it in the ajax side
-    '''
+    """
     qry = Microtasks.objects.filter(ticket_rel=ticket_id).order_by('-id')
     data = [ob.as_json() for ob in qry]
     return JsonResponse(data, safe=False)
@@ -382,9 +383,10 @@ def get_microtasks_jx(request, ticket_id=None):
 
 def del_microtask_jx(request, ticket_id=None):
     if request.is_ajax() and request.POST:
+        status = 0
         if request.POST.get('mk_id'):
             user_obj = request.user
-            '''Check if we can add comment trought get_rights_for_ticket'''
+            """Check if we can add comment trought get_rights_for_ticket"""
             user_object_rights = rights.get_rights_for_ticket(
                 user=user_obj, queue=None, ticket_id=ticket_id)
             if user_object_rights.can_comment or request.user.is_superuser:

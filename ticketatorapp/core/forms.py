@@ -11,14 +11,26 @@ from . import (
 # => Auth forms
 class UserForm(forms.ModelForm):
     date_joined = forms.DateField(
-        widget=forms.SelectDateWidget(), input_formats=['%d/%m/%Y'], initial=util.now)
+        widget=forms.SelectDateWidget(),
+        input_formats=['%d/%m/%Y'],
+        initial=util.now
+    )
     password_first = forms.CharField(
-        label='Initial Password', widget=forms.PasswordInput,
-        required=False, initial='')
+        label='Initial Password',
+        widget=forms.PasswordInput,
+        required=False,
+        initial=''
+    )
     password_check = forms.CharField(
-        label='Password confirmation', widget=forms.PasswordInput,
-        required=False,initial='')
-    is_active = forms.BooleanField(required=False, initial=True)
+        label='Password confirmation',
+        widget=forms.PasswordInput,
+        required=False,
+        initial=''
+    )
+    is_active = forms.BooleanField(
+        required=False,
+        initial=True
+    )
 
     # is_superuser = forms.BooleanField(initial=False)
     # Pass request to query wich user is trying ot modify the object User
@@ -28,8 +40,16 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = models.User
-        # fields = ['username', 'first_name', 'last_name', 'email', 'is_superuser', 'is_staff',
-        #                    'is_active', 'rssfeed', ]
+        # fields = [
+        #     'username',
+        #     'first_name',
+        #     'last_name',
+        #     'email',
+        #     'is_superuser',
+        #     'is_staff',
+        #     'is_active',
+        #     'rssfeed',
+        # ]
         exclude = ['password']
 
     def clean_password_check(self):
@@ -130,12 +150,12 @@ class TicketForm(forms.ModelForm):
         fields = '__all__'
         # exclude = ['date']
 
-    '''
+    """
     We log all importante changes in fields to be tracked
     The field_checker test if both are the same and if it found changes, call "logger" passing data
     TODO: Maybe, "if self.instance.pk is not None:" can be improved to not call
     all  times to make the check (and save N checks at save time)
-    '''
+    """
 
     def clean_assigned_state(self):
         if self.instance.pk is not None:   # new instance only
@@ -143,9 +163,9 @@ class TicketForm(forms.ModelForm):
                 self.cleaned_data.get('assigned_state')))
         return self.cleaned_data.get('assigned_state')
 
-    '''
+    """
     Check if the new queue assigned is permited...
-    '''
+    """
     def clean_assigned_queue(self):
         if self.instance.pk is not None:   # new instance only
             user_object_rights = rights.get_rights_for_ticket(
@@ -174,9 +194,9 @@ class TicketForm(forms.ModelForm):
             self.field_checker(self.instance.body, self.cleaned_data.get('body'))
         return self.cleaned_data.get('body')
 
-    '''
+    """
     Error codes:
-    '''
+    """
 
     def clean_error_cantedit(self):
         cantedit = 'You don\'t have permissions to edit this ticket'
@@ -194,10 +214,10 @@ class TicketForm(forms.ModelForm):
         cantsave = 'You don\'t have permissions to save this ticket'
         return cantsave
 
-    '''
+    """
     Functions:
     Check source=>destiny object and if it's not the same, log clean_it
-    '''
+    """
 
     def field_checker(self, source=None, destiny=None, destiny_name=None):
         if source != destiny:
@@ -210,24 +230,24 @@ class TicketForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
         queue_obj = cleaned_data.get('assigned_queue')
 
-        '''Check creation'''
+        """Check creation"""
         if not self.instance.pk:
             user_object_rights = rights.get_rights_for_ticket(
                 user=user_obj, queue=queue_obj, ticket_id=None)
             if not user_object_rights.can_create:
                 raise forms.ValidationError(self.clean_error_cantcreate())
 
-        '''Check edition'''
+        """Check edition"""
         if self.instance.pk:
             user_object_rights = rights.get_rights_for_ticket(
                 user=user_obj, queue=queue_obj, ticket_id=self.instance.id)
             if not user_object_rights.can_edit:
                 raise forms.ValidationError(self.clean_error_cantedit())
 
-        '''Force to assign company'''
+        """Force to assign company"""
         cleaned_data['assigned_company'] = queue_obj.company_rel
 
-        #  '''Put percentage 100% when closed ticket is detected'''
+        #  """Put percentage 100% when closed ticket is detected"""
         #  if cleaned_data['assigned_state'].id ==  3:
         #      self.instance.percentage = int(100)
 

@@ -4,12 +4,10 @@ from __future__ import unicode_literals
 import os
 
 from django.db import models
-from django import forms
+
 from django.forms import ModelForm
 # Added imports
 from django.contrib.auth.models import User, Group
-from datetime import datetime
-from core import rights, utils as util
 from django.core.exceptions import ValidationError
 # Extending the Django User's model
 from django.contrib.auth.models import AbstractUser
@@ -42,9 +40,21 @@ class UserType(TimeStampedModelMixin):
 # https://micropyramid.com/blog/how-to-create-custom-user-model-in-django/
 class User(AbstractUser):
     status_rel = models.ForeignKey(
-        UserType, on_delete=models.CASCADE, null=True, blank=True)
-    avatar = models.FileField(upload_to='avatar/', null=True, blank=True)
-    rssfeed = models.CharField(max_length=400, null=True, blank=True)
+        UserType,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    avatar = models.FileField(
+        upload_to='avatar/',
+        null=True,
+        blank=True
+    )
+    rssfeed = models.CharField(
+        max_length=400,
+        null=True,
+        blank=True
+    )
     collapsednavbar = models.BooleanField(default=False)
 
     # If is_superuser comes with NULL value, set it to FALSE
@@ -85,9 +95,17 @@ class Queue(TimeStampedModelMixin):
 class Rights(TimeStampedModelMixin):
     enabled = models.BooleanField(default=True)
     grp_src = models.ForeignKey(
-        Group, related_name="src_grp", blank=True, null=True)
+        Group,
+        related_name="src_grp",
+        blank=True,
+        null=True
+    )
     queue_dst = models.ForeignKey(
-        Queue, related_name="dst_queue", blank=True, null=True)
+        Queue,
+        related_name="dst_queue",
+        blank=True,
+        null=True
+    )
     # Permited actions
     can_view = models.BooleanField(default=False)
     can_create = models.BooleanField(default=False)
@@ -95,13 +113,13 @@ class Rights(TimeStampedModelMixin):
     can_edit = models.BooleanField(default=False)
     can_comment = models.BooleanField(default=False)
 
-    ''''
+    """'
     Check at database state if registry is created or we can create it:
     If you use the admin, to mantain the non-duplicity of the rules, we make a
     secondary check at time to save the object to the DB.
     Yes, you have 2 querys but this is the unique way to avoid errors if you
     use the admin panel to insert some righths
-    '''
+    """
 
     def detect_rights_exists(self, grp, queue):
         return_query = {}
@@ -142,9 +160,6 @@ class State(TimeStampedModelMixin):
         return self.name
 
 
-
-
-
 # => Prioritys
 class Priority(TimeStampedModelMixin):
     name = models.CharField(max_length=30)
@@ -168,22 +183,49 @@ class Inventory(TimeStampedModelMixin):
 # => Tickets
 class Ticket(TimeStampedModelMixin):
     create_user = models.ForeignKey(
-        User, related_name="c_user", blank=True, null=True,)
+        User,
+        related_name="c_user",
+        blank=True,
+        null=True,
+    )
     subject = models.CharField(max_length=40)
-    body = models.TextField(null=True, blank=True)
+    body = models.TextField(
+        null=True,
+        blank=True
+    )
     assigned_user = models.ForeignKey(
-        User, blank=True, null=True, related_name="a_user")
-    assigned_queue = models.ForeignKey(Queue, blank=True, null=True)
-    assigned_company = models.ForeignKey(Company, blank=True, null=True)
+        User,
+        blank=True,
+        null=True,
+        related_name="a_user"
+    )
+    assigned_queue = models.ForeignKey(
+        Queue,
+        blank=True,
+        null=True
+    )
+    assigned_company = models.ForeignKey(
+        Company,
+        blank=True,
+        null=True
+    )
     assigned_state = models.ForeignKey(State)
     assigned_prio = models.ForeignKey(Priority)
-    assigned_inventory = models.ForeignKey(Inventory, null=True, blank=True)
-    percentage = models.IntegerField(default=0, blank=True, null=True)
+    assigned_inventory = models.ForeignKey(
+        Inventory,
+        null=True,
+        blank=True
+    )
+    percentage = models.IntegerField(
+        default=0,
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return '%s' % (self.id)
 
-    '''Return a empty string to avoid problems in JSON serialization'''
+    """Return a empty string to avoid problems in JSON serialization"""
     def str_assigned_user_name(self):
         try:
             assigned_user_data = "" + str(self.assigned_user.first_name) + \
@@ -213,8 +255,8 @@ class Ticket(TimeStampedModelMixin):
             queue_shortcode=str(self.assigned_queue.shortcode),
             priority=str(self.assigned_prio),
             create_user=self.str_creator_user_name(),
-            assigned_user_data=self.str_assigned_user_name(),)
-
+            assigned_user_data=self.str_assigned_user_name(),
+        )
 
 
 # => Attachments
@@ -228,6 +270,9 @@ class Attachment(TimeStampedModelMixin):
     ticket_rel = models.ForeignKey(Ticket, null=True, blank=True)
     file_name = models.FileField(
         upload_to=get_attachment_upload_path, null=True, blank=True)
+
+    def shortfilename(self):
+        return os.path.basename(self.file_name.name)
 
 
 class AttachmentForm(ModelForm):
@@ -243,7 +288,7 @@ class Comments(TimeStampedModelMixin):
     comment = models.TextField(null=True, blank=True)
     private = models.BooleanField(default=False)
 
-    '''Return this dict to avoid the NO-NESTED objects in serialize library'''
+    """Return this dict to avoid the NO-NESTED objects in serialize library"""
 
     def as_json(self, request):
         if request.user.id == self.user_rel.id or request.user.is_superuser:
@@ -278,7 +323,8 @@ class Microtasks(TimeStampedModelMixin):
             state_data_id=str(self.assigned_state.id),
             state_color_data=str(self.assigned_state.color),
             date_data=str(self.created.strftime('%d/%m/%y %H:%M:%S')),
-            percentage_data=int(self.percentage))
+            percentage_data=int(self.percentage)
+        )
 
 
 class Logs(TimeStampedModelMixin):

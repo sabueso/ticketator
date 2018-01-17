@@ -12,7 +12,7 @@ def list_groups(request):
         group_list = Group.objects.all().order_by("-id")
     else:
         raise Http404
-    return render(request, 'groups/list_groups.html', locals())
+    return render(request, 'core/groups/list_groups.html', locals())
 
 
 def manage_group(request, group_id=None):
@@ -30,6 +30,6 @@ def manage_group(request, group_id=None):
         else:
             # Non-POST mode, show only
             form = GroupForm(instance=actual_group)
-        return render(request, 'groups/create_edit_group.html', locals())
+        return render(request, 'core/groups/create_edit_group.html', locals())
     else:
         raise Http404
