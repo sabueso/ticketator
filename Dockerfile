@@ -1,8 +1,7 @@
-FROM python:2.7
+FROM python:2.7-alpine
 
-RUN apt-get update
-RUN apt-get install -Vy netcat
-RUN apt-get install -Vy libffi-dev
+RUN apk update
+RUN apk add --no-cache netcat-openbsd libffi-dev
 
 WORKDIR /code
 
@@ -14,4 +13,4 @@ RUN chmod +x bootstrap.sh
 
 EXPOSE 8000
 
-CMD ["/bin/bash", "bootstrap.sh"]
+CMD ["/bin/sh", "bootstrap.sh"]
