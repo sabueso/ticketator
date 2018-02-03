@@ -9,10 +9,10 @@ Ticketator is about tickets, queues, users and groups.
 
 You can find more screenshots [screenshot here]
 
-###Some cool features
+### Some cool features
 
 * Simple ticket creation
-* Queus to organize tickets
+* Queues to organize tickets
 * Rights to organize access to queues (based on group access, can comment, can edit, can view...)
 * Comments on tickets
 * Ability to define percentage made on a particular task
@@ -63,14 +63,11 @@ docker-compose build
 docker-compose up -d
 
 # Create admin user
-docker exec -it ticketator_backend_1 ./manage.py createsuperuser
+docker exec -it ticketator_backend_1 ./ticketatorapp/manage.py createsuperuser
 
 # Login on http://localhost:8000
 ```
-### PEP8
-```sh
-pep8 --max-line-length=100 . --exclude=migrations
-```
+
 ### Disclaimer & Feedback
 
 Ticketator is under active developement and some areas could not be working as expected.
