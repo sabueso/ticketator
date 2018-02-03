@@ -1,7 +1,7 @@
 FROM python:2.7-alpine
 
 RUN apk update
-RUN apk add --no-cache netcat-openbsd libffi-dev
+RUN apk add --no-cache netcat-openbsd libffi-dev postgresql-dev gcc musl-dev
 
 WORKDIR /code
 

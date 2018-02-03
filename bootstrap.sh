@@ -6,7 +6,7 @@ false
 while [ ! $? -eq 0 ]
 do
     sleep 2
-    nc -z "${DB_HOST}" "${DB_PORT}"
+    nc -z "${POSTGRES_HOST}" "${POSTGRES_PORT}"
 done
 sleep 2
 
