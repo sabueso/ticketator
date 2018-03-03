@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:9.5.1
+    env_file: envs/${DOCKER_COMPOSE_ENV}.env
+    volumes:
+       - /srv/docker/ticketator/postgresql/data/:/var/lib/postgresql/data
+
+  backend:
+    image: ticketator/backend
+    build: .
+    env_file: envs/${DOCKER_COMPOSE_ENV}.env
+    volumes:
+      - .:/code
+      - /tmp/ticketator:/static
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
