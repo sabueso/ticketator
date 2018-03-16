@@ -7,7 +7,7 @@
   <link href="{% static "vendors/normalize-css/normalize.css" %}" rel="stylesheet">
   <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.css" %}" rel="stylesheet">
   <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" %}" rel="stylesheet">
-  <link href="{% static "css/ticket/view.css" %}" rel="stylesheet">
+  <!--<link href="{% static "css/ticket/view.css" %}" rel="stylesheet">-->
   {% include "dashboard/skel_css/pnotify_css" %}
 {%endblock%}
 
@@ -188,17 +188,27 @@
 
                 {% if actual_files %}
 
-                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                  <ul class="list-unstyled timeline">
-                    {% for i in actual_files %}
-                    <li>
-                      <!--modal part-->
-                      <img src="{{ i.file_name.url }}" class="img-responsive">
-                      <!--modal final-->
-                    </li>
-                    {%endfor%}
-                  </ul>
+                {% for i in actual_files %}
+                <div class="col-md-55">
+                  <div class="thumbnail">
+                              <div class="caption">{{ i.shortfilename }}</div>
+                              <a href="#" data-toggle="modal" data-target="#img{{i.id}}"><img style="width: 100%; display: block;" src="{{ i.file_name.url }}" alt="image"></a>
+
+                  </div>
                 </div>
+                <!--modal part-->
+                    <div id="img{{i.id}}" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-body">
+                            <img src="{{ i.file_name.url }}" class="img-responsive">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                <!--modal final-->
+
+                {%endfor%}
                 {%endif%}
 
                 <!--><!-->
@@ -208,11 +218,7 @@
                 <!--end-->
                 <!--comments part -->
                 {% if form_ticket.instance.id %}
-                <!--<div class"cold-md-12">
-                <label> TEST </label>
-                <button class="btn btn-info botonazo" type="button">Info</button>
-                <ul></ul>
-              </div>-->
+
 
               <!--new messages-->
               </form>
@@ -223,7 +229,7 @@
                              <div class="status-upload">
                                <form>
                                  <textarea placeholder="What are you doing right now?" name="message_data" class="form-control" id="message_data" style="resize: none;"></textarea>
-                                 <button type="submit" class="btn btn-success green add-message"><i class="fa fa-share"></i> Comment</button>
+                                 <button type="submit" class="btn btn-success pull-right add-message"><i class="fa fa-share"></i> Comment</button>
                              </div><!-- Status Upload  -->
                            </div><!-- Widget Area -->
                          </div>
@@ -235,13 +241,13 @@
                 {% for comm in actual_comments %}
                 <div class="row" id="comment">
                   <div class="col-sm-1">
-                    <div class="thumbnail">
+
                       {% if comm.user_rel.avatar %}
-                      <img alt="Avatar" class="img-responsive user-photo" src="{{ comm.user_rel.avatar.url }}">
+                      <img alt="Avatar" class="avatar" src="{{ comm.user_rel.avatar.url }}">
                       {% else %}
-                      <img alta="Avatar" class="img-responsive user-photo" src="{% static 'images/user.png' %}">
+                      <img alta="Avatar" class="avatar" src="{% static 'images/user.png' %}">
                       {%endif%}
-                    </div><!-- /thumbnail -->
+
                   </div><!-- /col-sm-1 -->
 
                   <div class="col-sm-11">
@@ -249,7 +255,9 @@
                       <div class="panel-heading">
                         <strong>{{comm.user_rel.username}}</strong> <span class="text-muted">commented {{comm.created|naturaltime}}</span>
                         <input type="hidden" id="idPMessage" name="idPMessage" value="{{comm.id}}">
-                        {%if request.user.is_superuser or request.user.id == comm.user_rel.id %}<button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;">Delete comment</button>{%endif%}
+                        {%if request.user.is_superuser or request.user.id == comm.user_rel.id %}
+                          <button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;"><i class="fa fa-trash-o"></i></button>-->
+                        {%endif%}
                       </div>
                       <div class="panel-body">
                         <div class="content-markdown-old">

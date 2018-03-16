@@ -1,6 +1,6 @@
 # User views: list, create, delete
 from django.contrib.auth import get_user_model
-from core.models import UserForm
+from core.forms import UserForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
@@ -16,7 +16,7 @@ def list_users(request, state_id=None):
         user_list = User.objects.all().order_by("-id")
     else:
         user_list = User.objects.filter(id=request.user.id)
-    return render(request, 'users/list_users.html', locals())
+    return render(request, 'core/users/list_users.html', locals())
 
 
 def manage_user(request, user_id=None):
@@ -38,11 +38,14 @@ def manage_user(request, user_id=None):
             form = UserForm(request.POST, request.FILES, request=request, instance=actual_user)
             if form.is_valid():
                 temp_form = form.save(commit=False)
-                #If no modifications were made to password fields...
-                if  (not form.cleaned_data["password_first"] and not form.cleaned_data["password_check"]) and form.instance.pk is not None:
+                # If no modifications were made to password fields...
+                if (
+                            not form.cleaned_data["password_first"]
+                            and not form.cleaned_data["password_check"]
+                ) and form.instance.pk is not None:
                     pass
                 else:
-                    #Validated by models, once password_check is cleaned, we proceeed updating password...
+                    # Validated by models, once password_check is cleaned, we proceeed updating password...
                     temp_form.set_password(form.cleaned_data["password_check"])
                 temp_form.save()
                 form.save_m2m()
@@ -50,7 +53,7 @@ def manage_user(request, user_id=None):
         else:
             # Non-POST mode, show only
             form = UserForm(instance=actual_user, request=request)
-        return render(request, 'users/create_edit_user.html', locals())
+        return render(request, 'core/users/create_edit_user.html', locals())
 
 
 def delete_user(request, user_id=None):
@@ -62,13 +65,15 @@ def delete_user(request, user_id=None):
         else:
             return HttpResponse("User is not found")
 
+
 @login_required
 def set_collapsednavbar_jx(request, mk_id=None):
     if request.is_ajax() and request.POST and [request.user.id == request.POST.get('submited_user_id')]:
         user_to_toggle = User.objects.filter(id=request.user.id)
-        user_to_toggle.update(collapsednavbar=Case(
-                        When(collapsednavbar=True, then=Value(False)),default=Value(True))
-                        )
+        user_to_toggle.update(
+            collapsednavbar=Case(
+                When(collapsednavbar=True, then=Value(False)), default=Value(True))
+            )
         data = {'message': 'Toggled'}
         return HttpResponse(json.dumps(data), content_type='application/json')
     else:

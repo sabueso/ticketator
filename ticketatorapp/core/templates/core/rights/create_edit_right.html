@@ -96,8 +96,12 @@
                          					<hr></hr>
                             <!--submit-->
                          				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save</button>
-                                        <button class="btn btn-default pull-left" style="margin-left: 20px">Back</button>
-                                      	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                        <a href="/settings/rights/" class="btn btn-default pull-left" style="margin-left: 20px">Back</a>
+                                      	{%if form.instance.id%}
+                                            <a class="btn btn-default pull-left" style="margin-left: 20px" href="/settings/rights/delete/{{form.instance.id}}">Delete</a>
+                                        {% else %}
+                                            <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                        {%endif%}
 
                                       	</div>
                          			</div>

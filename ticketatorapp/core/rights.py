@@ -2,11 +2,11 @@ from django.contrib.auth.models import Group
 import models
 from django.db.models import Q
 
-'''
+"""
 Check rights for user:
 You can pass a queue, or a ticket_id to retrieve all the rights
 defined for the users group
-'''
+"""
 
 
 def get_rights_for_ticket(user, queue=None, ticket_id=None):
@@ -72,7 +72,7 @@ def get_rights_for_ticket(user, queue=None, ticket_id=None):
     return u_rights_obj()
 
 
-'''
+"""
 get_queues:
 Used to get all queues for a particular user, and if needed for a particular
 right as can_view or can_create
@@ -81,7 +81,7 @@ Options for perm_level are can_view, can_create or cv_cc (both of them)
 Remember you can have rights to create a ticket but not for see the queue where you created for...
 (at time of creation, we pass the argument cv_cc to achieve all targets for rights)
 
-'''
+"""
 
 
 def get_queues(user, perm_level=None):
@@ -105,12 +105,12 @@ def get_queues(user, perm_level=None):
                 queue.queue_dst_id) for queue in u_rights if queue.can_create or queue.can_view]
     return granted_queues
 
-'''
+"""
 Designed to interact with Tickets model
 Return a Q object for assigned_queue_id, used in list_tickest()
 With this object we assure that only granted queus with can_view are listed as
 granted_queues in function
-'''
+"""
 
 
 def get_queues_as_q_for_ticket_model(user):
@@ -129,11 +129,11 @@ def get_queues_as_q_for_ticket_model(user):
 
     return query
 
-'''
+"""
 Designed to interact with Queues model
 Return a Q object to use it in other funcionts, as templatags (proxy model for get_queues)
 Used in core_settings_data inside a templatetag function
-'''
+"""
 
 
 def get_queues_as_q_for_queue_model(user, perm_level=None):
