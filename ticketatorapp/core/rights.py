@@ -114,19 +114,19 @@ granted_queues in function
 
 
 def get_queues_as_q_for_ticket_model(user):
-    can_view = ''
     #  Return a Q query with the "OR" operator, to be used as argument for
     #  filter in views_ticket
     #  Magic sponsored by stackoverflow =>
     #  http://stackoverflow.com/questions/852414/how-to-dynamically-compose-an-or-query-filter-in-django
-    queries = [Q(assigned_queue_id=value) for value in get_queues(user, 'can_view')]
+    queries = [Q(assigned_queue__id=value) for value in get_queues(user, 'can_view')]
     if not queries:
-        query = {'assigned_queue_id': ''}
+        query = Q(assigned_queue__isnull=True)
     else:
         query = queries.pop()
+
     for item in queries:
         query |= item
-    # End of magic
+
     return query
 
 '''
