@@ -1,0 +1,45 @@
+REFACTOR PROPOSAL
+==================
+
+Split core app into separated apps
+
+
+users/
+    - UserType
+    - User
+    userform
+    groupform
+
+companies/
+    - company
+    companyform
+
+queues/
+    - queue
+    - queueform
+
+rights/
+    - right
+    - rightform
+
+
+states/
+    - states
+    - stateform
+
+priorities/
+    - priority
+    - priorityform
+
+inventories/
+    - invetory
+    - inventorygroup
+
+tickets/
+    - Ticket
+    - ticketform
+    - attachment
+    - comments
+    - microtasks
+    - logs
+

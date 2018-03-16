@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^$', index),
 
     # Settings & utilities
-    url(r'^settings$', settings, name='tickets-settings'),
+    url(r'^settings/$', settings, name='tickets-settings'),
 
     # Auth
     url(r'^login$', auth_views.login, {'template_name': 'auth/login.html'}, name='login'),
