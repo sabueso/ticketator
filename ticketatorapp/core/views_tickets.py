@@ -50,6 +50,10 @@ def list_tickets(request, assigned_state=None):
     common_data = common_ticket_data()
     queues = rights.get_queues_as_q_for_ticket_model(request.user)
     states = State.objects.all()
+
+    # Pick for request object query params
+    assigned_state = request.GET.get("assigned_state", None)
+
     # We pass always granted_queues as a roundup to query_view requirements
     if not assigned_state:
         tickets = Ticket.objects.filter(queues) \
