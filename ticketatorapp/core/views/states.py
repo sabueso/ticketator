@@ -1,6 +1,7 @@
 # Company views: list, create, delete
 
-from core.models import State, StateForm
+from core.models import State
+from core.forms import StateForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 
@@ -9,7 +10,7 @@ from django.http import Http404
 def list_state(request):
     if request.user.is_superuser:
         state_list = State.objects.all().order_by("-id")
-        return render(request, 'states/list_states.html', locals())
+        return render(request, 'core/states/list_states.html', locals())
     else:
         raise Http404
 
@@ -33,7 +34,7 @@ def manage_state(request, state_id=None):
         else:
             # Non-POST mode, show only
             form = StateForm(instance=actual_state)
-        return render(request, 'states/create_edit_state.html', locals())
+        return render(request, 'core/states/create_edit_state.html', locals())
     else:
         raise Http404
 

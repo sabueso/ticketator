@@ -1,6 +1,7 @@
 # Company views: list, create, delete
 
-from core.models import Rights, RightForm
+from core.models import Rights
+from core.forms import RightForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 
@@ -11,7 +12,7 @@ def list_rights(request):
         rights_list = Rights.objects.all().order_by('grp_src_id', '-queue_dst')
     else:
         raise Http404
-    return render(request, 'rights/list_rights.html', locals())
+    return render(request, 'core/rights/list_rights.html', locals())
 
 
 def manage_right(request, right_id=None):
@@ -29,9 +30,19 @@ def manage_right(request, right_id=None):
         else:
             # Non-POST mode, show only
             form = RightForm(instance=actual_right)
-        return render(request, 'rights/create_edit_right.html', locals())
+        return render(request, 'core/rights/create_edit_right.html', locals())
     else:
         raise Http404
 
 # some unusefull comment
 # another one
+
+# Delete state
+def delete_right(request, right_id=None):
+    if request.user.is_superuser:
+        if right_id:
+            actual_right = get_object_or_404(Rights, pk=right_id)
+            actual_right.delete()
+            return redirect("/settings/rights")
+    else:
+        raise Http404

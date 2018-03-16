@@ -3,8 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 # from core import views_utils as utils
-from core.models import Ticket, TicketForm, Attachment, AttachmentForm, State
+from core.models import Ticket, Attachment, State
 from core.models import Queue, Priority, Company
+from core.forms import AttachmentForm
+from core.forms import TicketForm
 # Needed for forms
 from datetime import datetime
 # Rights magic
@@ -44,7 +46,7 @@ def list_tickets(request, state_id=None):
             tickets_info = Ticket.objects.filter(assigned_state=state_id).order_by("-id")
         else:
             tickets_info = Ticket.objects.filter(queues).order_by("-id")
-    return render(request, 'tickets/list_tickets.html', locals())
+    return render(request, 'core/tickets/list_tickets.html', locals())
 
 
 # Create/Edit tickets
@@ -88,7 +90,7 @@ def manage_ticket(request, ticket_id=None):
         # Non-POST mode, show only
         form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
         form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
-    return render(request, 'tickets/create_edit_ticket_newui.html', locals())
+    return render(request, 'core/tickets/create_edit_ticket_newui.html', locals())
 
 
 @login_required
@@ -151,4 +153,4 @@ def manage_ticket_dev(request, ticket_id=None):
         # Non-POST mode, show only
         form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
         form_attach = AttachmentForm(instance=actual_ticket, prefix="attach")
-    return render(request, 'tickets/create_edit_ticket_dev.html', locals())
+    return render(request, 'core/tickets/create_edit_ticket_dev.html', locals())
