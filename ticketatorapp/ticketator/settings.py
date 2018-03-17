@@ -15,19 +15,13 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
+SECRET_KEY = os.environ["SECRET_KEY"]
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ol84z9()#he4r#bx-%bo52^d5a!l*^84j%8))4r=_5-szall@$'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.environ["DEBUG"] in ("true", "True") else False
 
 ALLOWED_HOSTS = ['*']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,7 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_extensions',
     'core',
-    'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -54,12 +47,10 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'ticketator.urls'
 
-ACTUAL_TEMPLATES = os.path.join(BASE_DIR, 'templates')
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ACTUAL_TEMPLATES],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,11 +66,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ticketator.wsgi.application'
 
+# Databases
 
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-# Postgresql, for production use
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -90,15 +78,6 @@ DATABASES = {
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -136,7 +115,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    # '/var/www/static/',
 ]
 
 MEDIA_ROOT = "/var/www/media/"
@@ -162,15 +140,6 @@ AUTH_USER_MODEL = 'core.User'
 
 # Logo ticketator
 LOGO_COMPANY = STATIC_URL + 'images/logo/tk-tiny.png'
-
-# Sentry configure
-# RAVEN_CONFIG = {
-#     'dsn': 'https://18d509f919784813bc69524351ca56e7:1db31ffdbeeb498c88af0cc4691a06ad@sentry.io/140407',
-#     # If you are using git, you can also automatically configure the
-#     # release based on the git info.
-#     'release': '6.0.0',
-# }
-
 
 GRAPH_MODELS = {
   'all_applications': True,
