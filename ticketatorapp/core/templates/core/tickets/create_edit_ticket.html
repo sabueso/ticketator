@@ -32,7 +32,7 @@
     <div class="btn-group pull-right" style="margin-right: 5px;">
       <button class="btn btn-danger btn-sm" type="button" data-target=".bs-example-modal-lg" data-toggle="modal">Delete</button>
     </div>
-  {% include "tickets/delete_modal_ticket.html" %}
+  {% include "core/tickets/delete_modal_ticket.html" %}
 
   {% else %}
   <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Create</button>
@@ -246,6 +246,13 @@
                     <hr></hr>
                   </div>
                 </div>
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                <label>Labels:</label>
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                {{ form_ticket.labels | addcss:"form-control" }}
               </div>
 
               {% if actual_files %}

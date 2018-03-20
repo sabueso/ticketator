@@ -183,6 +183,20 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <div class="content-markdown-old" style="background-color: #f5f5f5; border: 1px solid #e3e3e3; border-radius: 4px; padding: 15px;">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</div>
                 </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <label>Labels:</label>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  {% for label in form_ticket.instance.get_label_list %}
+                    <a href="/tickets/{{ label }}">
+                      <span class="tag">
+                        <span>{{ label }}</span>
+                      </span>
+                    </a>
+                  {% endfor %}
+                </div>
+
                 <div style="padding-left:10px; font-size:11px;">{%if form_ticket.instance.updated != form_ticket.instance.created %}Last modified: {{form_ticket.instance.updated|naturaltime }}{%endif%}</div>
                 <hr></hr>
 

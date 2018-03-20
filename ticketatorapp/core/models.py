@@ -222,6 +222,8 @@ class Ticket(TimeStampedModelMixin):
         null=True
     )
 
+    labels = models.CharField(max_length=256, blank=True)
+
     def __str__(self):
         return '%s' % (self.id)
 
@@ -241,6 +243,10 @@ class Ticket(TimeStampedModelMixin):
         except:
             creator_user_data = ""
         return creator_user_data
+
+    def get_label_list(self):
+        # Remove white spaces and split each label
+        return self.labels.replace(' ', '').split(',')
 
     def as_json(self):
         return dict(

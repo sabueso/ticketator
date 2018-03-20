@@ -47,7 +47,7 @@ list_tickets: list functions called in urls.py used to list tickets under /ticke
 
 
 @login_required
-def list_tickets(request, assigned_state=None):
+def list_tickets(request, assigned_state=None, label=None):
     common_data = common_ticket_data()
     queues = rights.get_queues_as_q_for_ticket_model(request.user)
     states = State.objects.all()
@@ -64,6 +64,20 @@ def list_tickets(request, assigned_state=None):
     else:
         tickets = Ticket.objects.filter(queues) \
                                 .filter(assigned_state=assigned_state) \
+                                .order_by('-id')
+
+    return render(request, 'core/tickets/list_tickets.html', locals())
+
+
+@login_required
+def list_tickets_label(request, label):
+    common_data = common_ticket_data()
+    queues = rights.get_queues_as_q_for_ticket_model(request.user)
+    states = State.objects.all()
+    
+    if label is not None:
+        tickets = Ticket.objects.filter(queues) \
+                                .filter(labels__icontains=label) \
                                 .order_by('-id')
 
     return render(request, 'core/tickets/list_tickets.html', locals())
