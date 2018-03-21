@@ -245,8 +245,9 @@ class Ticket(TimeStampedModelMixin):
         return creator_user_data
 
     def get_label_list(self):
-        # Remove white spaces and split each label
-        return self.labels.replace(' ', '').split(',')
+        # Remove possible commas at the begin or end, remove whitespaces and split each label
+        cleaned_labels = self.labels.strip(',').replace(' ', '').split(',')
+        return cleaned_labels
 
     def as_json(self):
         return dict(

@@ -189,11 +189,13 @@
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   {% for label in form_ticket.instance.get_label_list %}
-                    <a href="/tickets/{{ label }}">
-                      <span class="tag">
-                        <span>{{ label }}</span>
-                      </span>
-                    </a>
+                    {% if label != "" %}
+                        <a href="{% url 'tickets-list-label' label %}">
+                          <span class="tag">
+                            <span>{{ label }}</span>
+                          </span>
+                        </a>
+                    {% endif %}
                   {% endfor %}
                 </div>
 

@@ -77,7 +77,7 @@ urlpatterns = [
 
     # Tickets
     url(r'^tickets/(?P<assigned_state>\d+)?$$', vtickets.list_tickets, name='tickets-list'),
-    url(r'^tickets/(?P<label>\w+)$', vtickets.list_tickets_label, name='tickets-list-label'),
+    url(r'^tickets/labels/(?P<label>\w+)$', vtickets.list_tickets_label, name='tickets-list-label'),
     url(r'^tickets/create', vtickets.manage_ticket, name='tickets-create'),
     url(r'^tickets/edit/(?P<ticket_id>\d+)?$',
         vtickets.manage_ticket, name='tickets-edit'),
