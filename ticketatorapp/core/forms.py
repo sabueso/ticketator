@@ -149,6 +149,9 @@ class TicketForm(forms.ModelForm):
         model = models.Ticket
         fields = '__all__'
         # exclude = ['date']
+        widgets = {
+            'labels': forms.TextInput(attrs={'placeholder': 'Add labels separated by comma'})
+        }
 
     """
     We log all importante changes in fields to be tracked

@@ -70,6 +70,21 @@ def list_tickets(request, assigned_state=None):
 
 
 @login_required
+def list_tickets_label(request, label):
+    if not request.method == 'GET':
+        return HttpResponse(status=405)
+    common_data = common_ticket_data()
+    queues = rights.get_queues_as_q_for_ticket_model(request.user)
+    states = State.objects.all()
+
+    tickets = Ticket.objects.filter(queues) \
+                            .filter(labels__icontains=label) \
+                            .order_by('-id')
+
+    return render(request, 'core/tickets/list_tickets.html', locals())
+
+
+@login_required
 def delete_ticket(request, ticket_id=None):
     user_obj = request.user
     """Check if we can add comment trought get_rights_for_ticket"""
