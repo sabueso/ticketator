@@ -31,10 +31,10 @@
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <select class="form-control pointer" id="id_status" name="ticket-status" onchange="javascript:location.href = this.value;">
-              <option value="/tickets/" {%if not assigned_state%}selected{%endif%} >Open & In progress</option>
-              {%for state in states%}
-              <option value="/tickets/{{state.id}}" {%if assigned_state == state.id|stringformat:"s"%}selected{%endif%}>{{state.name}}</option>
-              {%endfor%}
+              <option value="{% url 'tickets-list' %}" {% if not assigned_state %}selected{% endif %} >Open & In progress</option>
+              {% for state in states %}
+              <option value="{% url 'tickets-list-state' state.id %}" {% if assigned_state == state.id|stringformat:"s" %}selected{% endif %}>{{ state.name }}</option>
+              {% endfor %}
             </select>
           </li>
         </ul>
@@ -60,31 +60,31 @@
               </tr>
             </thead>
             <tbody>
-              {%for line in tickets%}
+              {% for ticket in tickets %}
               <tr class="odd gradeX">
-                <td class="text-center" style="vertical-align:middle"><a href="/tickets/view/{{line.id}}">{{line.id}}</a></td>
-                <td class="text-center" style="vertical-align:middle"><a href="/tickets/view/{{line.id}}">{{line.subject}}</a></td>
-                <td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:{{line.assigned_state.color}}"><font color="black">{{line.assigned_state}}</font></span></td>
-                <td class="text-center" style="vertical-align:middle">{% if line.assigned_queue %}{{line.assigned_queue.shortcode}}{%else%}{%endif%}</td>
-                <td class="text-center" style="vertical-align:middle">{{line.create_user}}</td>
-                <td class="text-center" style="vertical-align:middle">{{line.created|date:"d/m/y G:i:s"}}</td>
-                <td class="text-center" style="vertical-align:middle">{{line.assigned_user}}</td>
+                <td class="text-center" style="vertical-align:middle"><a href="{% url 'tickets-view' ticket.id %}">{{ ticket.id }}</a></td>
+                <td class="text-center" style="vertical-align:middle"><a href="{% url 'tickets-view' ticket.id %}">{{ ticket.subject }}</a></td>
+                <td class="text-center" style="vertical-align:middle"><span class="label" style="background-color:{{ ticket.assigned_state.color }}"><font color="black">{{ ticket.assigned_state }}</font></span></td>
+                <td class="text-center" style="vertical-align:middle">{% if ticket.assigned_queue %}{{ ticket.assigned_queue.shortcode }}{% else %}{% endif %}</td>
+                <td class="text-center" style="vertical-align:middle">{{ ticket.create_user }}</td>
+                <td class="text-center" style="vertical-align:middle">{{ ticket.created|date:"d/m/y G:i:s" }}</td>
+                <td class="text-center" style="vertical-align:middle">{{ ticket.assigned_user }}</td>
                 <td class="project_progress">
                   <div class="progress progress_sm" >
-                    <div aria-valuenow="{{line.percentage}}" style="width: {{line.percentage}}%" class="progress-bar
-                    {%if line.percentage <= 30 and line.percentage >= 0 %}  bg-red {%endif%}
-                    {%if line.percentage <= 60 and line.percentage >= 40 %} bg-orange {%endif%}
-                    {%if line.percentage <= 100 and line.percentage >= 70 %} bg-green {%endif%}"
-                    role="progressbar" data-transitiongoal="{{line.percentage}}">
+                    <div aria-valuenow="{{ ticket.percentage }}" style="width: {{ ticket.percentage }}%" class="progress-bar
+                    {% if ticket.percentage <= 30 and ticket.percentage >= 0 %}  bg-red {% endif %}
+                    {% if ticket.percentage <= 60 and ticket.percentage >= 40 %} bg-orange {% endif %}
+                    {% if ticket.percentage <= 100 and ticket.percentage >= 70 %} bg-green {% endif %}"
+                    role="progressbar" data-transitiongoal="{{ticket.percentage}}">
                   </div>
                 </div>
                 <div class="percentage_range" >
-                  <small>{{line.percentage}}%</small>
+                  <small>{{ ticket.percentage }}%</small>
                 </div>
               </td>
             </td>
-            <td class="text-center" style="vertical-align:middle">{{line.assigned_prio}}</td>
-            {%endfor%}
+            <td class="text-center" style="vertical-align:middle">{{ ticket.assigned_prio }}</td>
+            {% endfor %}
           </tbody>
         </table>
         {% paginate_menu tickets_info.pagination tickest_info.query %}

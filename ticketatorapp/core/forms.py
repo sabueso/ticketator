@@ -224,7 +224,7 @@ class TicketForm(forms.ModelForm):
 
     def field_checker(self, source=None, destiny=None, destiny_name=None):
         if source != destiny:
-            logger(self.instance, self.request.user, "Changed", destiny)
+            logger.logger(self.instance, self.request.user, "Changed", destiny)
             pass
 
     def clean(self):

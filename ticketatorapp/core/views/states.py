@@ -30,7 +30,7 @@ def manage_state(request, state_id=None):
             form = StateForm(request.POST, instance=actual_state)
             if form.is_valid():
                 form.save()
-                return redirect("/settings/state")
+                return redirect('state-list')
         else:
             # Non-POST mode, show only
             form = StateForm(instance=actual_state)
@@ -45,6 +45,6 @@ def delete_state(request, state_id=None):
         if state_id:
             actual_state = get_object_or_404(State, pk=state_id)
             actual_state.delete()
-            return redirect("/settings/state")
+            return redirect('state-list')
     else:
         raise Http404

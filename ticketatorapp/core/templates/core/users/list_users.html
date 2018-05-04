@@ -47,7 +47,7 @@
                 </div>
                 {% if request.user.is_superuser == True %}
                 <div class="title_right">
-                    <a href="/settings/user/create" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 16px;"></i>Add user</a>
+                    <a href="{% url 'user-create' %}" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 16px;"></i>Add user</a>
                 </div>
                 {%endif%}
             </div>
@@ -78,19 +78,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	{%for line in user_list %}
+                                    	{% for user in user_list %}
                                     	<tr class="odd gradeX">
-                                    	<td><a href="/settings/user/{{line.id}}">{{line.id}}</a></td>
-                                    	<td class="text-center">{{line.username}}</td>
-                                    	<td>{{line.first_name}}</td>
-                                    	<td>{{line.last_name}}</td>
-                                    	<td class="text-center" >{% if line.is_active == True %}<i class="glyphicon glyphicon-ok"></i>{%else%}<i class="glyphicon glyphicon-remove"></i>{%endif%}</td>
-                                        <td class="text-center" >{{line.email}}</td>
-                                        <td class="text-center" >{{line.date_joined|date:"d/m/y m:h:s"}}</td>
-                                        <td class="text-center" >{{line.is_staff}}</td>
-                                        <td class="text-center" >{% if line.status_rel.status == "Operator" %}<i class="fa fa-shield"></i>{%else%}<i class="fa fa-user"></i>{%endif%}</td>
-                                        <td class="text-center" >{% if line.is_superuser == True %}<img src="/static/images/superman.png">{%else%} - {%endif%}</td>
-                                    	{%endfor%}
+                                    	<td><a href="{% url 'user-edit' user.id %}">{{ user.id }}</a></td>
+                                    	<td class="text-center">{{ user.username }}</td>
+                                    	<td>{{ user.first_name }}</td>
+                                    	<td>{{ user.last_name }}</td>
+                                    	<td class="text-center" >{% if line.is_active == True %}<i class="glyphicon glyphicon-ok"></i>{% else %}<i class="glyphicon glyphicon-remove"></i>{% endif %}</td>
+                                        <td class="text-center" >{{ user.email}}</td>
+                                        <td class="text-center" >{{ user.date_joined|date:"d/m/y m:h:s" }}</td>
+                                        <td class="text-center" >{{ user.is_staff }}</td>
+                                        <td class="text-center" >{% if user.status_rel.status == "Operator" %}<i class="fa fa-shield"></i>{% else %}<i class="fa fa-user"></i>{% endif %}</td>
+                                        <td class="text-center" >{% if user.is_superuser == True %}<img src="{% static 'images/superman.png' %}">{% else %} - {% endif %}</td>
+                                    	{% endfor %}
                                     </tbody>
 
                                 </table>

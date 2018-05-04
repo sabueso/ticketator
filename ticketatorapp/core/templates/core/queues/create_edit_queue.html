@@ -16,8 +16,11 @@
 {% load core_settings_data %}
 {%site_vars as vars %}
 <!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
-<form method='post' action="/settings/queue/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form">
-{% csrf_token %}
+{% if form.instance.id %}
+<form method='post' action="{% url 'queue-edit' form.instance.id %}" role="form">{% csrf_token %}
+{% else %}
+<form method='post' action="{% url 'queue-create' %}" role="form">{% csrf_token %}
+{% endif %}
     <div class="row">
                 <div class="col-lg-8 col-md-offset-2">
                     <div class="panel panel-default">
@@ -137,7 +140,7 @@
                             <!--submit-->
                          				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save</button>
                                         {%if form.instance.id%}
-                                        <a class="btn btn-default pull-left" style="margin-left: 20px" href="/settings/queue/delete/{{form.instance.id}}">Delete</a>
+                                        <a class="btn btn-default pull-left" style="margin-left: 20px" href="{% url 'queue-delete' form.instance.id %}">Delete</a>
                                         {%endif%}
                                       	</div>
                          			</div>

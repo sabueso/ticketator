@@ -1,0 +1,38 @@
+{% extends 'dashboard/index.html' %}
+{% load staticfiles %}
+
+{% block extend_css %}
+  <link rel="stylesheet" href="{% static 'css/calendar/fullcalendar.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/calendar/fullcalendar.print.css' %}" media="print" />
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Calendar Events</h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li>
+              <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div id="calendar">
+            <!-- Fullcalendar -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'js/calendar/fullcalendar.min.js' %}"></script>
+  <script src="{% static 'js/calendar/custom.js' %}"></script>
+  <script>
+    var get_events_url = "{% url 'get_events' %}";
+  </script>
+{% endblock %}

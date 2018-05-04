@@ -32,9 +32,6 @@
                         <div class="clearfix"></div>
                     </div>
                         <div class="panel-body">
-                                <div class="alert alert-info">
-                                form.instance.pk {{form.instance.pk}}
-                                </div>
                                 {% if vars.debug == True%}
                                     {% if form.errors %}
                                     <div class="alert alert-danger">
@@ -42,8 +39,12 @@
                                     </div>
                                     {% endif %}
                                 {%endif%}
-                                <form method='post' action="/settings/user/{%if form.instance.id %}{{form.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">
-                                {% csrf_token %}
+                                
+                                {% if form.instance.id %}
+                                <form method='post' action="{% url 'user-edit' form.instance.id %}" role="form" enctype="multipart/form-data">{% csrf_token %}
+                                {% else %}
+                                <form method='post' action="{% url 'user-create' %}" role="form" enctype="multipart/form-data">{% csrf_token %}
+                                {% endif %}
                             <!--One main row + two div cols -->
                                 <div class="row">
 

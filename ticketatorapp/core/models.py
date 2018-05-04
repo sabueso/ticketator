@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 import os
 
 from django.db import models
-
 from django.forms import ModelForm
+from django.urls import reverse
 # Added imports
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
@@ -263,6 +263,16 @@ class Ticket(TimeStampedModelMixin):
             priority=str(self.assigned_prio),
             create_user=self.str_creator_user_name(),
             assigned_user_data=self.str_assigned_user_name(),
+        )
+
+    def events_as_json(self):
+        return dict(
+            id = str(self.id),
+            start = str(self.created.strftime('%Y-%m-%d')),
+            title = str(self.subject.encode('utf-8')),
+            body = str(self.body.encode('utf-8')),
+            state_data = str(self.assigned_state.name),
+            url = str(reverse('tickets-view', args=(self.id,)))
         )
 
 

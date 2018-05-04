@@ -44,18 +44,16 @@ catch (e) {}
 //console.log(userid_data)
 
 
-function set_navbar(final_value)
-{
- $.ajax({
-        type: "POST",
-        url: "/settings/user/set_togglenavbar/",
-        dataType: "json",
-        data: { "submited_user_id": userid_data },
-        success: function(data) {
-                //console.log("Post set_percentage: " + final_value);
-                notif('info','Success','Navbar toggled');
-                }
-        });
+function set_navbar(final_value) {
+  $.ajax({
+    type: "POST",
+    url: navbar_url,
+    dataType: "json",
+    data: { "submited_user_id": userid_data },
+    success: function(data) {
+      console.log("Post set_percentage: " + final_value);
+    }
+  });
  }
 
 

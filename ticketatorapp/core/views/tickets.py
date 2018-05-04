@@ -47,24 +47,15 @@ list_tickets: list functions called in urls.py used to list tickets under /ticke
 
 
 @login_required
-def list_tickets(request, assigned_state=None):
+def list_tickets(request):
     common_data = common_ticket_data()
     queues = rights.get_queues_as_q_for_ticket_model(request.user)
     states = State.objects.all()
 
-    # Pick for request object query params
-    assigned_state = request.GET.get("assigned_state", None)
-
     # We pass always granted_queues as a roundup to query_view requirements
-    if not assigned_state:
-        tickets = Ticket.objects.filter(queues) \
-                                .filter(Q(assigned_state=2) | Q(assigned_state=1)) \
-                                .order_by('-id')
-
-    else:
-        tickets = Ticket.objects.filter(queues) \
-                                .filter(assigned_state=assigned_state) \
-                                .order_by('-id')
+    tickets = Ticket.objects.filter(queues) \
+                            .filter(Q(assigned_state=2) | Q(assigned_state=1)) \
+                            .order_by('-id')
 
     return render(request, 'core/tickets/list_tickets.html', locals())
 
@@ -79,6 +70,36 @@ def list_tickets_label(request, label):
 
     tickets = Ticket.objects.filter(queues) \
                             .filter(labels__icontains=label) \
+                            .order_by('-id')
+
+    return render(request, 'core/tickets/list_tickets.html', locals())
+
+
+@login_required
+def list_tickets_state(request, state_id):
+    if not request.method == 'GET':
+        return HttpResponse(status=405)
+    common_data = common_ticket_data()
+    queues = rights.get_queues_as_q_for_ticket_model(request.user)
+    states = State.objects.all()
+
+    tickets = Ticket.objects.filter(queues) \
+                            .filter(assigned_state__id=state_id) \
+                            .order_by('-id')
+
+    return render(request, 'core/tickets/list_tickets.html', locals())
+
+
+@login_required
+def list_tickets_queue(request, queue_id):
+    if not request.method == 'GET':
+        return HttpResponse(status=405)
+    common_data = common_ticket_data()
+    queues = rights.get_queues_as_q_for_ticket_model(request.user)
+    states = State.objects.all()
+
+    tickets = Ticket.objects.filter(queues) \
+                            .filter(assigned_queue__id=queue_id) \
                             .order_by('-id')
 
     return render(request, 'core/tickets/list_tickets.html', locals())
@@ -101,7 +122,7 @@ def delete_ticket(request, ticket_id=None):
         else:
             attach_to_delete.delete()
         obj_to_delete.delete()
-        return redirect("/tickets")
+        return redirect('tickets-list')
     else:
         raise Http404("You dont have enough permissions to delete this ticket")
 
@@ -145,12 +166,12 @@ def manage_ticket(request, ticket_id=None):
                 new_form_attach.ticket_rel = new_ticket_form
                 new_form_attach.save()
                 if 'update-signal' in request.POST:
-                    return redirect("/tickets/edit/" + ticket_id + "")
+                    return redirect('tickets-edit ticket_id')
                 elif 'save-signal' in request.POST:
-                    return redirect("/tickets")
+                    return redirect('tickets-list')
             else:
                 if 'save-signal' in request.POST:
-                    return redirect("/tickets")
+                    return redirect('tickets-list')
     else:
         # Non-POST mode, show only
         form_ticket = TicketForm(instance=actual_ticket, request=request, prefix="ticket")
@@ -424,7 +445,7 @@ def del_microtask_jx(request, ticket_id=None):
         raise Http404
 
 
-def get_microtask_jx(request, user_id=None):
-    qry = User.objects.get(id=user_id)
+def get_microtask_jx(request, mk_id=None):
+    qry = Microtasks.objects.get(id=mk_id)
     data = qry.as_json()
     return JsonResponse(data, safe=False)
