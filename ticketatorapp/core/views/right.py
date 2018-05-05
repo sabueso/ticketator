@@ -26,7 +26,7 @@ def manage_right(request, right_id=None):
             form = RightForm(request.POST, instance=actual_right)
             if form.is_valid():
                 form.save()
-                return redirect("/settings/rights")
+                return redirect('right-list')
         else:
             # Non-POST mode, show only
             form = RightForm(instance=actual_right)

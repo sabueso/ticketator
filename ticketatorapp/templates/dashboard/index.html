@@ -1,98 +1,84 @@
+{% load core_settings_data %}
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{%site_vars as vars %}{{vars.name}}{{vars.version}}</title>
+    <link href="{% static "vendors/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/iCheck/skins/flat/green.min.css" %}" rel="stylesheet">
+    <link href="{% static "vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/maps/jquery-jvectormap-2.0.3.css" %}" rel="stylesheet">
+    <!--Custom -->
+    <link href="{% static "build/css/custom.css" %}" rel="stylesheet" type="text/css">
+    {% block extend_css %}
+    {% endblock %}
 
-<head>
-
-
-  {% load core_settings_data %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>{%site_vars as vars %}{{vars.name}}{{vars.version}}</title>
-
-  {% load staticfiles %}
-
-
-  <link href="{% static "vendors/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
-  <link href="{% static "vendors/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
-  <link href="{% static "vendors/iCheck/skins/flat/green.min.css" %}" rel="stylesheet">
-  <link href="{% static "vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" %}" rel="stylesheet">
-  <link href="{% static "css/maps/jquery-jvectormap-2.0.3.css" %}" rel="stylesheet">
-  <!--Custom -->
-  <link href="{% static "build/css/custom.css" %}" rel="stylesheet" type="text/css">
-  {% block extend_css %}
-  {% endblock %}
-
-  
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js"integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-  {% include "dashboard/skel_js/navbar_settings_js" %}
-  <script src=https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js></script>
-  <script src=https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js></script>
-  <script src="{% static "vendors/nprogress/nprogress.min.js" %}"></script>
-  <script src="{% static "vendors/bootstrap/dist/js/bootstrap.min.js" %}"></script>
-  <script src="{% static "vendors/fastclick/lib/fastclick.min.js" %}"></script>
-  <script src="{% static "vendors/bootstrap-progressbar/bootstrap-progressbar.min.js" %}"></script>
-  {% include "dashboard/skel_js/pnotify_js" %}
-  {% block extend_js %}
-  {% endblock %}
+    <script>
+      var navbar_url =  "{% url 'user-set-collapsednavbar' %}";
+    </script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    {% include "dashboard/skel_js/navbar_settings_js" %}
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js></script>
+    <script src="{% static 'vendors/nprogress/nprogress.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/fastclick/lib/fastclick.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+    {% include "dashboard/skel_js/pnotify_js" %}
+    {% block extend_js %}
+    {% endblock %}
+  </head>
 
 
+  {% if request.user.collapsednavbar == True %}
+  <body class="nav-sm">
+  {% else %}
+  <body class="nav-md">
+  {% endif %}
+    <div class="container body">
+      <div class="main_container">
+        <!-- Navigation -->
+        {% include "dashboard/skel/bars.html" %}
 
-
-</head>
-
-
-{% if request.user.collapsednavbar == True %}
-<body class="nav-sm">
-{% else %}
-<body class="nav-md">
-{% endif %}
-  <div class="container body">
-    <div class="main_container">
-      <!-- Navigation -->
-      {% include "dashboard/skel/bars.html" %}
-
-      <!-- /#page-wrapper -->
-
-      <div class="right_col" role="main">
-
-        {% block content %}
-        {% endblock %}
-
-
-      </div>
-      <!-- /#page-wrapper -->
-      <script>
-      $(document).ready(function(){
-        markdownfunction()
-      })
-      function markdownfunction(){
-        $(".content-markdown-old").each(function(){
-
-          $(this).html(marked($(this).text().trim()))
-        })
-        $(".content-markdown-old.homy h1").css('font-size','18px');
-
-      }
-      </script>
-      <footer>
-        <div class="pull-right">
-          Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+        <!-- /#page-wrapper -->
+        <div class="right_col" role="main">
+          <div class="">
+            {% block content %}
+            {% endblock %}
+          </div>
         </div>
-        <div class="clearfix"></div>
-      </footer>
-      <!-- /#wrapper -->
+        <!-- /#page-wrapper -->
+        <script>
+        $(document).ready(function(){
+          markdownfunction()
+        })
+        function markdownfunction(){
+          $(".content-markdown-old").each(function(){
 
-      {% load staticfiles %}
-      <script src="{% static "build/js/custom.min.js" %}"></script>
+            $(this).html(marked($(this).text().trim()))
+          })
+          $(".content-markdown-old.homy h1").css('font-size','18px');
 
+        }
+        </script>
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /#wrapper -->
 
-    <input type="hidden" id="idUser" name="idUserVar" value="{{ request.user.id }}">
-    </body>
-
-
-
-
-    </html>
-
+        <script src="{% static "build/js/custom.min.js" %}"></script>
+        <input type="hidden" id="idUser" name="idUserVar" value="{{ request.user.id }}">
+        {% block scripts %}
+        {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

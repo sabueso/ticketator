@@ -49,7 +49,7 @@ def manage_user(request, user_id=None):
                     temp_form.set_password(form.cleaned_data["password_check"])
                 temp_form.save()
                 form.save_m2m()
-                return redirect("/settings/user")
+                return redirect('user-list')
         else:
             # Non-POST mode, show only
             form = UserForm(instance=actual_user, request=request)
@@ -61,7 +61,7 @@ def delete_user(request, user_id=None):
         if user_id:
             actual_user = get_object_or_404(User, pk=user_id)
             actual_user.delete()
-            return redirect("/settings/user")
+            return redirect('user-list')
         else:
             return HttpResponse("User is not found")
 

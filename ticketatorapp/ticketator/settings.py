@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_extensions',
     'core',
+    'raven.contrib.django.raven_compat',
+    'django_filters',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -133,7 +136,7 @@ PAGINATE_BY = 15
 
 # Auth settings
 LOGIN_REDIRECT_URL = "/"
-LOGIN_URL = "/login"
+LOGIN_URL = "login/"
 
 # Auth custom settings
 AUTH_USER_MODEL = 'core.User'
@@ -145,3 +148,5 @@ GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
 }
+
+LOGOUT_REDIRECT_URL = '/'

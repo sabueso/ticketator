@@ -149,6 +149,9 @@ class TicketForm(forms.ModelForm):
         model = models.Ticket
         fields = '__all__'
         # exclude = ['date']
+        widgets = {
+            'labels': forms.TextInput(attrs={'placeholder': 'Add labels separated by comma'})
+        }
 
     """
     We log all importante changes in fields to be tracked
@@ -221,7 +224,7 @@ class TicketForm(forms.ModelForm):
 
     def field_checker(self, source=None, destiny=None, destiny_name=None):
         if source != destiny:
-            logger(self.instance, self.request.user, "Changed", destiny)
+            logger.logger(self.instance, self.request.user, "Changed", destiny)
             pass
 
     def clean(self):

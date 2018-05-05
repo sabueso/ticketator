@@ -10,7 +10,7 @@
     </div>
     <div class="row">
                 <div class="col-lg-12">
-                    <a href="/settings/groups/create" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 5px;"></i>Add Group</a>
+                    <a href="{% url 'group-create' %}" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 5px;"></i>Add Group</a>
                 </div>
     </div>
     
@@ -21,8 +21,6 @@
                             <div class="panel-heading">
                                 Actual groups
                             </div>
-                    
-                        
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
@@ -31,32 +29,19 @@
                                         <tr>
                                             <th>ID</th>
                                             <th class="text-center">Name</th>
-                                            <!-- <th>Name</th>
-                                            <th>Surname</th>
-                                            <th class="text-center" width="5px">Active</th>
-                                            <th class="text-center" >Email</th>
-                                            <th class="text-center" >Added</th>
-                                            <th class="text-center" >Staff</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	{%for line in group_list %}
+                                    	{% for group in group_list %}
                                     	<tr class="odd gradeX">
-                                    	<td><a href="/settings/groups/{{line.id}}">{{line.id}}</a></td>
-                                    	<td class="text-center">{{line.name}}</td>
-                                    	<!-- <td>{{line.first_name}}</td>
-                                    	<td>{{line.last_name}}</td>
-                                    	<td class="text-center" >{% if line.is_active == True %}<i class="glyphicon glyphicon-ok"></i>{%else%}<i class="glyphicon glyphicon-remove"></i>{%endif%}</td>
-                                        <td class="text-center" >{{line.email}}</td>
-                                        <td class="text-center" >{{line.date_joined|date:"d/m/y m:h:s"}}</td>
-                                        <td class="text-center" >{{line.is_staff}}</td> -->
-                                    	{%endfor%}
+                                        <td><a href="{% url 'group-edit' group.id %}">{{ group.id }}</a></td>
+                                        <td class="text-center">{{ group.name }}</td>
+                                      </tr>
+                                    	{% endfor %}
                                     </tbody>
-
                                 </table>
                             </div>
                             <!-- /.table-responsive -->
-                            
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -64,5 +49,4 @@
                 </div>
                 <!-- /.col-lg-12 -->
     </div>
-
 {%endblock%}

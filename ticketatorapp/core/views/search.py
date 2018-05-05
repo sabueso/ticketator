@@ -2,9 +2,10 @@ from __future__ import unicode_literals
 from core.models import Ticket
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .tickets import common_ticket_data
 from django.contrib.auth import get_user_model
+from core.filters import TicketFilter
 
 
 User = get_user_model()
@@ -46,4 +47,15 @@ def main_search(request, state_id=None):
         data = [obj.as_json() for obj in query_results]
         return JsonResponse(data, safe=False)
 
+    return render(request, 'core/search/search_form.html', locals())
+
+
+def search(request):
+    if len(request.GET.keys()) > 0:
+        if all(value == '' for value in request.GET.values()):
+            return redirect('search')
+
+    tickets_list = Ticket.objects.all()
+    tickets_filter = TicketFilter(request.GET, queryset=tickets_list)
+    # Need to check if user is superuser?
     return render(request, 'core/search/search_form.html', locals())

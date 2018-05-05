@@ -16,8 +16,11 @@
 {% load core_settings_data %}
 {%site_vars as vars %}
 <!--Test if we go to ticket/create or if we submit ticket/number_of_ticket-->
-<form method='post' action="/settings/priorities/{%if form.instance.id%}{{form.instance.id}}{%else%}create{%endif%}" role="form">
-{% csrf_token %}
+{% if form.instance.id %}
+<form method='post' action="{% url 'priority-edit' form.instance.id %}" role="form">{% csrf_token %}
+{% else %}
+<form method='post' action="{% url 'priority-create' %}" role="form">{% csrf_token %}
+{% endif %}
     <div class="row">
                 <div class="col-lg-8 col-md-offset-2">
                     <div class="panel panel-default">

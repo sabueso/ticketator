@@ -9,7 +9,7 @@ from django.http import Http404
 # List tickets
 def list_queues(request):
     if request.user.is_superuser:
-        queue_list = Queue.objects.all().order_by("-id")
+        queues_list = Queue.objects.all().order_by("-id")
     else:
         raise Http404
     return render(request, 'core/queues/list_queues.html', locals())
@@ -29,7 +29,7 @@ def manage_queue(request, queue_id=None):
             form = QueueForm(request.POST, instance=actual_queue)
             if form.is_valid():
                 form.save()
-                return redirect("/settings/queue")
+                return redirect('queue-list')
         else:
             # Non-POST mode, show only
             form = QueueForm(instance=actual_queue)
@@ -44,6 +44,6 @@ def delete_queue(request, queue_id=None):
         if queue_id:
             actual_queue = get_object_or_404(Queue, pk=queue_id)
             actual_queue.delete()
-            return redirect("/settings/queue")
+            return redirect('queue-list')
     else:
         raise Http404

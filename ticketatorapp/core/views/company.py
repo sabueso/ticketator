@@ -9,7 +9,7 @@ from django.http import Http404
 # List tickets
 def list_companies(request, state_id=None):
     if request.user.is_superuser:
-        user_list = Company.objects.all().order_by("-id")
+        companies_list = Company.objects.all().order_by("-id")
         return render(request, 'core/companies/list_companies.html', locals())
     else:
         raise Http404
@@ -26,11 +26,10 @@ def manage_company(request, company_id=None):
             actual_company = Company()
         # POST mode
         if request.method == 'POST':
-            form = CompanyForm(
-                request.POST, request.FILES, instance=actual_company)
+            form = CompanyForm(request.POST, request.FILES, instance=actual_company)
             if form.is_valid():
                 form.save()
-                return redirect("/settings/companies")
+                return redirect('company-list')
         else:
             # Non-POST mode, show only
             form = CompanyForm(instance=actual_company)

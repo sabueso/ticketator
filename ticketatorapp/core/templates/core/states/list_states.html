@@ -10,7 +10,7 @@
 </div>
 <div class="row">
 	<div class="col-lg-12">
-		<a href="/settings/state/create" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 5px;"></i>Add State</a>
+		<a href="{% url 'state-create' %}" class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus" style="margin-right: 5px;"></i>Add State</a>
 	</div>
 </div>
 
@@ -30,30 +30,20 @@
 								<th>ID</th>
 								<th class="text-center">Name</th>
 								<th class="text-center">Color</th>
-								<th class="text-center">Company</th>
-								<!-- <th>Name</th>
-								<th>Surname</th>
-								<th class="text-center" width="5px">Active</th>
-								<th class="text-center" >Email</th>
-								<th class="text-center" >Added</th>
-								<th class="text-center" >Staff</th> -->
+								<!-- <th class="text-center">Company</th> -->
 							</tr>
 						</thead>
 						<tbody>
-							{%for line in state_list %}
+							{% for state in state_list %}
 							<tr class="odd gradeX">
-								<td><a href="/settings/state/{{line.id}}">{{line.id}}</a></td>
-								<td class="text-center">{{line.name}}</td>
+								<td><a href="{% url 'state-edit' state.id %}">{{ state.id }}</a></td>
+								<td class="text-center">{{ state.name }}</td>
 								<td class="text-center">
-									<span class="label" style="background-color:{{line.color}}"><font color="black">#{{line.color}}</font></span></td>
-								<td class="text-center">{{line.company_rel}}</td>
-								<!-- <td>{{line.first_name}}</td>
-								<td>{{line.last_name}}</td>
-								<td class="text-center" >{% if line.is_active == True %}<i class="glyphicon glyphicon-ok"></i>{%else%}<i class="glyphicon glyphicon-remove"></i>{%endif%}</td>
-								<td class="text-center" >{{line.email}}</td>
-								<td class="text-center" >{{line.date_joined|date:"d/m/y m:h:s"}}</td>
-								<td class="text-center" >{{line.is_staff}}</td> -->
-								{%endfor%}
+									<span class="label" style="background-color:{{ state.color }}"><font color="black">{{ state.color }}</font></span>
+                </td>
+								<!-- <td class="text-center">{{ state.company_rel }}</td> -->
+              </tr>
+							{% endfor %}
 							</tbody>
 
 						</table>

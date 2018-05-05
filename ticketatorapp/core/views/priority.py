@@ -9,7 +9,7 @@ from django.http import Http404
 # List tickets
 def list_priorities(request, state_id=None):
     if request.user.is_superuser:
-        user_list = Priority.objects.all().order_by("-id")
+        priorities_list = Priority.objects.all().order_by("-id")
         return render(request, 'core/priorities/list_priorities.html', locals())
     else:
         raise Http404
@@ -29,7 +29,7 @@ def manage_priority(request, priority_id=None):
             form = PriorityForm(request.POST, instance=actual_priority)
             if form.is_valid():
                 form.save()
-                return redirect("/settings/priorities")
+                return redirect('priority-list')
         else:
             # Non-POST mode, show only
             form = PriorityForm(instance=actual_priority)

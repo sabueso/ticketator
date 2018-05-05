@@ -7,6 +7,7 @@
   <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.css" %}" rel="stylesheet">
   <link href="{% static "vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" %}" rel="stylesheet">
   <link href="{% static "css/ticket/view.css" %}" rel="stylesheet">
+  <link href="{% static 'css/labels/tagify.css' %}" rel="stylesheet" />
   {% include "dashboard/skel_css/pnotify_css" %}
 {%endblock%}
 
@@ -17,6 +18,7 @@
   <script src="{% static "vendors/ion.rangeSlider/js/ion.rangeSlider.min.js" %}"></script>
   <script type="text/javascript" src="{% static "js/tickets/tickets.js" %}"></script>
   {% include "dashboard/skel_js/pnotify_js" %}
+  <script type="text/javascript" src="{% static 'js/labels/tagify.js' %}"></script>
 {% endblock%}
 
 {% block content %}
@@ -32,7 +34,7 @@
     <div class="btn-group pull-right" style="margin-right: 5px;">
       <button class="btn btn-danger btn-sm" type="button" data-target=".bs-example-modal-lg" data-toggle="modal">Delete</button>
     </div>
-  {% include "tickets/delete_modal_ticket.html" %}
+  {% include "core/tickets/delete_modal_ticket.html" %}
 
   {% else %}
   <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Create</button>
@@ -56,7 +58,11 @@
     <div id="myTabContent" class="tab-content">
       <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="main-tab">
         <div class="row">
-          <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit/{{form_ticket.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
+          {% if form_ticket.instance.id %}
+            <form id="ticketform" method='post' action="{% url 'tickets-edit' form_ticket.instance.id %}" role="form" enctype="multipart/form-data">{% csrf_token %}
+          {% else %}
+            <form id="ticketform" method='post' action="{% url 'tickets-create' %}" role="form" enctype="multipart/form-data">{% csrf_token %}
+          {% endif %}
 
             <!--data for Js scripts-->
             <input type="hidden" id="idTicket" name="variable" value="{{ form_ticket.instance.id }}">
@@ -100,6 +106,7 @@
             <div class="col-md-2 col-sm-12 col-xs-12 form-group">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <label class="pull-center">Queue</label>
+                {{ form_ticket.instance.id }}
               </div>
 
               <div class="col-md-12 col-sm-12 col-xs-12">
@@ -248,6 +255,13 @@
                 </div>
               </div>
 
+              <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                <label>Labels:</label>
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                {{ form_ticket.labels }}
+              </div>
+
               {% if actual_files %}
               <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                 <label for="id_file_name">Uploaded files:</label>
@@ -358,7 +372,7 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary add-microtask">Save</button>
+              <button type="button" class="btn btn-primary add-microtask" data-url="{% url 'tickets-add-microtask' form_ticket.instance.id %}">Save</button>
             </div>
 
           </div>
@@ -379,32 +393,32 @@
           </tr>
         </thead>
         <tbody id="tblmicrotasks">
-          {% for i in actual_microtasks%}
+          {% for mk in actual_microtasks %}
           <tr>
-            <td>{{i.id}}</td>
+            <td>{{mk.id}}</td>
             <td>
-              <a>{{i.subject}}</a>
+              <a>{{mk.subject}}</a>
               <br>
-              <small>{{i.date|date:"d/m/y H:i:s"}}</small>
+              <small>{{mk.date|date:"d/m/y H:i:s"}}</small>
             </td>
             <td>
-              {{i.body}}
+              {{mk.body}}
             </td>
 
             <td class="project_progress">
               <div class="progress progress_sm">
-                <div data-transitiongoal="{{i.percentage}}" role="progressbar" class="progress-bar bg-green" style="width: 45%;" aria-valuenow="{{i.percentage}}"></div>
+                <div data-transitiongoal="{{mk.percentage}}" role="progressbar" class="progress-bar bg-green" style="width: 45%;" aria-valuenow="{{mk.percentage}}"></div>
               </div>
-              <small>{{i.percentage}}% Complete</small>
+              <small>{{mk.percentage}}% Complete</small>
             </td>
             <td>
               <!--<button class="btn btn-success btn-xs" type="button">Success</button>-->
-              <span class="label" style="background-color:#{{i.assigned_state.color}}"><font color="black">{{i.assigned_state}}</font></span>
+              <span class="label" style="background-color:#{{mk.assigned_state.color}}"><font color="black">{{mk.assigned_state}}</font></span>
             </td>
             <td id="buttons">
-              <input type="hidden" id="idmk" name="idmk" value="{{i.id}}">
-              <a class="btn btn-info btn-xs edit-mk" href="#"><i class="fa fa-pencil"></i> Edit </a>
-              <a class="btn btn-danger btn-xs del-mk" href="#"><i class="fa fa-trash-o"></i> Delete </a>
+              <input type="hidden" id="idmk" name="idmk" value="{{mk.id}}">
+              <a class="btn btn-info btn-xs edit-mk" href="#" data-url="{% url 'tickets-get-microtask' mk.id %}"><i class="fa fa-pencil"></i> Edit </a>
+              <a class="btn btn-danger btn-xs del-mk" href="#" data-url="{% url 'tickets-del-microtasks' %}"><i class="fa fa-trash-o"></i> Delete </a>
             </td>
           </tr>
           {% endfor %}
@@ -441,3 +455,17 @@
 
 
 {%endblock%}
+
+{% block scripts %}
+<script>
+  var labels_input = document.querySelector('input[name=ticket-labels]'),
+  tagify = new Tagify(labels_input);
+</script>
+
+{% if form_ticket.instance.id %}
+  <script>
+    var set_percentage_url = "{% url 'tickets-set-percentage' form_ticket.instance.id %}";
+    var get_percentage_url = "{% url 'tickets-get-percentage' form_ticket.instance.id %}";
+  </script>
+{% endif %}
+{% endblock %}

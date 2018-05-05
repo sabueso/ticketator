@@ -60,7 +60,7 @@ $().ready(function() {
     {
      $.ajax({
             type: "POST",
-            url: "/tickets/set_percentage/"+idTicket_data+"/range/",
+            url: set_percentage_url,
             dataType: "json",
             data: { "range_value": final_value },
             success: function(data) {
@@ -76,7 +76,7 @@ $().ready(function() {
      $.ajax({
             type: "GET",
             async: false,
-            url: "/tickets/get_percentage/"+ticket_id+"",
+            url: get_percentage_url,
             dataType: "json",
             success: function(data) {
                     //console.log(data);
@@ -155,7 +155,7 @@ $().ready(function() {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "/tickets/get_comments/"+idTicket_data+"",
+            url: get_comments_url,
             success: function(data) {
                         var dataparsed = (data);
                         //console.log(data);
@@ -195,7 +195,7 @@ $().ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "/tickets/add_comment/"+idTicket_data+"",
+            url: add_comment_url,
             dataType: "json",
             data: { "message_text": $("#message_data").val() },
             success: function(data) {
@@ -220,8 +220,9 @@ $().ready(function() {
         var idActualMessage = $(this).closest("div#comment").find("input[name='idPMessage']").val();
         $.ajax({
             type: "POST",
-            url: "/tickets/del_comment/",
+            url: del_comment_url,
             dataType: "json",
+            // TODO: add ticket id to delete ticket url!
             data: { "message_id": idActualMessage, "ticket_id": idTicket_data},
             success: function(data) {
                             update_comments_new();
@@ -308,9 +309,10 @@ $().ready(function() {
         //Try if ID exists and instance the variable
         //var ActualMK = $(this).closest("#microtask_modal").find("input[name='idmk']").val();
         var ActualMK = $(this).closest(".modal-footer").find("input[name='idmk']").val();
+        var add_mk_url = $(this).attr("data-url");
         $.ajax({
             type: "POST",
-            url: "/tickets/add_microtask/"+idTicket_data+"",
+            url: add_mk_url,
             dataType: "json",
             data: { "id_mk": ActualMK,
                     "subject_text": $("#subject_mk").val(),
@@ -352,36 +354,28 @@ $().ready(function() {
     });
 
     //Edit microtasks modal
-    function edit_microtask(mk_id)
-    {
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: "/tickets/get_microtask/"+mk_id+"",
-            success: function(data)
-                {
-
-                        var dataparsed = (data);
-                        $('#microtask_modal').find('[name="subject_mk"]').val(data.subject_data);
-                        $('#microtask_modal').find('[name="body_mk"]').val(data.body_data);
-                        $('#microtask_modal').find('[name="state_mk"]').val(data.state_data_id);
-                        slider_new_microtask.update({ from: data.percentage_data });
-                        $('.modal-footer').append('<input type="hidden" id="idmk" name="idmk" value="'+mk_id+'">');
-                        $('#microtask_modal').modal('show');
-
-
-
-                }
-
-        })
+    function edit_microtask(mk_id, edit_mk_url){
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: edit_mk_url,
+        success: function(data){
+          var dataparsed = (data);
+          $('#microtask_modal').find('[name="subject_mk"]').val(data.subject_data);
+          $('#microtask_modal').find('[name="body_mk"]').val(data.body_data);
+          $('#microtask_modal').find('[name="state_mk"]').val(data.state_data_id);
+          slider_new_microtask.update({ from: data.percentage_data });
+          $('.modal-footer').append('<input type="hidden" id="idmk" name="idmk" value="'+mk_id+'">');
+          $('#microtask_modal').modal('show');
+        }
+      });
     }
 
-
-    $('#tblmicrotasks ').on("click", ".edit-mk", function(){
+    $('#tblmicrotasks').on("click", ".edit-mk", function(){
       //console.log('am i called');
      var idActualMK = $(this).closest("td#buttons").find("input[name='idmk']").val();
-     edit_microtask(idActualMK);
-
+     var edit_mk_url = $(this).attr("data-url");
+     edit_microtask(idActualMK, edit_mk_url);
     });
 
 
@@ -390,9 +384,10 @@ $().ready(function() {
         $('#tblmicrotasks').on("click", ".del-mk", function(){
         //var idActualMessage = $(".del-message").closest("#idPMessage").attr("value");
         var ActualMK = $(this).closest("td#buttons").find("input[name='idmk']").val();
+        var del_mk_url = $(this).attr("data-url");
         $.ajax({
             type: "POST",
-            url: "/tickets/del_microtask/",
+            url: del_mk_url,
             dataType: "json",
             data: { "mk_id": ActualMK, "ticket_id": idTicket_data},
             success: function(data) {

@@ -26,7 +26,7 @@ def manage_group(request, group_id=None):
             form = GroupForm(request.POST, instance=actual_group)
             if form.is_valid():
                 form.save()
-                return redirect("/settings/groups")
+                return redirect('group-list')
         else:
             # Non-POST mode, show only
             form = GroupForm(instance=actual_group)

@@ -29,7 +29,7 @@
   <div class="x_title">
     <h2 >{{form_ticket.instance.subject}}</h2>
     {%if can_edit %}
-      <a class="btn btn-default btn-sm pull-right" style="margin-right: 5px" href="/tickets/edit/{{form_ticket.instance.id}}" >Edit</a>
+      <a class="btn btn-default btn-sm pull-right" style="margin-right: 5px" href="{% url 'tickets-edit' form_ticket.instance.id %}" >Edit</a>
     {%endif%}
 
     <div class="clearfix"></div>
@@ -44,22 +44,25 @@
         </li>
         <li role="presentation" class=""><a href="#tab_content3" role="tabpanel" id="log-tab" data-toggle="tab" aria-expanded="false">Log</a>
         </li>
-        {%endif%}
+        {% endif %}
       </ul>
 
       <div id="myTabContent" class="tab-content">
         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="main-tab">
           <div class="row">
-            <form id="ticketform" method='post' action="/tickets/{%if form_ticket.instance.id%}edit/{{form_ticket.instance.id}}{%else%}create{%endif%}" role="form" enctype="multipart/form-data">{% csrf_token %}
-
+            {% if form_ticket.instance.id %}
+              <form id="ticketform" method='post' action="{% url 'tickets-edit' form_ticket.instance.id %}" role="form" enctype="multipart/form-data">{% csrf_token %}
+            {% else %}
+              <form id="ticketform" method='post' action="{% url 'tickets-create' %}" role="form" enctype="multipart/form-data">{% csrf_token %}
+            {% endif %}
               <!--usefull for JS scripts-->
               <input type="hidden" id="idTicket" name="variable" value="{{ form_ticket.instance.id }}">
               <input type="hidden" id="id_ticket-percentage" name="ticket-percentage" value="{{ form_ticket.instance.percentage }}">
-              <input type="hidden" id="count_microtask" name="variable" value="{{actual_microtasks.count }}">
+              <input type="hidden" id="count_microtask" name="variable" value="{{ actual_microtasks.count }}">
 
 
               <!--Left side-->
-              {% if vars.debug == True%}
+              {% if vars.debug == True %}
 
 
               {% if form_ticket.errors %}
@@ -67,9 +70,9 @@
                 Main form: </p>
                 {% for fticket_error in form_ticket %}
                 {% if fticket_error.errors %}
-                <ul ><li>{{fticket_error.label|striptags }} => <b>{{fticket_error.errors|striptags}}</b> </li></ul>
-                {% endif%}
-                {% endfor%}
+                <ul ><li>{{ fticket_error.label|striptags }} => <b>{{ fticket_error.errors|striptags }}</b> </li></ul>
+                {% endif %}
+                {% endfor %}
               </div>
               {%endif%}
 
@@ -80,14 +83,12 @@
                 Attach form: </p>
                 {% for fattach_error in form_attach %}
                 {% if fattach_error.errrors %}
-                [ {{fattach_error.label|striptags }} => <b>{{fattach_error.errors|striptags}}</b> ]
-                {%endif%}
-                {% endfor%}
+                [ {{ fattach_error.label|striptags }} => <b>{{ fattach_error.errors|striptags }}</b> ]
+                {% endif %}
+                {% endfor %}
               </div>
-              {%endif%}
-
-
-              {%endif%}
+              {% endif %}
+              {% endif %}
 
               <!--Status-->
               <div class="col-md-2 col-sm-12 col-xs-12 form-group">
@@ -100,9 +101,9 @@
                   {% all_queues_for_user "cv_cc" as queues %}
                   {% for queue in queues %}
                   {% if queue.id == form_ticket.instance.assigned_queue.id %}
-                  <input class="form-control pointer" id="id_ticket-assigned_queue" name="ticket-assigned_queue" value="{{queue}}" disabled></input>
+                  <input class="form-control pointer" id="id_ticket-assigned_queue" name="ticket-assigned_queue" value="{{ queue }}" disabled></input>
                   {% endif %}
-                  {%endfor%}
+                  {% endfor %}
 
 
                 </select>
@@ -113,10 +114,10 @@
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12 ">
                 {% for status in common_data.status_info %}
-                {%if status.id  == form_ticket.instance.assigned_state.id %}
-                <input class="form-control pointer" id="id_tciket-assigned_state" name="ticket-assigned_state" value="{{status}}" disabled></input>
-                {%endif%}
-                {%endfor%}
+                {% if status.id  == form_ticket.instance.assigned_state.id %}
+                <input class="form-control pointer" id="id_tciket-assigned_state" name="ticket-assigned_state" value="{{ status }}" disabled></input>
+                {% endif %}
+                {% endfor %}
 
               </div>
 
@@ -126,13 +127,13 @@
 
               <div class="col-md-12 col-sm-12 col-xs-12 ">
                 {% if form_ticket.instance.id %}
-                <input id="id_ticket-date_disabled" name="ticket-date" class="form-control" value="{{form_ticket.instance.created|date:"d/m/y G:i"}}" readonly/>
-                {%else%}
+                <input id="id_ticket-date_disabled" name="ticket-date" class="form-control" value="{{ form_ticket.instance.created|date:"d/m/y G:i" }}" readonly/>
+                {% else %}
                 <input id="id_ticket-date" name="ticket-date" class="form-control" value="">
                 <!--<input id="id_ticket-date" type="text" aria-describedby="inputSuccess2Status"  class="form-control has-feedback-left">-->
-                {%endif%}
+                {% endif %}
 
-                {{form_ticket.date.errors}}
+                {{ form_ticket.date.errors }}
               </div>
 
               <div class="col-md-12 col-sm-12 col-xs-12 ">
@@ -141,10 +142,10 @@
 
               <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                 {% for prio in common_data.prio_info %}
-                {%if prio.id  == form_ticket.instance.assigned_prio.id %}
-                <inpunt class="form-control pointer" value="{{prio}}" disabled >{{prio}}</input>
-                  {%endif%}
-                  {%endfor%}
+                {% if prio.id  == form_ticket.instance.assigned_prio.id %}
+                <inpunt class="form-control pointer" value="{{prio}}" disabled >{{ prio }}</input>
+                  {% endif %}
+                  {% endfor %}
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                   <label class="pull-center">Responsible</label>
@@ -153,7 +154,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   {% for user_resp in common_data.users_info %}
                   {%if user_resp.id  == form_ticket.instance.assigned_user.id %}
-                  <input class="form-control pointer" value="{%if user_resp.first_name and user_resp.last_name%}{{user_resp.first_name}} {{user_resp.last_name}} {%else%}{{user_resp.email}}{%endif%}" disabled></input>
+                  <input class="form-control pointer" value="{% if user_resp.first_name and user_resp.last_name %}{{ user_resp.first_name }} {{ user_resp.last_name }} {% else %}{{ user_resp.email }}{% endif %}" disabled></input>
                   {%endif%}
                   {%endfor%}
                 </div>
@@ -183,6 +184,22 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                   <div class="content-markdown-old" style="background-color: #f5f5f5; border: 1px solid #e3e3e3; border-radius: 4px; padding: 15px;">{% if form_ticket.instance.body %}{{form_ticket.instance.body}}{%endif%}</div>
                 </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  <label>Labels:</label>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                  {% for label in form_ticket.instance.get_label_list %}
+                    {% if label != "" %}
+                        <a href="{% url 'tickets-list-label' label %}">
+                          <span class="tag">
+                            <span>{{ label }}</span>
+                          </span>
+                        </a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+
                 <div style="padding-left:10px; font-size:11px;">{%if form_ticket.instance.updated != form_ticket.instance.created %}Last modified: {{form_ticket.instance.updated|naturaltime }}{%endif%}</div>
                 <hr></hr>
 
@@ -192,12 +209,12 @@
                 <div class="col-md-55">
                   <div class="thumbnail">
                               <div class="caption">{{ i.shortfilename }}</div>
-                              <a href="#" data-toggle="modal" data-target="#img{{i.id}}"><img style="width: 100%; display: block;" src="{{ i.file_name.url }}" alt="image"></a>
+                              <a href="#" data-toggle="modal" data-target="#img{{ i.id }}"><img style="width: 100%; display: block;" src="{{ i.file_name.url }}" alt="image"></a>
 
                   </div>
                 </div>
                 <!--modal part-->
-                    <div id="img{{i.id}}" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div id="img{{ i.id }}" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-body">
@@ -256,7 +273,7 @@
                         <strong>{{comm.user_rel.username}}</strong> <span class="text-muted">commented {{comm.created|naturaltime}}</span>
                         <input type="hidden" id="idPMessage" name="idPMessage" value="{{comm.id}}">
                         {%if request.user.is_superuser or request.user.id == comm.user_rel.id %}
-                          <button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;"><i class="fa fa-trash-o"></i></button>-->
+                          <button href="#" class="del-message btn btn-xs btn-danger pull-right" onClick="return false;"><i class="fa fa-trash-o"></i></button>
                         {%endif%}
                       </div>
                       <div class="panel-body">
@@ -330,8 +347,8 @@
               </td>
               <td id="buttons">
                 <input type="hidden" id="idmk" name="idmk" value="{{i.id}}">
-                <a class="btn btn-info btn-xs edit-mk" href="#"><i class="fa fa-pencil"></i> Edit </a>
-                <a class="btn btn-danger btn-xs del-mk" href="#"><i class="fa fa-trash-o"></i> Delete </a>
+                <a class="btn btn-info btn-xs edit-mk" href="#" data-url="{% url 'tickets-get-microtask' i.id %}"><i class="fa fa-pencil"></i> Edit </a>
+                <a class="btn btn-danger btn-xs del-mk" href="#" data-url="{% url 'tickets-del-microtasks' %}"><i class="fa fa-trash-o"></i> Delete </a>
               </td>
             </tr>
             {% endfor %}
@@ -367,3 +384,15 @@
 
 
 {%endblock%}
+
+{% block scripts %}
+{% if form_ticket.instance.id %}
+  <script>
+    var set_percentage_url = "{% url 'tickets-set-percentage' form_ticket.instance.id %}";
+    var get_percentage_url = "{% url 'tickets-get-percentage' form_ticket.instance.id %}";
+    var get_comments_url = "{% url 'tickets-get-comments' form_ticket.instance.id %}";
+    var add_comment_url = "{% url 'tickets-add-comment' form_ticket.instance.id %}";
+    var del_comment_url = "{% url 'tickets-del-comment' %}";
+  </script>
+{% endif %}
+{% endblock %}
