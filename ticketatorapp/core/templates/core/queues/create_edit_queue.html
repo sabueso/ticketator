@@ -139,9 +139,13 @@
                          					<hr></hr>
                             <!--submit-->
                          				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save</button>
-                                        {%if form.instance.id%}
-                                        <a class="btn btn-default pull-left" style="margin-left: 20px" href="{% url 'queue-delete' form.instance.id %}">Delete</a>
-                                        {%endif%}
+                                <a class="btn btn-default pull-left" style="margin-left: 20px" href="{% url 'queue-list' %}"><i class="fa fa-angle-left"></i> Back</a>
+                                {% if form.instance.id %}
+                                  <a class="btn btn-default pull-left" style="margin-left: 20px" href="{% url 'queue-delete' form.instance.id %}">Delete</a>
+                                {% else %}
+                                  <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                {% endif %}
+
                                       	</div>
                          			</div>
                          		</div>

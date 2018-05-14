@@ -32,13 +32,13 @@
     <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 3px;" type="submit" name="save-signal">Save</button>
     <button form="ticketform" class="btn btn-default btn-sm pull-right"  style="margin-right: 5px;" type="submit" name="update-signal">Update</button>
     <div class="btn-group pull-right" style="margin-right: 5px;">
-      <button class="btn btn-danger btn-sm" type="button" data-target=".bs-example-modal-lg" data-toggle="modal">Delete</button>
+      <button class="btn btn-danger btn-sm" type="button" data-target=".bs-example-modal-lg" data-toggle="modal"><i class="fa fa-trash"></i> Delete</button>
     </div>
   {% include "core/tickets/delete_modal_ticket.html" %}
 
   {% else %}
   <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="submit" name="save-signal" >Create</button>
-  <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="reset" name="save-signal">Clear</button>
+  <button form="ticketform" class="btn btn-default btn-sm pull-right" style="margin-right: 5px" type="reset" name="save-signal">Clear form</button>
   {%endif%}
   <div class="clearfix"></div>
 
@@ -418,7 +418,7 @@
             <td id="buttons">
               <input type="hidden" id="idmk" name="idmk" value="{{mk.id}}">
               <a class="btn btn-info btn-xs edit-mk" href="#" data-url="{% url 'tickets-get-microtask' mk.id %}"><i class="fa fa-pencil"></i> Edit </a>
-              <a class="btn btn-danger btn-xs del-mk" href="#" data-url="{% url 'tickets-del-microtasks' %}"><i class="fa fa-trash-o"></i> Delete </a>
+              <a class="btn btn-danger btn-xs del-mk" href="#" data-url="{% url 'tickets-del-microtasks' %}"><i class="fa fa-trash"></i> Delete </a>
             </td>
           </tr>
           {% endfor %}

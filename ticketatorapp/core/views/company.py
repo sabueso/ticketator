@@ -36,3 +36,13 @@ def manage_company(request, company_id=None):
         return render(request, 'core/companies/create_edit_company.html', locals())
     else:
         raise Http404
+
+
+def delete_company(request, company_id=None):
+    if request.user.is_superuser:
+        if company_id:
+            actual_company = get_object_or_404(Company, pk=company_id)
+            actual_company.delete()
+            return redirect('company-list')
+    else:
+        return Http404

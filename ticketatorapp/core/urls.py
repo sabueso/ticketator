@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^settings/groups/$', vgroup.list_groups, name='group-list'),
     url(r'^settings/groups/create/$', vgroup.manage_group, name='group-create'),
     url(r'^settings/groups/(?P<group_id>\d+)/$', vgroup.manage_group, name='group-edit'),
+    url(r'^settings/groups/delete/(?P<group_id>\d+)/$', vgroup.delete_group, name='group-delete'),
 
     # Rights
     url(r'^settings/rights/$', vright.list_rights, name='right-list'),
@@ -58,14 +59,18 @@ urlpatterns = [
     # Companies
     url(r'^settings/companies/$', vcompanies.list_companies, name='company-list'),
     url(r'^settings/companies/create/$', vcompanies.manage_company, name='company-create'),
-    url(r'^settings/companies/(?P<company_id>\d+)/$',
-        vcompanies.manage_company, name='company-edit'),
+    url(r'^settings/companies/(?P<company_id>\d+)/$', vcompanies.manage_company,
+        name='company-edit'),
+    url(r'^settings/companies/delete/(?P<company_id>\d+)/$', vcompanies.delete_company,
+        name='company-delete'),
 
     # Priorities
     url(r'^settings/priorities/$', vpriorities.list_priorities, name='priority-list'),
     url(r'^settings/priorities/create/$', vpriorities.manage_priority, name='priority-create'),
-    url(r'^settings/priorities/(?P<priority_id>\d+)/$',
-        vpriorities.manage_priority, name='priority-edit'),
+    url(r'^settings/priorities/(?P<priority_id>\d+)/$', vpriorities.manage_priority,
+        name='priority-edit'),
+    url(r'^settings/priorities/delete/(?P<priority_id>\d+)/$', vpriorities.delete_priority,
+        name='priority-delete'),
 
     # Queues
     url(r'^settings/queue/$', vqueues.list_queues, name='queue-list'),

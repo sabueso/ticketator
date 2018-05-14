@@ -12,23 +12,9 @@
                     <div class="x_title">
                         {% if not form.instance.id %}
                             <h2>New User</h2>
-
-                        {%else%}
+                        {% else %}
                             <h2>Edit User</h2>
-                                <div class="btn-group pull-right" style="margin-right: 5px;">
-                                          <button class="btn btn-default btn-sm" type="button">More</button>
-                                          <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                          </button>
-                                          <ul role="menu" class="dropdown-menu">
-                                            <li><a href="#" data-target=".bs-example-modal-lg" data-toggle="modal">Delete</a>
-                                            </li>
-                                            </li>
-                                          </ul>
-                                </div>
-                            {% include "core/users/delete_modal_user.html" %}
-                        {%endif%}
+                        {% endif %}
                         <div class="clearfix"></div>
                     </div>
                         <div class="panel-body">
@@ -39,7 +25,7 @@
                                     </div>
                                     {% endif %}
                                 {%endif%}
-                                
+
                                 {% if form.instance.id %}
                                 <form method='post' action="{% url 'user-edit' form.instance.id %}" role="form" enctype="multipart/form-data">{% csrf_token %}
                                 {% else %}
@@ -238,8 +224,14 @@
                                                     <div class="ln_solid">
                                                     </div>
 
-                                 				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save user</button>
-                                              	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                 				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save</button>
+                                        <a class="btn btn-default pull-left" style="margin-left: 20px" href="{% url 'user-list' %}"><i class="fa fa-angle-left"></i> Back</a>
+                                        {% if form.instance.id %}
+                                          <a class="btn btn-danger pull-left" style="margin-left: 20px" href="#" data-target=".bs-example-modal-lg" data-toggle="modal"><i class="fa fa-trash"></i> Delete</a>
+                                          {% include "core/users/delete_modal_user.html" %}
+                                        {% else %}
+                                          <button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                        {% endif %}
                                           	</div>
                              			</div>
 

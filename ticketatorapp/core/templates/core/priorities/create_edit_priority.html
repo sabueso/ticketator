@@ -24,7 +24,7 @@
     <div class="row">
                 <div class="col-lg-8 col-md-offset-2">
                     <div class="panel panel-default">
-                        
+
                         <div class="panel-heading">
                             {% if vars.debug == True%}
                             <div class="pull-left">
@@ -41,7 +41,7 @@
                                     {% if form.errors %}
                                     <div class="alert alert-danger">
                                         {{form.errors}}
-                                
+
                                     </div>
                                     {% endif %}
                                 {%endif%}
@@ -58,7 +58,7 @@
                                                     <p class="help-block"></p>
                                                     {{form.name.errors}}
                                         </div>
-                                        
+
 <!--                                         <div class="form-group">
                                                     <label>First name</label>
                                                     {% if form.instance.first_name%}
@@ -69,7 +69,7 @@
                                                     <p class="help-block"></p>
                                                     {{form.first_name.errors}}
                                         </div>
-                                        
+
                                         <div class="form-group">
                                                    <label>Last name</label>
                                                     {% if form.instance.last_name%}
@@ -91,11 +91,11 @@
                                                     <p class="help-block"></p>
                                                     {{form.email.errors}}
                                         </div> -->
-                                        
+
                                 </div>
-                                
-                                       
-                                
+
+
+
                             </div>
 
 
@@ -107,7 +107,12 @@
                          					<hr></hr>
                             <!--submit-->
                          				<button class="btn btn-default pull-right" style="margin-right: 20px" type="submit">Save</button>
-                                      	<button class="btn btn-default pull-left" style="margin-left: 20px" type="reset">Clear form</button>
+                                      	<a class="btn btn-default pull-left" style="margin-left: 20px" href="{% url 'priority-list' %}"><i class="fa fa-angle-left"></i> Back</a>
+                                        {% if form.instance.id %}
+                                          <a class="btn btn-danger pull-left" style="margin-left: 20px" href="{% url 'priority-delete' form.instance.id %}"><i class="fa fa-trash"></i> Delete</a>
+                                        {% else %}
+                                          <button class="btn btn-default pull-left" style="margin-left: 20px"type="reset">Clear form</button>
+                                        {% endif %}
                                       	</div>
                          			</div>
                          		</div>
