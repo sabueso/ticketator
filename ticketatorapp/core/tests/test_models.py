@@ -3,9 +3,12 @@
 from __future__ import unicode_literals
 
 from django.test import TestCase
+from django.core.files import File
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from core.models import (
-    UserType, User, Company, Queue, Rights, State, Priority, Ticket, Comments, Microtasks
+    UserType, User, Company, Queue, Rights, State, Priority, Ticket, Attachment, Comments,
+    Microtasks, Logs
 )
 
 # Run tests: docker-compose exec backend ./ticketatorapp/manage.py test core.tests
@@ -43,7 +46,11 @@ class MainMethods(TestCase):
                                      assigned_queue=self.create_queue(),
                                      assigned_company=self.create_company(),
                                      assigned_state=self.create_state(),
-                                     assigned_prio=self.create_priority())
+                                     assigned_prio=self.create_priority(), labels='test,ticket, hi')
+
+    def create_attachment(self):
+        return Attachment.objects.create(ticket_rel=self.create_ticket(),
+                                         file_name=SimpleUploadedFile('dodo.png', b'Test file'))
 
     def create_comments(self):
         return Comments.objects.create(ticket_rel=self.create_ticket(),
@@ -53,6 +60,10 @@ class MainMethods(TestCase):
         return Microtasks.objects.create(ticket_rel=self.create_ticket(), subject='Microtask Test',
                                          body='Microtask test body',
                                          assigned_state=self.create_state())
+
+    def create_logs(self):
+        return Logs.objects.create(log_ticket=self.create_ticket(),
+                                   log_user=self.create_user('testuser4'), log_action='Test log')
 
 
 class UserTypeTest(MainMethods):
@@ -114,6 +125,16 @@ class TicketTest(MainMethods):
         self.assertTrue(isinstance(ticket, Ticket))
         self.assertEqual(ticket.__str__(), str(ticket.id))
         self.assertNotEqual(ticket.subject, 'Test subject')
+        self.assertEqual(ticket.str_assigned_user_name(), 'Test User')
+        self.assertEqual(ticket.str_creator_user_name(), 'Test User')
+        self.assertEqual(ticket.get_label_list(), ['test', 'ticket', 'hi'])
+
+
+class AttachmentTest(MainMethods):
+    def test_attachment_creation(self):
+        attachment = self.create_attachment()
+        self.assertTrue(isinstance(attachment, Attachment))
+        self.assertEqual(attachment.file_name.path, '/code/media/ticket_files/1/dodo.png')
 
 
 class CommentsTest(MainMethods):
@@ -128,3 +149,10 @@ class MicrotasksTest(MainMethods):
         microtasks = self.create_microtasks()
         self.assertTrue(isinstance(microtasks, Microtasks))
         self.assertEqual(microtasks.subject, 'Microtask Test')
+
+
+class LogsTest(MainMethods):
+    def test_logs_creation(self):
+        logs = self.create_logs()
+        self.assertTrue(isinstance(logs, Logs))
+        self.assertEqual(logs.log_action, 'Test log')
