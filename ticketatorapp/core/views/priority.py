@@ -36,3 +36,13 @@ def manage_priority(request, priority_id=None):
         return render(request, 'core/priorities/create_edit_priority.html', locals())
     else:
         raise Http404
+
+
+def delete_priority(request, priority_id=None):
+    if request.user.is_superuser:
+        if priority_id:
+            actual_priority = get_object_or_404(Priority, pk=priority_id)
+            actual_priority.delete()
+            return redirect('priority-list')
+    else:
+        raise Http404

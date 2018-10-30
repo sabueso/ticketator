@@ -33,3 +33,13 @@ def manage_group(request, group_id=None):
         return render(request, 'core/groups/create_edit_group.html', locals())
     else:
         raise Http404
+
+
+def delete_group(request, group_id=None):
+    if request.user.is_superuser:
+        if group_id:
+            actual_group = get_object_or_404(Group, pk=group_id)
+            actual_group.delete()
+            return redirect('group-list')
+    else:
+        return Http404
